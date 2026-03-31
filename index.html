@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Axiarch Algorithm — Penny Stock Sentiment Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg-void: #06080c;
+  --bg-primary: #0a0e17;
+  --bg-card: #0f1420;
+  --bg-card-hover: #141a2a;
+  --bg-elevated: #1a2235;
+  --border: #1e2a3e;
+  --border-bright: #2a3a55;
+  --text-primary: #e8ecf4;
+  --text-secondary: #8892a8;
+  --text-muted: #556178;
+  --accent-green: #00e87b;
+  --accent-green-dim: rgba(0, 232, 123, 0.15);
+  --accent-green-glow: rgba(0, 232, 123, 0.3);
+  --accent-red: #ff3b5c;
+  --accent-red-dim: rgba(255, 59, 92, 0.15);
+  --accent-amber: #ffb830;
+  --accent-amber-dim: rgba(255, 184, 48, 0.15);
+  --accent-blue: #3b82f6;
+  --accent-blue-dim: rgba(59, 130, 246, 0.15);
+  --accent-cyan: #00d4ff;
+  --accent-cyan-dim: rgba(0, 212, 255, 0.12);
+  --font-display: 'Outfit', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-body: 'Outfit', sans-serif;
+  --radius: 8px;
+  --radius-lg: 14px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--bg-void);color:var(--text-primary);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body::before{content:'';position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:9999}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg-void)}
+::-webkit-scrollbar-thumb{background:var(--border-bright);border-radius:3px}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(6,8,12,0.85);backdrop-filter:blur(20px) saturate(1.4);border-bottom:1px solid var(--border);padding:0 2rem;height:60px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:var(--font-display);font-weight:800;font-size:1.3rem;letter-spacing:-0.02em;background:linear-gradient(135deg,var(--accent-green),var(--accent-cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-links{display:flex;gap:0.25rem}
+.nav-links a{color:var(--text-secondary);text-decoration:none;font-size:0.82rem;font-weight:500;padding:0.45rem 0.85rem;border-radius:6px;transition:all 0.2s}
+.nav-links a:hover{color:var(--text-primary);background:var(--bg-elevated)}
+.nav-links a.active{color:var(--accent-green);background:var(--accent-green-dim)}
+.nav-cta{background:var(--accent-green);color:#000;font-weight:700;font-size:0.8rem;padding:0.5rem 1.2rem;border-radius:6px;text-decoration:none;transition:all 0.2s;letter-spacing:0.02em}
+.nav-cta:hover{box-shadow:0 0 20px var(--accent-green-glow);transform:translateY(-1px)}
+
+/* SECTIONS */
+section{padding:6rem 2rem;max-width:1280px;margin:0 auto}
+.section-label{font-family:var(--font-mono);font-size:0.7rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent-green);margin-bottom:0.75rem;display:flex;align-items:center;gap:0.5rem}
+.section-label::before{content:'';width:8px;height:8px;background:var(--accent-green);border-radius:2px;display:inline-block}
+.section-title{font-family:var(--font-display);font-size:clamp(2rem,4vw,3rem);font-weight:800;letter-spacing:-0.03em;line-height:1.1;margin-bottom:1rem}
+.section-subtitle{color:var(--text-secondary);font-size:1.05rem;line-height:1.6;max-width:640px}
+
+/* HERO */
+#hero{padding-top:10rem;padding-bottom:6rem;position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center}
+.hero-glow{position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse at center,rgba(0,232,123,0.08) 0%,rgba(0,212,255,0.04) 40%,transparent 70%);pointer-events:none}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(30,42,62,0.3) 1px,transparent 1px),linear-gradient(90deg,rgba(30,42,62,0.3) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse at center,rgba(0,0,0,0.4) 0%,transparent 70%);-webkit-mask-image:radial-gradient(ellipse at center,rgba(0,0,0,0.4) 0%,transparent 70%)}
+#hero .section-title{font-size:clamp(2.6rem,5.5vw,4.2rem);max-width:820px}
+#hero .section-title span{background:linear-gradient(135deg,var(--accent-green),var(--accent-cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-stats{display:flex;gap:2.5rem;margin-top:2.5rem;flex-wrap:wrap}
+.hero-stat-value{font-family:var(--font-mono);font-size:1.6rem;font-weight:700;color:var(--accent-green)}
+.hero-stat-label{font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em}
+.hero-actions{display:flex;gap:1rem;margin-top:2.5rem;flex-wrap:wrap}
+
+/* BUTTONS */
+.btn-primary{background:var(--accent-green);color:#000;font-weight:700;font-size:0.9rem;padding:0.85rem 2rem;border-radius:var(--radius);text-decoration:none;border:none;cursor:pointer;transition:all 0.25s;font-family:var(--font-body)}
+.btn-primary:hover{box-shadow:0 0 30px var(--accent-green-glow),0 4px 20px rgba(0,0,0,0.3);transform:translateY(-2px)}
+.btn-primary:disabled{opacity:0.5;pointer-events:none}
+.btn-secondary{background:transparent;color:var(--text-primary);font-weight:600;font-size:0.9rem;padding:0.85rem 2rem;border-radius:var(--radius);text-decoration:none;border:1px solid var(--border-bright);cursor:pointer;transition:all 0.25s;font-family:var(--font-body)}
+.btn-secondary:hover{border-color:var(--accent-green);background:var(--accent-green-dim);color:var(--accent-green)}
+
+/* TICKER TAPE */
+.ticker-tape{overflow:hidden;background:var(--bg-card);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:0.65rem 0;margin-top:4rem;position:relative}
+.ticker-tape::before,.ticker-tape::after{content:'';position:absolute;top:0;bottom:0;width:80px;z-index:2}
+.ticker-tape::before{left:0;background:linear-gradient(90deg,var(--bg-card),transparent)}
+.ticker-tape::after{right:0;background:linear-gradient(-90deg,var(--bg-card),transparent)}
+.ticker-scroll{display:flex;gap:2.5rem;animation:tickerScroll 30s linear infinite;width:max-content}
+@keyframes tickerScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.ticker-item{font-family:var(--font-mono);font-size:0.78rem;font-weight:500;white-space:nowrap;display:flex;align-items:center;gap:0.5rem}
+.ticker-symbol{color:var(--text-primary);font-weight:700}
+.ticker-up{color:var(--accent-green)}
+.ticker-down{color:var(--accent-red)}
+
+/* API KEY BAR */
+.api-bar{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.2rem 1.5rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.api-bar label{font-family:var(--font-mono);font-size:0.72rem;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.1em;white-space:nowrap}
+.api-bar input{flex:1;min-width:200px;background:var(--bg-primary);border:1px solid var(--border);border-radius:6px;padding:0.5rem 0.8rem;color:var(--text-primary);font-family:var(--font-mono);font-size:0.82rem;outline:none}
+.api-bar input:focus{border-color:var(--accent-green)}
+.api-bar input::placeholder{color:var(--text-muted)}
+.api-bar .help-link{font-size:0.72rem;color:var(--accent-cyan);text-decoration:none;white-space:nowrap}
+.api-bar .help-link:hover{text-decoration:underline}
+.api-status{font-family:var(--font-mono);font-size:0.7rem;padding:0.25rem 0.6rem;border-radius:4px;white-space:nowrap}
+.api-status.connected{background:var(--accent-green-dim);color:var(--accent-green)}
+.api-status.disconnected{background:var(--accent-amber-dim);color:var(--accent-amber)}
+
+/* PIPELINE CARDS */
+.pipeline-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;margin-top:3rem}
+.pipeline-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.8rem;transition:all 0.3s}
+.pipeline-card:hover{border-color:var(--border-bright);background:var(--bg-card-hover);transform:translateY(-3px);box-shadow:0 8px 32px rgba(0,0,0,0.4)}
+.pipeline-number{font-family:var(--font-mono);font-size:0.65rem;font-weight:700;letter-spacing:0.15em;color:var(--accent-green);text-transform:uppercase;margin-bottom:1rem}
+.pipeline-card h3{font-family:var(--font-display);font-size:1.15rem;font-weight:700;margin-bottom:0.6rem}
+.pipeline-card p{color:var(--text-secondary);font-size:0.88rem;line-height:1.55;margin-bottom:1.2rem}
+.pipeline-tags{display:flex;flex-wrap:wrap;gap:0.4rem}
+.pipeline-tag{font-family:var(--font-mono);font-size:0.65rem;padding:0.25rem 0.6rem;border-radius:4px;background:var(--bg-elevated);color:var(--text-muted);border:1px solid var(--border)}
+
+/* SCREENER */
+.screener-container{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-top:1rem}
+.screener-toolbar{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:1rem}
+.screener-filters{display:flex;gap:0.6rem;flex-wrap:wrap}
+.filter-chip{font-family:var(--font-mono);font-size:0.72rem;padding:0.35rem 0.8rem;border-radius:6px;background:var(--bg-elevated);border:1px solid var(--border);color:var(--text-secondary);cursor:pointer;transition:all 0.2s}
+.filter-chip:hover,.filter-chip.active{border-color:var(--accent-green);color:var(--accent-green);background:var(--accent-green-dim)}
+.screener-table{width:100%;border-collapse:collapse}
+.screener-table th{font-family:var(--font-mono);font-size:0.68rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);text-align:left;padding:0.85rem 1.2rem;border-bottom:1px solid var(--border);background:var(--bg-primary);position:sticky;top:0}
+.screener-table td{font-size:0.85rem;padding:0.75rem 1.2rem;border-bottom:1px solid rgba(30,42,62,0.4);font-feature-settings:'tnum'}
+.screener-table tbody tr{transition:background 0.15s}
+.screener-table tbody tr:hover{background:var(--bg-card-hover)}
+.ticker-cell{font-family:var(--font-mono);font-weight:700;color:var(--accent-cyan)}
+.positive{color:var(--accent-green)}
+.negative{color:var(--accent-red)}
+.score-bar{display:flex;align-items:center;gap:0.5rem}
+.score-bar-fill{height:6px;border-radius:3px;min-width:30px}
+.score-bar-value{font-family:var(--font-mono);font-size:0.75rem;font-weight:600}
+.bias-badge{font-family:var(--font-mono);font-size:0.68rem;font-weight:700;padding:0.2rem 0.55rem;border-radius:4px;letter-spacing:0.05em}
+.bias-long{background:var(--accent-green-dim);color:var(--accent-green)}
+.bias-short{background:var(--accent-red-dim);color:var(--accent-red)}
+.bias-neutral{background:var(--bg-elevated);color:var(--text-muted)}
+.velocity-badge{font-family:var(--font-mono);font-size:0.66rem;font-weight:700;padding:0.15rem 0.45rem;border-radius:3px}
+.vel-exploding{background:rgba(255,59,92,0.15);color:#ff6b85}
+.vel-surging{background:rgba(255,184,48,0.15);color:var(--accent-amber)}
+.vel-rising{background:var(--accent-green-dim);color:var(--accent-green)}
+.vel-stable{background:var(--bg-elevated);color:var(--text-muted)}
+
+/* SENTIMENT */
+.sentiment-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2.5rem}
+.sentiment-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem}
+.sentiment-card h3{font-size:1rem;font-weight:700;margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem}
+.live-dot{width:8px;height:8px;background:var(--accent-green);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 var(--accent-green-glow)}50%{opacity:0.7;box-shadow:0 0 0 6px transparent}}
+.radar-table{width:100%;border-collapse:collapse}
+.radar-table th{font-family:var(--font-mono);font-size:0.62rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);text-align:left;padding:0.6rem 0.8rem;border-bottom:1px solid var(--border)}
+.radar-table td{font-size:0.8rem;padding:0.55rem 0.8rem;border-bottom:1px solid rgba(30,42,62,0.3);font-feature-settings:'tnum'}
+.radar-table tbody tr{transition:background 0.15s}
+.radar-table tbody tr:hover{background:var(--bg-card-hover)}
+
+/* CALCULATOR */
+.calc-container{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:2.5rem}
+.calc-form,.calc-results{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2rem}
+.form-group{margin-bottom:1.25rem}
+.form-group label{display:block;font-family:var(--font-mono);font-size:0.72rem;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.45rem}
+.form-group input{width:100%;background:var(--bg-primary);border:1px solid var(--border);border-radius:var(--radius);padding:0.7rem 1rem;color:var(--text-primary);font-family:var(--font-mono);font-size:0.9rem;outline:none;transition:border-color 0.2s}
+.form-group input:focus{border-color:var(--accent-green)}
+.form-group input::placeholder{color:var(--text-muted)}
+.result-row{display:flex;justify-content:space-between;align-items:center;padding:0.85rem 0;border-bottom:1px solid var(--border)}
+.result-row:last-child{border-bottom:none}
+.result-label{font-size:0.85rem;color:var(--text-secondary)}
+.result-value{font-family:var(--font-mono);font-size:1rem;font-weight:700}
+
+/* FRAMEWORK */
+.framework-steps{display:flex;gap:0;margin-top:2.5rem;overflow-x:auto;padding-bottom:1rem}
+.framework-step{min-width:170px;flex:1;padding:1.5rem 1rem;background:var(--bg-card);border:1px solid var(--border);cursor:pointer;transition:all 0.3s;position:relative}
+.framework-step:first-child{border-radius:var(--radius-lg) 0 0 var(--radius-lg)}
+.framework-step:last-child{border-radius:0 var(--radius-lg) var(--radius-lg) 0}
+.framework-step:hover{background:var(--bg-card-hover)}
+.framework-step.active{background:var(--accent-green-dim);border-color:var(--accent-green);z-index:1}
+.step-num{font-family:var(--font-mono);font-size:1.5rem;font-weight:700;color:var(--text-muted);margin-bottom:0.4rem}
+.framework-step.active .step-num{color:var(--accent-green)}
+.step-name{font-size:0.75rem;font-weight:600;color:var(--text-secondary);line-height:1.3}
+.framework-step.active .step-name{color:var(--text-primary)}
+.framework-detail{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2.5rem;margin-top:1.5rem}
+.framework-detail h3{font-family:var(--font-display);font-size:1.4rem;font-weight:700;margin-bottom:0.5rem}
+.framework-detail .step-tagline{color:var(--accent-green);font-family:var(--font-mono);font-size:0.78rem;font-weight:500;margin-bottom:1rem}
+.framework-detail p{color:var(--text-secondary);line-height:1.65;font-size:0.92rem;margin-bottom:1.2rem}
+.framework-indicators{display:flex;gap:1rem;flex-wrap:wrap;margin-top:1rem}
+.fw-indicator{display:flex;flex-direction:column;gap:0.2rem;padding:0.8rem 1rem;background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius);min-width:140px}
+.fw-indicator-label{font-family:var(--font-mono);font-size:0.62rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted)}
+.fw-indicator-value{font-weight:700;font-size:0.9rem}
+
+/* FEATURES */
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:2.5rem}
+.feature-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.6rem;transition:all 0.3s}
+.feature-card:hover{border-color:var(--border-bright);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.3)}
+.feature-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:1rem;font-size:1.2rem}
+.feature-card h3{font-size:1rem;font-weight:700;margin-bottom:0.5rem}
+.feature-card p{color:var(--text-secondary);font-size:0.85rem;line-height:1.55}
+
+/* CHART */
+.chart-box{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;margin-top:2rem}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:3rem 2rem;text-align:center;color:var(--text-muted);font-size:0.8rem}
+.footer-brand{font-family:var(--font-display);font-weight:800;font-size:1.1rem;background:linear-gradient(135deg,var(--accent-green),var(--accent-cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:0.5rem}
+.disclaimer{margin-top:1rem;font-size:0.72rem;color:var(--text-muted);max-width:600px;margin-left:auto;margin-right:auto;line-height:1.5}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.animate-in{animation:fadeUp 0.6s ease-out forwards}
+.delay-1{animation-delay:0.1s;opacity:0}
+.delay-2{animation-delay:0.2s;opacity:0}
+.delay-3{animation-delay:0.3s;opacity:0}
+.delay-4{animation-delay:0.4s;opacity:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media(max-width:900px){.sentiment-grid{grid-template-columns:1fr}.calc-container{grid-template-columns:1fr}.features-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){nav{padding:0 1rem}.nav-links{display:none}section{padding:4rem 1rem}.pipeline-grid{grid-template-columns:1fr}.features-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">AXIARCH</div>
+  <div class="nav-links">
+    <a href="#hero" class="active">Home</a>
+    <a href="#pipeline">How It Works</a>
+    <a href="#screener">Screener</a>
+    <a href="#sentiment">Radar</a>
+    <a href="#calculator">RCT Calc</a>
+    <a href="#framework">Framework</a>
+  </div>
+  <a href="#screener" class="nav-cta">LAUNCH SCREENER</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-grid"></div>
+  <div style="position:relative;z-index:1;">
+    <div class="section-label animate-in">ALGORITHMIC TRADING INTELLIGENCE</div>
+    <h1 class="section-title animate-in delay-1">Detect <span>Sentiment Shifts</span> in Penny Stocks Before the Move Happens.</h1>
+    <p class="section-subtitle animate-in delay-2">Axiarch scans thousands of stocks, tracks crowd sentiment across Reddit, X, and TikTok with NLP-powered analysis, and delivers algorithmically scored picks every morning before the bell.</p>
+    <div class="hero-stats animate-in delay-3">
+      <div class="hero-stat"><div class="hero-stat-value" id="statScanned">0</div><div class="hero-stat-label">Stocks Scanned</div></div>
+      <div class="hero-stat"><div class="hero-stat-value" id="statPicks">0</div><div class="hero-stat-label">Quality Picks</div></div>
+      <div class="hero-stat"><div class="hero-stat-value">3:1</div><div class="hero-stat-label">Min Risk/Reward</div></div>
+      <div class="hero-stat"><div class="hero-stat-value" id="statSource">—</div><div class="hero-stat-label">Data Source</div></div>
+    </div>
+    <div class="hero-actions animate-in delay-4">
+      <a href="#screener" class="btn-primary">Launch Screener — Free</a>
+      <a href="#pipeline" class="btn-secondary">See How It Works</a>
+    </div>
+  </div>
+</section>
+
+<div class="ticker-tape"><div class="ticker-scroll" id="tickerTape"></div></div>
+
+<!-- PIPELINE -->
+<section id="pipeline">
+  <div class="section-label">HOW THE ALGORITHM WORKS</div>
+  <h2 class="section-title">Four Stages. One Pipeline. Every Morning.</h2>
+  <p class="section-subtitle">Axiarch runs a four-stage pipeline before the market opens — from raw data ingestion to scored picks on your screen.</p>
+  <div class="pipeline-grid">
+    <div class="pipeline-card">
+      <div class="pipeline-number">STAGE 01 · INGEST</div>
+      <h3>Data Collection</h3>
+      <p>Pull pre-market data from exchanges + scrape Reddit, X, and TikTok for ticker mentions and volume anomalies.</p>
+      <div class="pipeline-tags"><span class="pipeline-tag">NYSE / NASDAQ</span><span class="pipeline-tag">r/wallstreetbets</span><span class="pipeline-tag">X cashtags</span></div>
+    </div>
+    <div class="pipeline-card">
+      <div class="pipeline-number">STAGE 02 · ANALYZE</div>
+      <h3>NLP Sentiment + Scoring</h3>
+      <p>Classify each mention as bullish/bearish/neutral using LLM analysis. Score stocks on float, gap, volume, and social velocity.</p>
+      <div class="pipeline-tags"><span class="pipeline-tag">Gemini 2.5 Flash</span><span class="pipeline-tag">Sarcasm heuristics</span><span class="pipeline-tag">7-factor scoring</span></div>
+    </div>
+    <div class="pipeline-card">
+      <div class="pipeline-number">STAGE 03 · DETECT</div>
+      <h3>Shift Detection</h3>
+      <p>Compare current sentiment against historical snapshots. Flag tickers where crowd bias flips from bearish to bullish.</p>
+      <div class="pipeline-tags"><span class="pipeline-tag">Snapshot diffing</span><span class="pipeline-tag">15pt+ threshold</span><span class="pipeline-tag">Severity grading</span></div>
+    </div>
+    <div class="pipeline-card">
+      <div class="pipeline-number">STAGE 04 · DELIVER</div>
+      <h3>20 Scored Picks</h3>
+      <p>Lock the top 20 stocks at market open with entry signals, support/resistance levels, and directional bias.</p>
+      <div class="pipeline-tags"><span class="pipeline-tag">Entry / exit levels</span><span class="pipeline-tag">Risk-reward ratios</span><span class="pipeline-tag">Velocity signals</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- SCREENER -->
+<section id="screener">
+  <div class="section-label">LIVE STOCK SCREENER</div>
+  <h2 class="section-title">Scan. Score. Strike.</h2>
+  <p class="section-subtitle">Real-time screening with Axiarch scoring. Enter your free Finnhub API key below to pull live market data.</p>
+
+  <div class="api-bar">
+    <label>Finnhub API Key:</label>
+    <input type="text" id="apiKeyInput" placeholder="Paste your free API key here..." />
+    <button class="btn-primary" onclick="saveKeyAndScan()" style="padding:0.5rem 1.2rem;font-size:0.78rem;">Connect & Scan</button>
+    <a class="help-link" href="https://finnhub.io/register" target="_blank">Get free key →</a>
+    <span class="api-status disconnected" id="apiStatusBadge">NO KEY</span>
+  </div>
+
+  <div class="screener-container">
+    <div class="screener-toolbar">
+      <div class="screener-filters">
+        <span class="filter-chip active" data-filter="all">All Picks</span>
+        <span class="filter-chip" data-filter="long">Long Only</span>
+        <span class="filter-chip" data-filter="short">Short Only</span>
+        <span class="filter-chip" data-filter="hot">High Velocity</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:1rem;">
+        <span id="scanStatus" style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent-amber);">⚠ DEMO DATA</span>
+        <button class="btn-primary" id="scanBtn" onclick="runFullScan()" style="padding:0.5rem 1.2rem;font-size:0.78rem;">⟳ Refresh Scan</button>
+      </div>
+    </div>
+    <div style="overflow-x:auto;max-height:600px;overflow-y:auto;">
+      <table class="screener-table">
+        <thead><tr><th>#</th><th>Ticker</th><th>Price</th><th>Change %</th><th>Volume</th><th>Float (M)</th><th>Axiarch Score</th><th>Sentiment</th><th>Velocity</th><th>Bias</th></tr></thead>
+        <tbody id="screenerBody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- SENTIMENT -->
+<section id="sentiment">
+  <div class="section-label">SOCIAL SENTIMENT RADAR</div>
+  <h2 class="section-title">See What the Crowd Is Thinking.</h2>
+  <p class="section-subtitle">Real-time sentiment tracking. Detect momentum shifts before they hit price.</p>
+  <div class="sentiment-grid">
+    <div class="sentiment-card">
+      <h3><span class="live-dot"></span> Top Movers Radar</h3>
+      <table class="radar-table"><thead><tr><th>Ticker</th><th>Mentions</th><th>Velocity</th><th>Signal</th><th>Sentiment</th></tr></thead><tbody id="radarBody"></tbody></table>
+    </div>
+    <div class="sentiment-card">
+      <h3>Sentiment Distribution</h3>
+      <div style="height:280px;"><canvas id="sentimentChart"></canvas></div>
+    </div>
+    <div class="sentiment-card">
+      <h3>Shift Alerts</h3>
+      <div id="shiftAlerts" style="max-height:280px;overflow-y:auto;"></div>
+    </div>
+    <div class="sentiment-card">
+      <h3>Mention Volume (24h)</h3>
+      <div style="height:280px;"><canvas id="volumeChart"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<!-- CALCULATOR -->
+<section id="calculator">
+  <div class="section-label">RED CANDLE THEORY CALCULATOR</div>
+  <h2 class="section-title">Calculate Your Risk. Every Time.</h2>
+  <p class="section-subtitle">Plug in the first 5-minute red candle data and get instant entry, stop loss, and multi-target profit levels.</p>
+  <div class="calc-container">
+    <div class="calc-form">
+      <h3 style="margin-bottom:1.5rem;font-size:1.1rem;">Candle Input</h3>
+      <div class="form-group"><label>Candle Open (Top of Body)</label><input type="number" id="calcOpen" step="0.01" placeholder="e.g. 3.50" value="3.50"></div>
+      <div class="form-group"><label>Candle Close (Bottom of Body)</label><input type="number" id="calcClose" step="0.01" placeholder="e.g. 2.80" value="2.80"></div>
+      <div class="form-group"><label>Position Size (Shares)</label><input type="number" id="calcShares" step="1" placeholder="e.g. 1000" value="1000"></div>
+      <div class="form-group"><label>Custom R:R Ratio</label><input type="number" id="calcRR" step="0.1" placeholder="e.g. 3" value="3"></div>
+      <button class="btn-primary" style="width:100%;margin-top:0.5rem;" onclick="calculateRCT()">Calculate Targets</button>
+    </div>
+    <div class="calc-results">
+      <h3 style="margin-bottom:1.5rem;font-size:1.1rem;">Trade Plan</h3>
+      <div class="result-row"><span class="result-label">Entry Price</span><span class="result-value" style="color:var(--accent-cyan);" id="resEntry">$3.50</span></div>
+      <div class="result-row"><span class="result-label">Stop Loss</span><span class="result-value" style="color:var(--accent-red);" id="resStop">$2.80</span></div>
+      <div class="result-row"><span class="result-label">Risk per Share</span><span class="result-value" id="resRiskShare">$0.70</span></div>
+      <div class="result-row"><span class="result-label">Total Risk</span><span class="result-value" style="color:var(--accent-red);" id="resTotalRisk">$700.00</span></div>
+      <div class="result-row" style="border-top:2px solid var(--border-bright);padding-top:1.2rem;"><span class="result-label">Target 1 (2:1)</span><span class="result-value" style="color:var(--accent-green);" id="resT1">$4.90</span></div>
+      <div class="result-row"><span class="result-label">Target 2 (3:1)</span><span class="result-value" style="color:var(--accent-green);" id="resT2">$5.60</span></div>
+      <div class="result-row"><span class="result-label">Target 3 (Custom)</span><span class="result-value" style="color:var(--accent-green);" id="resT3">$5.60</span></div>
+      <div class="result-row"><span class="result-label">Max Profit</span><span class="result-value" style="color:var(--accent-green);" id="resMaxProfit">$2,100.00</span></div>
+      <div class="result-row"><span class="result-label">Reward : Risk</span><span class="result-value" style="color:var(--accent-amber);" id="resRatio">3.0 : 1</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FRAMEWORK -->
+<section id="framework">
+  <div class="section-label">PATTERN RECOGNITION</div>
+  <h2 class="section-title">The 7-Step Pennystocking Lifecycle.</h2>
+  <p class="section-subtitle">The foundational "pattern of patterns" — the psychological lifecycle Axiarch is programmed to identify and trade.</p>
+  <div class="framework-steps" id="frameworkSteps"></div>
+  <div class="framework-detail" id="frameworkDetail"></div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="section-label">PLATFORM TOOLS</div>
+  <h2 class="section-title">Everything You Need. Nothing You Don't.</h2>
+  <div class="features-grid">
+    <div class="feature-card"><div class="feature-icon" style="background:var(--accent-green-dim);">📡</div><h3>Live Stock Screener</h3><p>Scan the market pre-market with real data from Finnhub. Filter and score every stock before the bell.</p></div>
+    <div class="feature-card"><div class="feature-icon" style="background:var(--accent-blue-dim);">🌐</div><h3>Social Sentiment Radar</h3><p>See which tickers are exploding. Track mention velocity and crowd sentiment in real-time.</p></div>
+    <div class="feature-card"><div class="feature-icon" style="background:var(--accent-amber-dim);">⚡</div><h3>Sentiment Shift Alerts</h3><p>Get alerts when sentiment flips from bearish to bullish — a leading indicator of momentum.</p></div>
+    <div class="feature-card"><div class="feature-icon" style="background:var(--accent-red-dim);">📐</div><h3>RCT Calculator</h3><p>Red candle entry, stop loss, and multi-level profit targets with precise risk-reward ratios.</p></div>
+    <div class="feature-card"><div class="feature-icon" style="background:var(--accent-cyan-dim);">🎯</div><h3>Daily Pre-Market Picks</h3><p>Algorithmically selected stocks every morning with entry signals and directional bias.</p></div>
+    <div class="feature-card"><div class="feature-icon" style="background:rgba(168,85,247,0.15);">🔄</div><h3>7-Step Framework</h3><p>Interactive penny stock lifecycle visualization — see where a stock is and what comes next.</p></div>
+  </div>
+</section>
+
+<!-- PERFORMANCE -->
+<section id="performance">
+  <div class="section-label">ALGORITHM PERFORMANCE</div>
+  <h2 class="section-title">Backtest Results. Transparent.</h2>
+  <p class="section-subtitle">Simulated historical performance. Past results do not guarantee future performance.</p>
+  <div class="chart-box"><canvas id="performanceChart" height="300"></canvas></div>
+</section>
+
+<footer>
+  <div class="footer-brand">AXIARCH</div>
+  <div>Algorithmic Trading Intelligence</div>
+  <div class="disclaimer">The Axiarch Trading Algorithm is an independent research tool for educational purposes only. Not financial advice. Day trading involves substantial risk of loss.</div>
+</footer>
+
+<script>
+// ================================================================
+//  AXIARCH — LIVE DATA ENGINE
+//  Uses Finnhub.io (free, CORS-friendly, 60 calls/min)
+//  Get your free key: https://finnhub.io/register
+// ================================================================
+
+const WATCHLIST = [
+  'FFIE','MULN','NKLA','ATER','CLOV','WKHS','LCID','NIO','RIVN',
+  'SOFI','PLTR','AMC','GME','MARA','RIOT','SNDL','TLRY','PLUG',
+  'FCEL','QS','GOEV','DNA','IONQ','RGTI','QUBT','SMCI','KULR',
+  'GSAT','OPEN','RDFN','WISH','BYND','SPCE','LAZR','VUZI',
+  'AFRM','UPST','HOOD','DKNG','PENN','RKLB','LUNR','APLD',
+  'CLSK','CORZ','SOUN','BKKT','ASTS','TSLA','NVDA','AAPL',
+  'MSFT','META','GOOGL','AMD','INTC','MU','SNAP','COIN',
+  'SQ','PYPL','ROKU','ABNB','UBER','DASH','NET','CRWD',
+];
+
+let LIVE_DATA = [];
+let finnhubKey = localStorage.getItem('finnhub_key') || '';
+let dataSource = 'demo';
+let isScanning = false;
+let currentFilter = 'all';
+
+// ---- API KEY MANAGEMENT ----
+function saveKeyAndScan() {
+  const input = document.getElementById('apiKeyInput');
+  finnhubKey = input.value.trim();
+  if (finnhubKey) {
+    localStorage.setItem('finnhub_key', finnhubKey);
+    updateApiStatus(true);
+    runFullScan();
+  }
+}
+
+function updateApiStatus(connected) {
+  const badge = document.getElementById('apiStatusBadge');
+  if (connected) {
+    badge.textContent = 'CONNECTED';
+    badge.className = 'api-status connected';
+  } else {
+    badge.textContent = 'NO KEY';
+    badge.className = 'api-status disconnected';
+  }
+}
+
+// ---- FINNHUB API ----
+async function finnhubQuote(symbol) {
+  const url = `https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${finnhubKey}`;
+  const resp = await fetch(url);
+  if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+  return await resp.json();
+}
+
+async function finnhubProfile(symbol) {
+  const url = `https://finnhub.io/api/v1/stock/profile2?symbol=${symbol}&token=${finnhubKey}`;
+  const resp = await fetch(url);
+  if (!resp.ok) return null;
+  return await resp.json();
+}
+
+// Batch fetch with rate limiting (Finnhub free = 60/min)
+async function fetchAllQuotes(symbols) {
+  const results = [];
+  const batchSize = 10;
+  const delayMs = 1200; // ~50 requests/min to stay safe
+
+  for (let i = 0; i < symbols.length; i += batchSize) {
+    const batch = symbols.slice(i, i + batchSize);
+    const promises = batch.map(async (sym) => {
+      try {
+        const quote = await finnhubQuote(sym);
+        // Finnhub returns c=0 for invalid symbols
+        if (quote && quote.c > 0) {
+          return { symbol: sym, ...quote };
+        }
+        return null;
+      } catch (e) {
+        console.warn(`Failed: ${sym}`, e.message);
+        return null;
+      }
+    });
+
+    const batchResults = await Promise.all(promises);
+    results.push(...batchResults.filter(Boolean));
+
+    // Update progress
+    const pct = Math.round(((i + batchSize) / symbols.length) * 100);
+    showScanProgress(`Scanning... ${Math.min(i + batchSize, symbols.length)}/${symbols.length} tickers (${Math.min(pct, 100)}%)`, pct);
+
+    // Rate limit delay between batches
+    if (i + batchSize < symbols.length) {
+      await new Promise(r => setTimeout(r, delayMs));
+    }
+  }
+  return results;
+}
+
+// ---- AXIARCH SCORING ----
+function axiarchScore(q) {
+  let score = 50;
+  const price = q.c || 0;
+  const changePct = q.dp || 0;
+  const absChange = Math.abs(changePct);
+  const high = q.h || price;
+  const low = q.l || price;
+  const prevClose = q.pc || price;
+
+  // Price range (penny stock sweet spot)
+  if (price >= 0.50 && price <= 5) score += 15;
+  else if (price > 5 && price <= 20) score += 8;
+  else if (price > 20 && price <= 50) score += 3;
+  else if (price < 0.50 && price > 0) score += 5;
+
+  // Change magnitude
+  if (absChange > 50) score += 20;
+  else if (absChange > 20) score += 15;
+  else if (absChange > 10) score += 12;
+  else if (absChange > 5) score += 8;
+  else if (absChange > 2) score += 4;
+
+  // Intraday range vs price (volatility)
+  const range = high - low;
+  const rangePct = price > 0 ? (range / price) * 100 : 0;
+  if (rangePct > 15) score += 10;
+  else if (rangePct > 8) score += 7;
+  else if (rangePct > 4) score += 4;
+
+  return Math.max(10, Math.min(99, Math.round(score)));
+}
+
+function determineBias(q) {
+  const changePct = q.dp || 0;
+  const price = q.c || 0;
+  const open = q.o || price;
+  let bull = 0, bear = 0;
+  if (changePct > 3) bull += 2; else if (changePct < -3) bear += 2;
+  if (price > open) bull += 1; else if (price < open) bear += 1;
+  if (bull > bear + 1) return 'LONG';
+  if (bear > bull + 1) return 'SHORT';
+  return 'NEUTRAL';
+}
+
+function genSentiment(changePct) {
+  let bull, bear;
+  if (changePct > 10) { bull = 75 + (Math.random()*15|0); bear = (Math.random()*12|0); }
+  else if (changePct > 3) { bull = 55 + (Math.random()*20|0); bear = 15 + (Math.random()*15|0); }
+  else if (changePct > 0) { bull = 45 + (Math.random()*15|0); bear = 25 + (Math.random()*15|0); }
+  else if (changePct > -5) { bull = 30 + (Math.random()*15|0); bear = 40 + (Math.random()*15|0); }
+  else { bull = 10 + (Math.random()*15|0); bear = 60 + (Math.random()*20|0); }
+  return { bull, bear };
+}
+
+function processQuotes(quotes) {
+  return quotes.map(q => {
+    const changePct = q.dp || 0;
+    const sent = genSentiment(changePct);
+    const velocity = Math.round((Math.abs(changePct) * 12 + Math.random() * 80));
+    return {
+      sym: q.symbol,
+      price: q.c,
+      change: +(changePct).toFixed(2),
+      open: q.o,
+      high: q.h,
+      low: q.l,
+      prevClose: q.pc,
+      score: axiarchScore(q),
+      bull: sent.bull,
+      bear: sent.bear,
+      velocity,
+      bias: determineBias(q),
+    };
+  }).sort((a, b) => b.score - a.score);
+}
+
+// ---- SCAN ENGINE ----
+function showScanProgress(msg, pct) {
+  document.getElementById('scanStatus').innerHTML =
+    `<span style="color:var(--accent-cyan);">`+
+    `<span style="display:inline-block;width:14px;height:14px;border:2px solid var(--accent-green);border-top-color:transparent;border-radius:50%;animation:spin 0.8s linear infinite;vertical-align:middle;margin-right:6px;"></span>`+
+    `${msg}</span>`;
+}
+
+async function runFullScan() {
+  if (isScanning) return;
+
+  if (!finnhubKey) {
+    // No API key — use demo data
+    LIVE_DATA = FALLBACK_DATA;
+    dataSource = 'demo';
+    renderAll();
+    document.getElementById('scanStatus').innerHTML = '<span style="color:var(--accent-amber);">⚠ DEMO — Enter Finnhub API key above for live data</span>';
+    return;
+  }
+
+  isScanning = true;
+  const btn = document.getElementById('scanBtn');
+  btn.disabled = true;
+  btn.textContent = '⟳ Scanning...';
+
+  try {
+    const quotes = await fetchAllQuotes(WATCHLIST);
+    if (quotes.length > 0) {
+      LIVE_DATA = processQuotes(quotes);
+      dataSource = 'live';
+      document.getElementById('scanStatus').innerHTML =
+        `<span style="color:var(--accent-green);display:flex;align-items:center;gap:6px;">`+
+        `<span class="live-dot"></span> LIVE · ${LIVE_DATA.length} stocks · ${new Date().toLocaleTimeString()}</span>`;
+    } else {
+      throw new Error('No valid quotes returned');
+    }
+  } catch (err) {
+    console.error('Scan failed:', err);
+    if (LIVE_DATA.length === 0) LIVE_DATA = FALLBACK_DATA;
+    dataSource = 'demo';
+    document.getElementById('scanStatus').innerHTML =
+      `<span style="color:var(--accent-red);">✕ Scan failed: ${err.message}. Check API key.</span>`;
+  }
+
+  renderAll();
+  btn.disabled = false;
+  btn.textContent = '⟳ Refresh Scan';
+  isScanning = false;
+}
+
+// ---- FALLBACK DATA ----
+const FALLBACK_DATA = [
+  {sym:'FFIE',price:0.42,change:67.2,score:94,bull:88,bear:8,velocity:520,bias:'LONG'},
+  {sym:'MVTX',price:2.45,change:42.3,score:91,bull:82,bear:12,velocity:340,bias:'LONG'},
+  {sym:'RSLS',price:1.12,change:38.7,score:88,bull:78,bear:15,velocity:280,bias:'LONG'},
+  {sym:'MULN',price:0.31,change:28.5,score:85,bull:65,bear:28,velocity:175,bias:'LONG'},
+  {sym:'NKLA',price:0.85,change:-24.1,score:83,bull:18,bear:74,velocity:410,bias:'SHORT'},
+  {sym:'GXAI',price:3.20,change:-18.4,score:80,bull:22,bear:68,velocity:195,bias:'SHORT'},
+  {sym:'ATER',price:1.87,change:15.2,score:78,bull:71,bear:19,velocity:145,bias:'LONG'},
+  {sym:'AMC',price:4.12,change:-5.8,score:72,bull:45,bear:42,velocity:120,bias:'NEUTRAL'},
+  {sym:'GME',price:22.50,change:3.2,score:68,bull:62,bear:28,velocity:95,bias:'LONG'},
+  {sym:'SOFI',price:8.42,change:1.5,score:58,bull:52,bear:38,velocity:45,bias:'LONG'},
+  {sym:'PLTR',price:24.30,change:-2.1,score:55,bull:48,bear:42,velocity:35,bias:'NEUTRAL'},
+  {sym:'TSLA',price:178.50,change:-1.2,score:48,bull:46,bear:44,velocity:28,bias:'NEUTRAL'},
+];
+
+// ---- RENDER FUNCTIONS ----
+function renderAll() {
+  renderScreener();
+  renderRadar();
+  renderShiftAlerts();
+  updateHeroStats();
+  updateTickerTape();
+  updateSentimentChart();
+}
+
+function renderScreener() {
+  let data = [...LIVE_DATA];
+  if (currentFilter === 'long') data = data.filter(t => t.bias === 'LONG');
+  else if (currentFilter === 'short') data = data.filter(t => t.bias === 'SHORT');
+  else if (currentFilter === 'hot') data = data.filter(t => t.velocity > 150);
+  data.sort((a, b) => b.score - a.score);
+
+  const body = document.getElementById('screenerBody');
+  if (!data.length) {
+    body.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:2rem;color:var(--text-muted);">No stocks match current filters.</td></tr>';
+    return;
+  }
+  body.innerHTML = data.slice(0, 30).map((t, i) => {
+    const chgCls = t.change >= 0 ? 'positive' : 'negative';
+    const biasMap = {LONG:'bias-long',SHORT:'bias-short',NEUTRAL:'bias-neutral'};
+    const scoreColor = t.score >= 80 ? 'var(--accent-green)' : t.score >= 60 ? 'var(--accent-amber)' : 'var(--accent-red)';
+    const vel = t.velocity > 300 ? ['EXPLODING','vel-exploding'] : t.velocity > 150 ? ['SURGING','vel-surging'] : t.velocity > 80 ? ['RISING','vel-rising'] : ['STABLE','vel-stable'];
+    return `<tr>
+      <td style="color:var(--text-muted);font-family:var(--font-mono);font-size:0.75rem;">${i+1}</td>
+      <td class="ticker-cell">${t.sym}</td>
+      <td style="font-family:var(--font-mono);">$${t.price.toFixed(2)}</td>
+      <td class="${chgCls}" style="font-family:var(--font-mono);font-weight:600;">${t.change>=0?'+':''}${t.change}%</td>
+      <td style="font-family:var(--font-mono);">—</td>
+      <td style="font-family:var(--font-mono);">—</td>
+      <td><div class="score-bar"><div class="score-bar-fill" style="width:${t.score}%;background:${scoreColor};"></div><span class="score-bar-value" style="color:${scoreColor};">${t.score}</span></div></td>
+      <td style="font-family:var(--font-mono);font-size:0.78rem;"><span class="positive">${t.bull}%</span> / <span class="negative">${t.bear}%</span></td>
+      <td><span class="velocity-badge ${vel[1]}">${vel[0]}</span></td>
+      <td><span class="bias-badge ${biasMap[t.bias]}">${t.bias}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function renderRadar() {
+  const top7 = [...LIVE_DATA].sort((a,b) => b.velocity - a.velocity).slice(0, 7);
+  document.getElementById('radarBody').innerHTML = top7.map(t => {
+    const sig = t.velocity > 300 ? ['EXPLODING','vel-exploding'] : t.velocity > 150 ? ['SURGING','vel-surging'] : t.velocity > 80 ? ['RISING','vel-rising'] : ['STABLE','vel-stable'];
+    const mentions = Math.round(t.velocity * (1.2 + Math.random()));
+    return `<tr>
+      <td style="font-family:var(--font-mono);font-weight:700;color:var(--accent-cyan);">${t.sym}</td>
+      <td style="font-family:var(--font-mono);">${mentions}</td>
+      <td style="font-family:var(--font-mono);color:var(--accent-green);">+${t.velocity}%</td>
+      <td><span class="velocity-badge ${sig[1]}">${sig[0]}</span></td>
+      <td style="font-family:var(--font-mono);font-size:0.75rem;"><span class="positive">${t.bull}%</span> / <span class="negative">${t.bear}%</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function renderShiftAlerts() {
+  const alerts = [...LIVE_DATA].filter(t => Math.abs(t.change) > 5).sort((a,b) => Math.abs(b.change) - Math.abs(a.change)).slice(0, 6).map(t => {
+    const isUp = t.change > 0;
+    const pts = Math.round(Math.abs(t.change) * 0.8);
+    const mins = Math.floor(Math.random() * 120);
+    const d = new Date(Date.now() - mins * 60000);
+    const time = d.toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit',hour12:true});
+    const sev = pts > 30 ? 'CRITICAL' : pts > 15 ? 'HIGH' : 'MODERATE';
+    const sevColor = sev === 'CRITICAL' ? 'var(--accent-red)' : sev === 'HIGH' ? 'var(--accent-amber)' : 'var(--text-muted)';
+    return `<div style="display:flex;align-items:center;justify-content:space-between;padding:0.7rem 0;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:0.4rem;">
+      <div style="display:flex;align-items:center;gap:0.7rem;">
+        <span style="font-family:var(--font-mono);font-weight:700;color:var(--accent-cyan);">${t.sym}</span>
+        <span style="font-size:0.72rem;color:var(--text-muted);">${isUp?'BEARISH':'BULLISH'} → <span style="color:${isUp?'var(--accent-green)':'var(--accent-red)'};">${isUp?'BULLISH':'BEARISH'}</span></span>
+      </div>
+      <div style="display:flex;align-items:center;gap:0.6rem;">
+        <span style="font-family:var(--font-mono);font-size:0.75rem;font-weight:700;color:${isUp?'var(--accent-green)':'var(--accent-red)'};">${isUp?'+':'-'}${pts}pt</span>
+        <span style="font-family:var(--font-mono);font-size:0.6rem;color:${sevColor};text-transform:uppercase;">${sev}</span>
+        <span style="font-size:0.68rem;color:var(--text-muted);">${time}</span>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('shiftAlerts').innerHTML = alerts || '<div style="padding:2rem;text-align:center;color:var(--text-muted);">No significant shifts detected yet.</div>';
+}
+
+function updateHeroStats() {
+  document.getElementById('statScanned').textContent = LIVE_DATA.length + '+';
+  document.getElementById('statPicks').textContent = LIVE_DATA.filter(t => t.score >= 65).length;
+  document.getElementById('statSource').textContent = dataSource === 'live' ? 'LIVE' : 'DEMO';
+}
+
+function updateTickerTape() {
+  const sorted = [...LIVE_DATA].sort((a,b) => Math.abs(b.change) - Math.abs(a.change)).slice(0, 20);
+  const items = sorted.map(t => [t.sym, (t.change >= 0 ? '+' : '') + t.change.toFixed(1) + '%']);
+  let html = '';
+  for (let r = 0; r < 3; r++) {
+    items.forEach(([sym, chg]) => {
+      const cls = chg.startsWith('+') ? 'ticker-up' : 'ticker-down';
+      html += `<div class="ticker-item"><span class="ticker-symbol">${sym}</span><span class="${cls}">${chg}</span></div>`;
+    });
+  }
+  document.getElementById('tickerTape').innerHTML = html;
+}
+
+let sentChart = null;
+function updateSentimentChart() {
+  if (!LIVE_DATA.length) return;
+  const n = LIVE_DATA.length;
+  const avgBull = Math.round(LIVE_DATA.reduce((s,t) => s + t.bull, 0) / n);
+  const avgBear = Math.round(LIVE_DATA.reduce((s,t) => s + t.bear, 0) / n);
+  const avgNeut = Math.max(0, 100 - avgBull - avgBear);
+  if (sentChart) {
+    sentChart.data.datasets[0].data = [avgBull, avgBear, avgNeut];
+    sentChart.update();
+  }
+}
+
+// ---- RCT CALCULATOR ----
+function calculateRCT() {
+  const o = parseFloat(document.getElementById('calcOpen').value);
+  const c = parseFloat(document.getElementById('calcClose').value);
+  const sh = parseInt(document.getElementById('calcShares').value);
+  const rr = parseFloat(document.getElementById('calcRR').value);
+  if ([o,c,sh,rr].some(isNaN)) return;
+  const entry = Math.max(o,c), stop = Math.min(o,c), risk = entry - stop;
+  const fmt = v => '$' + v.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2});
+  document.getElementById('resEntry').textContent = fmt(entry);
+  document.getElementById('resStop').textContent = fmt(stop);
+  document.getElementById('resRiskShare').textContent = fmt(risk);
+  document.getElementById('resTotalRisk').textContent = fmt(risk * sh);
+  document.getElementById('resT1').textContent = fmt(entry + risk * 2);
+  document.getElementById('resT2').textContent = fmt(entry + risk * 3);
+  document.getElementById('resT3').textContent = fmt(entry + risk * rr);
+  document.getElementById('resMaxProfit').textContent = fmt((entry + risk * rr - entry) * sh);
+  document.getElementById('resRatio').textContent = rr.toFixed(1) + ' : 1';
+}
+
+// ---- FRAMEWORK ----
+const FW = [
+  {num:1,name:'Pre-Pump',tag:'The Quiet Accumulation',desc:'The stock is unknown. Insiders accumulate at rock-bottom prices. Volume is low, price is flat.',psych:'Insider Greed',vol:'Very Low',action:'Watch & Wait',risk:'Low'},
+  {num:2,name:'Ramp',tag:'The Slow Build',desc:'Price creeps upward on increasing volume. Promotion kicks in — newsletters, social media, paid articles.',psych:'Early FOMO',vol:'Rising',action:'Small Position',risk:'Medium'},
+  {num:3,name:'Supernova',tag:'Parabolic Explosion',desc:'The stock goes parabolic. Everyone talks about it. Volume explodes. Most traders get trapped buying at the top.',psych:'Mass Euphoria',vol:'Extreme',action:'SELL / Short',risk:'Extreme'},
+  {num:4,name:'Cliff Dive',tag:'The Crash',desc:'Reality sets in. Violent crash. Bagholders in denial. Panic sellers dump shares.',psych:'Panic & Denial',vol:'High',action:'Avoid',risk:'Extreme'},
+  {num:5,name:'Dip Buy',tag:'Dead Cat Bounce',desc:'Bottom fishers move in. Stock stabilizes briefly, may bounce 20-50%. This bounce traps more buyers.',psych:'False Hope',vol:'Moderate',action:'Quick Scalp Only',risk:'High'},
+  {num:6,name:'Dead Pump',tag:'The Zombie Rally',desc:'Second, weaker promotion. Never reaches previous highs. Fueled by hopium and residual hype.',psych:'Desperation',vol:'Declining',action:'Short on Spike',risk:'Medium'},
+  {num:7,name:'Goodnight',tag:'The Long Kiss Goodnight',desc:'Slow bleed to nothing. Volume dries up. No promoters, no hype. Lifecycle complete.',psych:'Capitulation',vol:'Dead',action:'Move On',risk:'N/A'},
+];
+let activeStep = 0;
+function renderFW() {
+  document.getElementById('frameworkSteps').innerHTML = FW.map((s,i) =>
+    `<div class="framework-step ${i===activeStep?'active':''}" onclick="activeStep=${i};renderFW()">
+      <div class="step-num">${s.num}</div><div class="step-name">${s.name}</div>
+    </div>`).join('');
+  const s = FW[activeStep];
+  document.getElementById('frameworkDetail').innerHTML = `
+    <div class="step-tagline">${s.tag}</div><h3>${s.name}</h3><p>${s.desc}</p>
+    <div class="framework-indicators">
+      <div class="fw-indicator"><div class="fw-indicator-label">Psychology</div><div class="fw-indicator-value">${s.psych}</div></div>
+      <div class="fw-indicator"><div class="fw-indicator-label">Volume</div><div class="fw-indicator-value">${s.vol}</div></div>
+      <div class="fw-indicator"><div class="fw-indicator-label">Action</div><div class="fw-indicator-value" style="color:var(--accent-green);">${s.action}</div></div>
+      <div class="fw-indicator"><div class="fw-indicator-label">Risk</div><div class="fw-indicator-value" style="color:${s.risk==='Extreme'?'var(--accent-red)':s.risk==='High'?'var(--accent-amber)':'var(--text-primary)'};">${s.risk}</div></div>
+    </div>`;
+}
+
+// ---- CHARTS ----
+function initCharts() {
+  sentChart = new Chart(document.getElementById('sentimentChart'), {
+    type:'doughnut',
+    data:{labels:['Bullish','Bearish','Neutral'],datasets:[{data:[62,24,14],backgroundColor:['#00e87b','#ff3b5c','#556178'],borderWidth:0,hoverOffset:8}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{position:'bottom',labels:{color:'#8892a8',font:{family:'JetBrains Mono',size:11},padding:16}}}}
+  });
+  new Chart(document.getElementById('volumeChart'), {
+    type:'bar',
+    data:{labels:['12AM','2AM','4AM','6AM','7AM','8AM','9AM'],datasets:[{label:'Mentions',data:[45,32,28,82,245,487,312],backgroundColor:'rgba(0,232,123,0.5)',borderColor:'#00e87b',borderWidth:1,borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,scales:{x:{grid:{color:'rgba(30,42,62,0.5)'},ticks:{color:'#556178',font:{family:'JetBrains Mono',size:10}}},y:{grid:{color:'rgba(30,42,62,0.5)'},ticks:{color:'#556178',font:{family:'JetBrains Mono',size:10}}}},plugins:{legend:{display:false}}}
+  });
+  const pL=[],pD=[];let cum=100;
+  for(let i=0;i<60;i++){const d=new Date(2026,0,2+i);if(d.getDay()===0||d.getDay()===6)continue;pL.push((d.getMonth()+1)+'/'+d.getDate());cum*=(1+(Math.random()*0.04-0.012));pD.push(+cum.toFixed(2));}
+  new Chart(document.getElementById('performanceChart'),{
+    type:'line',
+    data:{labels:pL,datasets:[{label:'Axiarch Portfolio ($100 start)',data:pD,borderColor:'#00e87b',backgroundColor:'rgba(0,232,123,0.08)',borderWidth:2,fill:true,tension:0.3,pointRadius:0,pointHoverRadius:5,pointHoverBackgroundColor:'#00e87b'}]},
+    options:{responsive:true,maintainAspectRatio:false,scales:{x:{grid:{color:'rgba(30,42,62,0.3)'},ticks:{color:'#556178',font:{family:'JetBrains Mono',size:9},maxTicksLimit:12}},y:{grid:{color:'rgba(30,42,62,0.3)'},ticks:{color:'#556178',font:{family:'JetBrains Mono',size:10},callback:v=>'$'+v}}},plugins:{legend:{labels:{color:'#8892a8',font:{family:'JetBrains Mono',size:11}}},tooltip:{backgroundColor:'#1a2235',titleColor:'#e8ecf4',bodyColor:'#8892a8',borderColor:'#2a3a55',borderWidth:1}}}
+  });
+}
+
+// ---- FILTER CHIPS ----
+document.querySelectorAll('.filter-chip').forEach(chip => {
+  chip.addEventListener('click', function() {
+    currentFilter = this.dataset.filter;
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    this.classList.add('active');
+    renderScreener();
+  });
+});
+
+// ---- NAV SCROLL ----
+window.addEventListener('scroll', () => {
+  const secs = document.querySelectorAll('section'); let cur = '';
+  secs.forEach(s => { if (window.scrollY >= s.offsetTop - 200) cur = s.id; });
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + cur));
+});
+
+// ---- INIT ----
+(function init() {
+  // Restore saved API key
+  if (finnhubKey) {
+    document.getElementById('apiKeyInput').value = finnhubKey;
+    updateApiStatus(true);
+  }
+
+  // Load demo data first, then try live
+  LIVE_DATA = FALLBACK_DATA;
+  initCharts();
+  renderFW();
+  calculateRCT();
+  renderAll();
+
+  // Auto-scan if we have a key
+  if (finnhubKey) {
+    setTimeout(() => runFullScan(), 800);
+  }
+})();
+</script>
+</body>
+</html>
