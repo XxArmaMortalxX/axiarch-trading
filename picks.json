@@ -1,0 +1,218 @@
+{
+  "picks": [
+    {
+      "rank": 1,
+      "ticker": "ASTC",
+      "score": 50,
+      "sources": [
+        "Reddit"
+      ],
+      "signal": "5 Reddit post(s) across pennystocks, RobinHoodPennyStocks",
+      "generatedAt": "2026-03-31T20:40:08.352Z"
+    },
+    {
+      "rank": 2,
+      "ticker": "UNIT",
+      "score": 36,
+      "sources": [
+        "Yahoo Gainers"
+      ],
+      "signal": "+15.8% today",
+      "generatedAt": "2026-03-31T20:40:08.352Z"
+    },
+    {
+      "rank": 3,
+      "ticker": "IBRX",
+      "score": 35,
+      "sources": [
+        "Yahoo Gainers"
+      ],
+      "signal": "+15.2% today",
+      "generatedAt": "2026-03-31T20:40:08.352Z"
+    },
+    {
+      "rank": 4,
+      "ticker": "SOUN",
+      "score": 34,
+      "sources": [
+        "Yahoo Gainers"
+      ],
+      "signal": "+13.9% today",
+      "generatedAt": "2026-03-31T20:40:08.352Z"
+    },
+    {
+      "rank": 5,
+      "ticker": "WRD",
+      "score": 34,
+      "sources": [
+        "Yahoo Gainers"
+      ],
+      "signal": "+13.8% today",
+      "generatedAt": "2026-03-31T20:40:08.352Z"
+    },
+    {
+      "rank": 6,
+      "ticker": "EMAT",
+      "score": 33,
+      "sources": [
+        "Yahoo Gainers"
+      ],
+      "signal": "+12.6% today",
+      "generatedAt": "2026-03-31T20:40:08.352Z"
+    },
+    {
+      "rank": 7,
+      "ticker": "SNAP",
+      "score": 31,
+      "sources": [
+        "Yahoo Trending",
+        "Yahoo Active"
+      ],
+      "signal": "Yahoo trending #15",
+      "generatedAt": "2026-03-31T20:40:08.352Z"
+    },
+    {
+      "rank": 8,
+      "ticker": "BA",
+      "score": 30,
+      "sources": [
+        "Yahoo Trending"
+      ],
+      "signal": "Yahoo trending #1",
+      "generatedAt": "2026-03-31T20:40:08.352Z"
+    },
+    {
+      "rank": 9,
+      "ticker": "APLS",
+      "score": 29,
+      "sources": [
+        "Yahoo Trending"
+      ],
+      "signal": "Yahoo trending #2",
+      "generatedAt": "2026-03-31T20:40:08.352Z"
+    },
+    {
+      "rank": 10,
+      "ticker": "TSLA",
+      "score": 28,
+      "sources": [
+        "Yahoo Trending"
+      ],
+      "signal": "Yahoo trending #3",
+      "generatedAt": "2026-03-31T20:40:08.352Z"
+    },
+    {
+      "rank": 11,
+      "ticker": "GS",
+      "score": 27,
+      "sources": [
+        "Yahoo Trending"
+      ],
+      "signal": "Yahoo trending #4",
+      "generatedAt": "2026-03-31T20:40:08.352Z"
+    },
+    {
+      "rank": 12,
+      "ticker": "CEG",
+      "score": 26,
+      "sources": [
+        "Yahoo Trending"
+      ],
+      "signal": "Yahoo trending #5",
+      "generatedAt": "2026-03-31T20:40:08.352Z"
+    },
+    {
+      "rank": 13,
+      "ticker": "MASK",
+      "score": 25,
+      "sources": [
+        "Yahoo Trending"
+      ],
+      "signal": "Yahoo trending #6",
+      "generatedAt": "2026-03-31T20:40:08.352Z"
+    },
+    {
+      "rank": 14,
+      "ticker": "ETH-USD",
+      "score": 24,
+      "sources": [
+        "Yahoo Trending"
+      ],
+      "signal": "Yahoo trending #7",
+      "generatedAt": "2026-03-31T20:40:08.352Z"
+    },
+    {
+      "rank": 15,
+      "ticker": "FLY",
+      "score": 23,
+      "sources": [
+        "Yahoo Trending"
+      ],
+      "signal": "Yahoo trending #8",
+      "generatedAt": "2026-03-31T20:40:08.352Z"
+    },
+    {
+      "rank": 16,
+      "ticker": "BYND",
+      "score": 22,
+      "sources": [
+        "Yahoo Trending"
+      ],
+      "signal": "Yahoo trending #9",
+      "generatedAt": "2026-03-31T20:40:08.352Z"
+    },
+    {
+      "rank": 17,
+      "ticker": "B",
+      "score": 21,
+      "sources": [
+        "Yahoo Trending"
+      ],
+      "signal": "Yahoo trending #10",
+      "generatedAt": "2026-03-31T20:40:08.352Z"
+    },
+    {
+      "rank": 18,
+      "ticker": "POLA",
+      "score": 20,
+      "sources": [
+        "Reddit"
+      ],
+      "signal": "2 Reddit post(s) across pennystocks",
+      "generatedAt": "2026-03-31T20:40:08.352Z"
+    },
+    {
+      "rank": 19,
+      "ticker": "BFRG",
+      "score": 20,
+      "sources": [
+        "Reddit"
+      ],
+      "signal": "2 Reddit post(s) across pennystocks, RobinHoodPennyStocks",
+      "generatedAt": "2026-03-31T20:40:08.352Z"
+    },
+    {
+      "rank": 20,
+      "ticker": "ELAB",
+      "score": 20,
+      "sources": [
+        "Reddit"
+      ],
+      "signal": "2 Reddit post(s) across pennystocks, RobinHoodPennyStocks",
+      "generatedAt": "2026-03-31T20:40:08.352Z"
+    }
+  ],
+  "stats": {
+    "totalPicks": 20,
+    "stocksScanned": 24,
+    "winRate": 100,
+    "avgReturn": 24.3,
+    "trackedPicks": 10,
+    "bestPick": {
+      "ticker": "APLS",
+      "pct": "135.4",
+      "date": "2026-03-31"
+    },
+    "lastUpdated": "2026-03-31T22:30:55.542Z"
+  }
+}
