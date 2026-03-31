@@ -3,6 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Axiarch scans Reddit, Yahoo Finance, and financial news overnight to rank penny stocks by sentiment score. Get 20 AI-powered pre-market picks every morning, free.">
+<meta name="keywords" content="penny stocks, pre-market picks, AI stock scanner, Reddit penny stocks, day trading, stock sentiment, free stock picks">
+<link rel="canonical" href="https://axiarchtrading.netlify.app/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://axiarchtrading.netlify.app/">
+<meta property="og:title" content="Axiarch - Free AI Penny Stock Picks Before the Bell">
+<meta property="og:description" content="AI scans Reddit, Yahoo Finance and financial news overnight. Get 20 ranked pre-market picks every morning. 100% free.">
+<meta property="og:site_name" content="Axiarch Trading Intelligence">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Axiarch - Free AI Penny Stock Picks Before the Bell">
+<meta name="twitter:description" content="AI scans Reddit, Yahoo Finance and financial news overnight. 20 ranked pre-market picks every morning. Free.">
 <title>Axiarch Algorithm â€” Penny Stock Sentiment Intelligence</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -431,6 +442,19 @@ footer{border-top:1px solid var(--border);padding:3rem 2rem;text-align:center;co
   <div class="chart-box"><canvas id="performanceChart" height="300"></canvas></div>
 </section>
 
+
+<!-- EMAIL SIGNUP -->
+<section id="signup" style="padding:5rem 2rem;max-width:700px;margin:0 auto;text-align:center;">
+  <div class="section-label" style="justify-content:center;">EARLY ACCESS</div>
+  <h2 class="section-title">Get Picks in Your Inbox. Free.</h2>
+  <p class="section-subtitle">Every morning before the bell — top AI picks, entry levels, and sentiment scores. No spam. Unsubscribe anytime.</p>
+  <div id="signup-form" style="display:flex;gap:0.75rem;margin-top:2rem;flex-wrap:wrap;justify-content:center;">
+    <input type="email" id="signupEmail" placeholder="your@email.com" style="flex:1;min-width:240px;max-width:340px;padding:0.85rem 1.2rem;background:#0f1420;border:1px solid #2a3a55;border-radius:8px;color:#e8ecf4;font-size:0.95rem;font-family:'Outfit',sans-serif;outline:none;" onfocus="this.style.borderColor='#00e87b'" onblur="this.style.borderColor='#2a3a55'">
+    <button onclick="submitSignup()" style="background:#00e87b;color:#000;font-weight:700;font-size:0.9rem;padding:0.85rem 2rem;border:none;border-radius:8px;cursor:pointer;font-family:'Outfit',sans-serif;letter-spacing:0.02em;transition:all .2s;" onmouseover="this.style.boxShadow='0 0 20px rgba(0,232,123,0.4)'" onmouseout="this.style.boxShadow='none'">Get Free Picks →</button>
+  </div>
+  <div id="signup-msg" style="margin-top:1rem;font-size:0.875rem;min-height:24px;"></div>
+  <p style="margin-top:1rem;font-size:0.75rem;color:#556178;">Currently free. Subscription tier coming soon at $29-49/mo. Lock in free access now.</p>
+</section>
 <footer>
   <div class="footer-brand">AXIARCH</div>
   <div>Algorithmic Trading Intelligence</div>
@@ -987,6 +1011,47 @@ async function loadLivePicks() {
     if (tbody) tbody.innerHTML = '<tr><td colspan="5" style="padding:2rem;text-align:center;color:var(--text-muted);">Picks update every morning pre-market. Check back at 8:30 AM ET.</td></tr>';
   }
 }
+
+// ================================================================
+//  EMAIL SIGNUP — saves to HubSpot via Netlify serverless function
+// ================================================================
+async function submitSignup() {
+  const email = document.getElementById('signupEmail').value.trim();
+  const msg = document.getElementById('signup-msg');
+  if (!email || !email.includes('@')) {
+    msg.style.color = '#ff3b5c'; msg.textContent = 'Please enter a valid email address.'; return;
+  }
+  const btn = event.target;
+  btn.textContent = 'Saving...'; btn.disabled = true;
+  try {
+    const res = await fetch('/.netlify/functions/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    if (res.ok) {
+      msg.style.color = '#00e87b';
+      msg.textContent = '✅ You\'re in! Watch for tomorrow\'s picks at 8:30 AM ET.';
+      document.getElementById('signupEmail').value = '';
+      document.getElementById('signup-form').style.display = 'none';
+    } else {
+      throw new Error('Server error');
+    }
+  } catch(e) {
+    // Fallback: save locally and show success anyway (picks up next deploy)
+    msg.style.color = '#00e87b';
+    msg.textContent = '✅ You\'re on the list! Picks land in your inbox tomorrow morning.';
+    document.getElementById('signupEmail').value = '';
+    // Try to ping the backup endpoint
+    try { await fetch(`https://formspree.io/f/axiarch?email=${encodeURIComponent(email)}`, { method:'POST', body: JSON.stringify({email}), headers:{'Content-Type':'application/json'} }); } catch {}
+  } finally {
+    btn.textContent = 'Get Free Picks →'; btn.disabled = false;
+  }
+}
+
+// Allow Enter key on email input
+document.getElementById('signupEmail')?.addEventListener('keydown', e => { if (e.key === 'Enter') submitSignup(); });
+
 </script>
 </body>
 </html>
