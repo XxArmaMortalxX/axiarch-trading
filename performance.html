@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Axiarch Performance — Live Track Record | AI Penny Stock Picks</title>
-<meta name="description" content="Axiarch's live track record. Every AI pick tracked with real close prices. Transparent win rate, average return, and best picks — updated daily.">
-<meta property="og:title" content="Axiarch Performance — Live Track Record">
+<title>Axiarch Performance â€” Live Track Record | AI Penny Stock Picks</title>
+<meta name="description" content="Axiarch's live track record. Every AI pick tracked with real close prices. Transparent win rate, average return, and best picks â€” updated daily.">
+<meta property="og:title" content="Axiarch Performance â€” Live Track Record">
 <meta property="og:description" content="100% win rate. +24.3% average return. Every pick tracked. Updated at market close.">
 <link rel="canonical" href="https://axiarchtrading.netlify.app/performance.html">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -51,7 +51,7 @@ footer{text-align:center;padding:2rem;color:var(--dim);font-size:.8rem;border-to
 </head>
 <body>
 <nav>
-  <a href="/" class="logo">⚡ AXIARCH</a>
+  <a href="/" class="logo">âš¡ AXIARCH</a>
   <a href="/#todays-picks">Today's Picks</a>
   <a href="/performance.html" style="color:var(--green)">Performance</a>
   <a href="/#screener">Screener</a>
@@ -60,7 +60,7 @@ footer{text-align:center;padding:2rem;color:var(--dim);font-size:.8rem;border-to
 </nav>
 
 <main>
-  <a href="/" class="back">← Back to dashboard</a>
+  <a href="/" class="back">â† Back to dashboard</a>
 
   <div class="section-label">LIVE TRACK RECORD</div>
   <h1>Real Results. <span>Every Pick Tracked.</span></h1>
@@ -68,11 +68,11 @@ footer{text-align:center;padding:2rem;color:var(--dim);font-size:.8rem;border-to
 
   <!-- Stats -->
   <div class="stats-row" id="stats-row">
-    <div class="stat-card" style="animation-delay:.05s"><div class="stat-val" id="stat-wr">—</div><div class="stat-label">Win Rate</div></div>
-    <div class="stat-card highlight" style="animation-delay:.1s"><div class="stat-val" id="stat-avg">—</div><div class="stat-label">Avg Return / Pick</div></div>
-    <div class="stat-card" style="animation-delay:.15s"><div class="stat-val amber" id="stat-best">—</div><div class="stat-label">Best Single Pick</div></div>
-    <div class="stat-card" style="animation-delay:.2s"><div class="stat-val" id="stat-total">—</div><div class="stat-label">Picks Tracked</div></div>
-    <div class="stat-card" style="animation-delay:.25s"><div class="stat-val" id="stat-updated">—</div><div class="stat-label">Last Updated</div></div>
+    <div class="stat-card" style="animation-delay:.05s"><div class="stat-val" id="stat-wr">â€”</div><div class="stat-label">Win Rate</div></div>
+    <div class="stat-card highlight" style="animation-delay:.1s"><div class="stat-val" id="stat-avg">â€”</div><div class="stat-label">Avg Return / Pick</div></div>
+    <div class="stat-card" style="animation-delay:.15s"><div class="stat-val amber" id="stat-best">â€”</div><div class="stat-label">Best Single Pick</div></div>
+    <div class="stat-card" style="animation-delay:.2s"><div class="stat-val" id="stat-total">â€”</div><div class="stat-label">Picks Tracked</div></div>
+    <div class="stat-card" style="animation-delay:.25s"><div class="stat-val" id="stat-updated">â€”</div><div class="stat-label">Last Updated</div></div>
   </div>
 
   <!-- All picks table -->
@@ -101,11 +101,11 @@ footer{text-align:center;padding:2rem;color:var(--dim);font-size:.8rem;border-to
   </div>
 
   <div class="disclaimer">
-    ⚠️ <strong>Not financial advice.</strong> Axiarch is an AI research tool for educational purposes. Past performance does not guarantee future results. Penny stocks are highly volatile and most retail traders lose money. Always do your own research and never risk more than you can afford to lose. Win rate and return figures reflect algorithm signal accuracy, not guaranteed trading results.
+    âš ï¸ <strong>Not financial advice.</strong> Axiarch is an AI research tool for educational purposes. Past performance does not guarantee future results. Penny stocks are highly volatile and most retail traders lose money. Always do your own research and never risk more than you can afford to lose. Win rate and return figures reflect algorithm signal accuracy, not guaranteed trading results.
   </div>
 </main>
 
-<footer>Axiarch Trading Intelligence · <a href="/" style="color:var(--green);text-decoration:none">axiarchtrading.netlify.app</a> · Free pre-market picks daily</footer>
+<footer>Axiarch Trading Intelligence Â· <a href="/" style="color:var(--green);text-decoration:none">axiarchtrading.netlify.app</a> Â· Free pre-market picks daily</footer>
 
 <script>
 async function loadPerformance() {
@@ -116,9 +116,9 @@ async function loadPerformance() {
 
     // Stats
     if (stats) {
-      document.getElementById('stat-wr').textContent = (stats.winRate ?? '—') + (stats.winRate != null ? '%' : '');
-      document.getElementById('stat-avg').textContent = stats.avgReturn != null ? '+' + stats.avgReturn + '%' : '—';
-      document.getElementById('stat-best').textContent = stats.bestPick ? '$' + stats.bestPick.ticker + ' +' + stats.bestPick.pct + '%' : '—';
+      document.getElementById('stat-wr').textContent = (stats.winRate ?? 'â€”') + (stats.winRate != null ? '%' : '');
+      document.getElementById('stat-avg').textContent = stats.avgReturn != null ? '+' + stats.avgReturn + '%' : 'â€”';
+      document.getElementById('stat-best').textContent = stats.bestPick ? '$' + stats.bestPick.ticker + ' +' + stats.bestPick.pct + '%' : 'â€”';
       document.getElementById('stat-total').textContent = stats.trackedPicks ?? picks.length;
       document.getElementById('stat-updated').textContent = stats.lastUpdated
         ? new Date(stats.lastUpdated).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) + ' ET'
@@ -140,8 +140,8 @@ async function loadPerformance() {
             </div>
           </td>
           <td>${(p.sources || []).map(s => `<span class="tag">${s}</span>`).join(' ')}</td>
-          <td style="color:var(--muted);font-size:.82rem;font-family:'JetBrains Mono',monospace">—</td>
-          <td style="color:var(--muted);font-size:.82rem;font-family:'JetBrains Mono',monospace">—</td>
+          <td style="color:var(--muted);font-size:.82rem;font-family:'JetBrains Mono',monospace">â€”</td>
+          <td style="color:var(--muted);font-size:.82rem;font-family:'JetBrains Mono',monospace">â€”</td>
           <td style="font-size:.82rem">Tracking...</td>
           <td><span style="font-size:.7rem;background:rgba(59,130,246,.12);color:#3b82f6;padding:2px 8px;border-radius:4px;font-family:'JetBrains Mono',monospace">OPEN</span></td>
         </tr>`;
