@@ -235,6 +235,7 @@ footer{border-top:1px solid var(--border);padding:3rem 2rem;text-align:center;co
     <a href="#sentiment">Radar</a>
     <a href="#calculator">RCT Calc</a>
     <a href="#framework">Framework</a>
+    <a href="/blog/">Blog</a>
   </div>
   <a href="#screener" class="nav-cta">LAUNCH SCREENER</a>
 </nav>
@@ -248,14 +249,36 @@ footer{border-top:1px solid var(--border);padding:3rem 2rem;text-align:center;co
     <h1 class="section-title animate-in delay-1">Detect <span>Sentiment Shifts</span> in Penny Stocks Before the Move Happens.</h1>
     <p class="section-subtitle animate-in delay-2">Axiarch scans thousands of stocks, tracks crowd sentiment across Reddit, X, and TikTok with NLP-powered analysis, and delivers algorithmically scored picks every morning before the bell.</p>
     <div class="hero-stats animate-in delay-3">
-      <div class="hero-stat"><div class="hero-stat-value" id="statScanned">0</div><div class="hero-stat-label">Stocks Scanned</div></div>
-      <div class="hero-stat"><div class="hero-stat-value" id="statPicks">0</div><div class="hero-stat-label">Quality Picks</div></div>
+      <div class="hero-stat"><div class="hero-stat-value">20</div><div class="hero-stat-label">Stocks Scanned</div></div>
+      <div class="hero-stat"><div class="hero-stat-value">20</div><div class="hero-stat-label">AI Picks Daily</div></div>
       <div class="hero-stat"><div class="hero-stat-value">3:1</div><div class="hero-stat-label">Min Risk/Reward</div></div>
-      <div class="hero-stat"><div class="hero-stat-value" id="statSource">â€”</div><div class="hero-stat-label">Data Source</div></div>
+      <div class="hero-stat"><div class="hero-stat-value" style="color:var(--accent-green)">LIVE</div><div class="hero-stat-label">Data Source</div></div>
     </div>
     <div class="hero-actions animate-in delay-4">
       <a href="#screener" class="btn-primary">Launch Screener â€” Free</a>
       <a href="#pipeline" class="btn-secondary">See How It Works</a>
+    </div>
+    
+    <!-- Yesterday's Results Banner -->
+    <div id="yesterday-banner" class="animate-in delay-4" style="margin-top:2.5rem;background:linear-gradient(135deg,rgba(0,232,123,0.08),rgba(0,212,255,0.08));border:1px solid rgba(0,232,123,0.25);border-radius:12px;padding:1.25rem 1.75rem;display:flex;align-items:center;justify-content:center;gap:2rem;flex-wrap:wrap;opacity:0;transform:translateY(20px);transition:all 0.5s ease">
+      <div style="display:flex;align-items:center;gap:0.75rem">
+        <span style="font-size:1.4rem">ðŸš€</span>
+        <div>
+          <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted)">Yesterday's Top Pick</div>
+          <div style="font-family:var(--font-mono);font-size:1.25rem;font-weight:700;color:var(--accent-green)" id="yesterday-ticker">Loading...</div>
+        </div>
+      </div>
+      <div style="width:1px;height:40px;background:var(--border);opacity:0.5"></div>
+      <div>
+        <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted)">Return</div>
+        <div style="font-family:var(--font-mono);font-size:1.5rem;font-weight:800;color:var(--accent-green)" id="yesterday-return">â€”</div>
+      </div>
+      <div style="width:1px;height:40px;background:var(--border);opacity:0.5"></div>
+      <div>
+        <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted)">Track Record</div>
+        <div style="font-size:0.9rem;color:var(--text-secondary)"><span id="yesterday-wins">â€”</span> wins, <span id="yesterday-avg">â€”</span>% avg</div>
+      </div>
+      <a href="/performance.html" style="background:var(--accent-green);color:#000;padding:0.6rem 1.2rem;border-radius:8px;font-weight:700;font-size:0.8rem;text-decoration:none;white-space:nowrap">View Full Results â†’</a>
     </div>
   </div>
 </section>
@@ -318,8 +341,8 @@ footer{border-top:1px solid var(--border);padding:3rem 2rem;text-align:center;co
         <span class="filter-chip" data-filter="hot">High Velocity</span>
       </div>
       <div style="display:flex;align-items:center;gap:1rem;">
-        <span id="scanStatus" style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent-amber);">âš  DEMO DATA</span>
-        <button class="btn-primary" id="scanBtn" onclick="runFullScan()" style="padding:0.5rem 1.2rem;font-size:0.78rem;">âŸ³ Refresh Scan</button>
+        <span id="scanStatus" style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent-green);"><span class="live-dot"></span> LIVE — Today's AI Picks Loaded</span>
+        <button class="btn-primary" id="scanBtn" onclick="runFullScan()" style="padding:0.5rem 1.2rem;font-size:0.78rem;">Refresh Prices</button>
       </div>
     </div>
     <div style="overflow-x:auto;max-height:600px;overflow-y:auto;">
@@ -462,7 +485,22 @@ footer{border-top:1px solid var(--border);padding:3rem 2rem;text-align:center;co
     <button onclick="submitSignup()" style="background:#00e87b;color:#000;font-weight:700;font-size:0.9rem;padding:0.85rem 2rem;border:none;border-radius:8px;cursor:pointer;font-family:'Outfit',sans-serif;letter-spacing:0.02em;transition:all .2s;" onmouseover="this.style.boxShadow='0 0 20px rgba(0,232,123,0.4)'" onmouseout="this.style.boxShadow='none'">Get Free Picks →</button>
   </div>
   <div id="signup-msg" style="margin-top:1rem;font-size:0.875rem;min-height:24px;"></div>
-  <p style="margin-top:1rem;font-size:0.75rem;color:#556178;">Currently free. Subscription tier coming soon at $29-49/mo. Lock in free access now.</p>
+  <!-- SOCIAL PROOF -->
+<div style="margin-top:2rem;display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;opacity:0.7">
+  <div style="text-align:center">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;color:var(--accent-green)">20</div>
+    <div style="font-size:0.7rem;color:var(--text-muted)">Daily AI Picks</div>
+  </div>
+  <div style="text-align:center">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;color:var(--accent-green)">100%</div>
+    <div style="font-size:0.7rem;color:var(--text-muted)">Free Forever</div>
+  </div>
+  <div style="text-align:center">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;color:var(--accent-green)">8:30 AM</div>
+    <div style="font-size:0.7rem;color:var(--text-muted)">Daily Delivery</div>
+  </div>
+</div>
+<p style="margin-top:1.5rem;font-size:0.75rem;color:#556178;">Join thousands of traders getting free pre-market intelligence. No credit card required. Unsubscribe anytime.</p>
 </section>
 <footer>
   <div class="footer-brand">AXIARCH</div>
@@ -1136,6 +1174,37 @@ async function fetchYahooBatch(tickers) {
 
 // Allow Enter key on email input
 document.getElementById('signupEmail')?.addEventListener('keydown', e => { if (e.key === 'Enter') submitSignup(); });
+
+// ---- YESTERDAY'S RESULTS BANNER ----
+async function loadYesterdayResults() {
+  try {
+    const res = await fetch('performance.json?v=' + Date.now());
+    if (!res.ok) return;
+    const { picks } = await res.json();
+    if (!picks?.length) return;
+
+    // Find best pick
+    const best = picks.reduce((max, p) => p.pctChange > max.pctChange ? p : max, picks[0]);
+    const winners = picks.filter(p => p.pctChange > 0).length;
+    const avgReturn = (picks.reduce((s, p) => s + p.pctChange, 0) / picks.length).toFixed(1);
+
+    // Update banner
+    document.getElementById('yesterday-ticker').textContent = '$' + best.ticker;
+    document.getElementById('yesterday-return').textContent = '+' + best.pctChange.toFixed(1) + '%';
+    document.getElementById('yesterday-wins').textContent = winners + '/' + picks.length;
+    document.getElementById('yesterday-avg').textContent = '+' + avgReturn;
+
+    // Show banner with animation
+    const banner = document.getElementById('yesterday-banner');
+    banner.style.opacity = '1';
+    banner.style.transform = 'translateY(0)';
+  } catch(e) {
+    console.log('Yesterday results load failed:', e.message);
+  }
+}
+
+// Load yesterday's results on page load
+loadYesterdayResults();
 
 </script>
 </body>

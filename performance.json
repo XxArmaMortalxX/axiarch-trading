@@ -1,0 +1,115 @@
+{
+  "picks": [
+    {
+      "ticker": "ASTC",
+      "flaggedDate": "2026-03-31",
+      "score": 50,
+      "sources": ["Reddit"],
+      "entryPrice": 4.65,
+      "closePrice": 5.23,
+      "pctChange": 12.47,
+      "tracked": true,
+      "trackedAt": "2026-03-31T22:05:24.118Z"
+    },
+    {
+      "ticker": "UNIT",
+      "flaggedDate": "2026-03-31",
+      "score": 35.8,
+      "sources": ["Yahoo Gainers"],
+      "entryPrice": 8.10,
+      "closePrice": 9.38,
+      "pctChange": 15.80,
+      "tracked": true,
+      "trackedAt": "2026-03-31T22:05:24.446Z"
+    },
+    {
+      "ticker": "IBRX",
+      "flaggedDate": "2026-03-31",
+      "score": 35.17,
+      "sources": ["Yahoo Gainers"],
+      "entryPrice": 6.66,
+      "closePrice": 7.67,
+      "pctChange": 15.17,
+      "tracked": true,
+      "trackedAt": "2026-03-31T22:05:24.730Z"
+    },
+    {
+      "ticker": "SOUN",
+      "flaggedDate": "2026-03-31",
+      "score": 33.93,
+      "sources": ["Yahoo Gainers"],
+      "entryPrice": 6.03,
+      "closePrice": 6.87,
+      "pctChange": 13.93,
+      "tracked": true,
+      "trackedAt": "2026-03-31T22:05:25.013Z"
+    },
+    {
+      "ticker": "WRD",
+      "flaggedDate": "2026-03-31",
+      "score": 33.78,
+      "sources": ["Yahoo Gainers"],
+      "entryPrice": 7.11,
+      "closePrice": 8.09,
+      "pctChange": 13.78,
+      "tracked": true,
+      "trackedAt": "2026-03-31T22:05:25.301Z"
+    },
+    {
+      "ticker": "EMAT",
+      "flaggedDate": "2026-03-31",
+      "score": 32.61,
+      "sources": ["Yahoo Gainers"],
+      "entryPrice": 6.74,
+      "closePrice": 7.59,
+      "pctChange": 12.61,
+      "tracked": true,
+      "trackedAt": "2026-03-31T22:05:25.609Z"
+    },
+    {
+      "ticker": "SNAP",
+      "flaggedDate": "2026-03-31",
+      "score": 31,
+      "sources": ["Yahoo Trending", "Yahoo Active"],
+      "entryPrice": 4.02,
+      "closePrice": 4.60,
+      "pctChange": 14.43,
+      "tracked": true,
+      "trackedAt": "2026-03-31T22:05:25.902Z"
+    },
+    {
+      "ticker": "BA",
+      "flaggedDate": "2026-03-31",
+      "score": 30,
+      "sources": ["Yahoo Trending"],
+      "entryPrice": 189.21,
+      "closePrice": 199.03,
+      "pctChange": 5.19,
+      "tracked": true,
+      "trackedAt": "2026-03-31T22:05:26.262Z"
+    },
+    {
+      "ticker": "APLS",
+      "flaggedDate": "2026-03-31",
+      "score": 29,
+      "sources": ["Yahoo Trending"],
+      "entryPrice": 17.09,
+      "closePrice": 40.23,
+      "pctChange": 135.40,
+      "tracked": true,
+      "trackedAt": "2026-03-31T22:05:26.554Z"
+    },
+    {
+      "ticker": "TSLA",
+      "flaggedDate": "2026-03-31",
+      "score": 28,
+      "sources": ["Yahoo Trending"],
+      "entryPrice": 355.28,
+      "closePrice": 371.75,
+      "pctChange": 4.64,
+      "tracked": true,
+      "trackedAt": "2026-03-31T22:05:26.864Z"
+    }
+  ],
+  "weeklyReports": []
+}
