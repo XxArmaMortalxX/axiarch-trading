@@ -920,29 +920,23 @@ window.addEventListener('scroll', () => {
 // Exit popup
 (function(){if(!localStorage.getItem('ax_pop')){document.addEventListener('mouseleave',function(e){if(e.clientY<=0){document.getElementById('exitPopup').classList.add('show');localStorage.setItem('ax_pop','1');}},{once:true});}})();
 function closePopup(){document.getElementById('exitPopup').classList.remove('show');}
-async function submitPopupEmail(){const em=document.getElementById('popupEmail').value.trim();if(!em||!em.includes('@'))return;try{await fetch('/.netlify/functions/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:em})});}catch(e){}closePopup();const m=document.getElementById('signup-msg');if(m){m.style.color='#00e87b';m.textContent="You're in! Picks at 8:30 AM ET.";}}
+async function submitPopupEmail(){const em=document.getElementById('popupEmail').value.trim();if(!em||!em.includes('@'))return;try{await fetch('/.netlify/functions/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:em})});}catch(e){}closePopup();const m=document.getElementById('signup-msg');if(m){m.style.color='#00e87b';m.textContent="You are in! Picks at 8:30 AM ET.";}}
 // Telegram sticky
-(function(){if(!localStorage.getItem('ax_tg')){setTimeout(()=>document.getElementById('tgSticky').classList.add('show'),5000);}})();
+(function(){if(!localStorage.getItem('ax_tg')){setTimeout(function(){document.getElementById('tgSticky').classList.add('show');},5000);}})();
 function dismissTg(){document.getElementById('tgSticky').classList.remove('show');localStorage.setItem('ax_tg','1');}
 // Theme toggle
-function toggleTheme(){const on=document.body.classList.toggle('light-mode');document.getElementById('themeToggle').textContent=on?'☀️':'🌙';localStorage.setItem('ax_theme',on?'light':'dark');}
-(function(){if(localStorage.getItem('ax_theme')==='light'){document.body.classList.add('light-mode');const b=document.getElementById('themeToggle');if(b)b.textContent='☀️';}})();
+function toggleTheme(){var on=document.body.classList.toggle('light-mode');document.getElementById('themeToggle').textContent=on?'\u2600\uFE0F':'\uD83C\uDF19';localStorage.setItem('ax_theme',on?'light':'dark');}
+(function(){if(localStorage.getItem('ax_theme')==='light'){document.body.classList.add('light-mode');var b=document.getElementById('themeToggle');if(b)b.textContent='\u2600\uFE0F';}})();
 // Mobile nav
 function toggleMobileMenu(){document.querySelector('.nav-links').classList.toggle('open');}
 // Ticker modal
-function openModal(sym,price,change,score,bull,bear){document.getElementById('mSym').textContent='
-</html>
-+sym;document.getElementById('mPrice').textContent='
-</html>
-+parseFloat(price).toFixed(2);const c=document.getElementById('mChg');c.textContent=(change>=0?'+':'')+change+'%';c.style.color=change>=0?'var(--accent-green)':'var(--accent-red)';document.getElementById('mScore').textContent=score;document.getElementById('mBull').textContent=bull+'%';document.getElementById('mBear').textContent=bear+'%';document.getElementById('mYahoo').href='https://finance.yahoo.com/quote/'+sym;document.getElementById('mReddit').href='https://www.reddit.com/search/?q='+encodeURIComponent('
-</html>
-+sym)+'&sort=new';document.getElementById('tickerModal').classList.add('show');}
+function openModal(sym,price,change,score,bull,bear){document.getElementById('mSym').textContent='\u0024'+sym;document.getElementById('mPrice').textContent='\u0024'+parseFloat(price).toFixed(2);var c=document.getElementById('mChg');c.textContent=(change>=0?'+':'')+change+'%';c.style.color=change>=0?'var(--accent-green)':'var(--accent-red)';document.getElementById('mScore').textContent=score;document.getElementById('mBull').textContent=bull+'%';document.getElementById('mBear').textContent=bear+'%';document.getElementById('mYahoo').href='https://finance.yahoo.com/quote/'+sym;document.getElementById('mReddit').href='https://www.reddit.com/search/?q='+encodeURIComponent('\u0024'+sym)+'&sort=new';document.getElementById('tickerModal').classList.add('show');}
 function closeModal(){document.getElementById('tickerModal').classList.remove('show');}
 document.addEventListener('click',function(e){if(e.target===document.getElementById('tickerModal'))closeModal();if(e.target===document.getElementById('exitPopup'))closePopup();});
 // Member counter
-(function(){const el=document.getElementById('memberCount');if(!el)return;let n=0;const t=setInterval(()=>{n=Math.min(n+21,1200);el.textContent=n.toLocaleString()+'+';if(n>=1200)clearInterval(t);},20);})();
+(function(){var el=document.getElementById('memberCount');if(!el)return;var n=0;var t=setInterval(function(){n=Math.min(n+21,1200);el.textContent=n.toLocaleString()+'+';if(n>=1200)clearInterval(t);},20);})();
 // Service worker
-if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));
+if('serviceWorker' in navigator)window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){});});
 </script>
 </body>
 </html>
