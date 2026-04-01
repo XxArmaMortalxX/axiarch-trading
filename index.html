@@ -314,25 +314,25 @@ body.light-mode nav{background:rgba(240,242,245,0.92)}
   <p class="section-subtitle">Axiarch runs a four-stage pipeline before the market opens â€” from raw data ingestion to scored picks on your screen.</p>
   <div class="pipeline-grid">
     <div class="pipeline-card">
-      <div class="pipeline-number">STAGE 01 Â· INGEST</div>
+      <div class="pipeline-number">STAGE 01 · INGEST</div>
       <h3>Data Collection</h3>
       <p>Pull pre-market data from exchanges + scrape Reddit, X, and TikTok for ticker mentions and volume anomalies.</p>
       <div class="pipeline-tags"><span class="pipeline-tag">NYSE / NASDAQ</span><span class="pipeline-tag">r/wallstreetbets</span><span class="pipeline-tag">X cashtags</span></div>
     </div>
     <div class="pipeline-card">
-      <div class="pipeline-number">STAGE 02 Â· ANALYZE</div>
+      <div class="pipeline-number">STAGE 02 · ANALYZE</div>
       <h3>NLP Sentiment + Scoring</h3>
       <p>Classify each mention as bullish/bearish/neutral using LLM analysis. Score stocks on float, gap, volume, and social velocity.</p>
       <div class="pipeline-tags"><span class="pipeline-tag">Gemini 2.5 Flash</span><span class="pipeline-tag">Sarcasm heuristics</span><span class="pipeline-tag">7-factor scoring</span></div>
     </div>
     <div class="pipeline-card">
-      <div class="pipeline-number">STAGE 03 Â· DETECT</div>
+      <div class="pipeline-number">STAGE 03 · DETECT</div>
       <h3>Shift Detection</h3>
       <p>Compare current sentiment against historical snapshots. Flag tickers where crowd bias flips from bearish to bullish.</p>
       <div class="pipeline-tags"><span class="pipeline-tag">Snapshot diffing</span><span class="pipeline-tag">15pt+ threshold</span><span class="pipeline-tag">Severity grading</span></div>
     </div>
     <div class="pipeline-card">
-      <div class="pipeline-number">STAGE 04 Â· DELIVER</div>
+      <div class="pipeline-number">STAGE 04 · DELIVER</div>
       <h3>20 Scored Picks</h3>
       <p>Lock the top 20 stocks at market open with entry signals, support/resistance levels, and directional bias.</p>
       <div class="pipeline-tags"><span class="pipeline-tag">Entry / exit levels</span><span class="pipeline-tag">Risk-reward ratios</span><span class="pipeline-tag">Velocity signals</span></div>
@@ -713,7 +713,7 @@ async function runFullScan() {
       dataSource = 'live';
       document.getElementById('scanStatus').innerHTML =
         `<span style="color:var(--accent-green);display:flex;align-items:center;gap:6px;">`+
-        `<span class="live-dot"></span> LIVE Â· ${LIVE_DATA.length} stocks Â· ${new Date().toLocaleTimeString()}</span>`;
+        `<span class="live-dot"></span> LIVE · ${LIVE_DATA.length} stocks · ${new Date().toLocaleTimeString()}</span>`;
     } else {
       throw new Error('No valid quotes returned');
     }
