@@ -1,4 +1,4 @@
-ÃƒÂ¯Ã‚Â»Ã‚Â¿<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -14,16 +14,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Axiarch - Free AI Penny Stock Picks Before the Bell">
 <meta name="twitter:description" content="AI scans Reddit, Yahoo Finance and financial news overnight. 20 ranked pre-market picks every morning. Free.">
-<title>Axiarch Algorithm — Penny Stock Sentiment Intelligence</title>
-<link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#06080c">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Axiarch">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Axiarch Trading Intelligence","url":"https://axiarchtrading.netlify.app","description":"AI-powered penny stock scanner. 20 scored pre-market picks every morning, free.","applicationCategory":"FinanceApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
-</script>
+<title>Axiarch Algorithm â€” Penny Stock Sentiment Intelligence</title>
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#06080c">
 <meta name="mobile-web-app-capable" content="yes">
@@ -238,71 +229,26 @@ footer{border-top:1px solid var(--border);padding:3rem 2rem;text-align:center;co
 @media(max-width:900px){.sentiment-grid{grid-template-columns:1fr}.calc-container{grid-template-columns:1fr}.features-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:768px){nav{padding:0 1rem}.nav-links{display:none}section{padding:4rem 1rem}.pipeline-grid{grid-template-columns:1fr}.features-grid{grid-template-columns:1fr}}
 
-/* EXIT POPUP */
-#exitPopup{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:10000;align-items:center;justify-content:center}
-#exitPopup.show{display:flex}
-.popup-box{background:var(--bg-card);border:1px solid var(--border-bright);border-radius:16px;padding:2.5rem;max-width:420px;width:90%;text-align:center;position:relative}
-.popup-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--text-muted);font-size:1.4rem;cursor:pointer;line-height:1}
-.popup-box h3{font-family:var(--font-display);font-size:1.5rem;font-weight:800;margin-bottom:0.5rem}
-.popup-box p{color:var(--text-secondary);font-size:0.9rem;margin-bottom:1.5rem}
-.popup-input{width:100%;padding:0.8rem 1rem;background:var(--bg-primary);border:1px solid var(--border-bright);border-radius:8px;color:var(--text-primary);font-size:0.9rem;margin-bottom:0.75rem;box-sizing:border-box}
-/* TELEGRAM STICKY */
-#tgSticky{display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:linear-gradient(135deg,rgba(0,212,255,0.12),rgba(0,232,123,0.08));border-top:1px solid rgba(0,212,255,0.3);padding:0.75rem 1.5rem;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap}
-#tgSticky.show{display:flex}
-.tg-sticky-text{font-size:0.88rem;color:var(--text-primary)}
-.tg-sticky-btn{background:var(--accent-cyan);color:#000;font-weight:700;font-size:0.8rem;padding:0.45rem 1.2rem;border-radius:6px;text-decoration:none;white-space:nowrap}
-.tg-close{background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:1.1rem;padding:0.2rem}
-/* SKELETON */
-@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
-.skeleton{background:linear-gradient(90deg,var(--bg-elevated) 25%,var(--bg-card-hover) 50%,var(--bg-elevated) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:4px;height:14px;display:inline-block}
-/* MODAL */
-#tickerModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:10000;align-items:center;justify-content:center}
-#tickerModal.show{display:flex}
-.modal-box{background:var(--bg-card);border:1px solid var(--border-bright);border-radius:16px;padding:2rem;max-width:480px;width:90%;position:relative}
-.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--text-muted);font-size:1.4rem;cursor:pointer}
-.modal-ticker{font-family:var(--font-mono);font-size:2rem;font-weight:800;color:var(--accent-green);margin-bottom:0.25rem}
-.modal-price{font-family:var(--font-mono);font-size:1.2rem;font-weight:600;color:var(--text-primary)}
-.modal-stats{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.5rem 0}
-.modal-stat{background:var(--bg-elevated);border-radius:8px;padding:0.8rem;text-align:center}
-.modal-stat-label{font-size:0.65rem;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);margin-bottom:0.3rem}
-.modal-stat-value{font-family:var(--font-mono);font-weight:700;font-size:1rem}
-.modal-links{display:flex;gap:0.75rem;margin-top:1rem}
-.modal-link{flex:1;text-align:center;padding:0.6rem;border-radius:8px;text-decoration:none;font-size:0.8rem;font-weight:600;border:1px solid var(--border-bright);color:var(--text-secondary);transition:all .2s}
-.modal-link:hover{border-color:var(--accent-green);color:var(--accent-green)}
-/* LIGHT MODE */
-body.light-mode{--bg-void:#f0f2f5;--bg-primary:#ffffff;--bg-card:#ffffff;--bg-card-hover:#f8f9fb;--bg-elevated:#eef0f4;--border:#d8dde8;--border-bright:#c0c8d8;--text-primary:#0d1117;--text-secondary:#4a5568;--text-muted:#8896a5}
-body.light-mode nav{background:rgba(240,242,245,0.92)}
-/* MOBILE NAV */
-@media(max-width:768px){#mobileMenuBtn{display:inline-block!important}.nav-links.mobile-open{display:flex!important;flex-direction:column;position:absolute;top:60px;left:0;right:0;background:var(--bg-card);border-bottom:1px solid var(--border);padding:1rem;gap:0.25rem;z-index:999}}
-
 /* LIGHT MODE */
 body.light-mode{--bg-void:#f0f2f5;--bg-primary:#fff;--bg-card:#fff;--bg-card-hover:#f8f9fb;--bg-elevated:#eef0f4;--border:#d8dde8;--border-bright:#c0c8d8;--text-primary:#0d1117;--text-secondary:#4a5568;--text-muted:#8896a5}
 body.light-mode nav{background:rgba(240,242,245,0.92)}
-/* SKELETON */
-@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
-.skeleton-row td{padding:12px}
-.skel{background:linear-gradient(90deg,var(--bg-elevated) 25%,var(--bg-card-hover) 50%,var(--bg-elevated) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:4px;height:14px;display:inline-block;width:60%}
 /* POPUP */
 #exitPopup{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:10000;align-items:center;justify-content:center}
 #exitPopup.show{display:flex}
 .popup-box{background:var(--bg-card);border:1px solid var(--border-bright);border-radius:16px;padding:2.5rem;max-width:400px;width:90%;text-align:center;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.5)}
-.popup-close{position:absolute;top:0.8rem;right:1rem;background:none;border:none;color:var(--text-muted);font-size:1.5rem;cursor:pointer;line-height:1}
+.popup-close{position:absolute;top:0.8rem;right:1rem;background:none;border:none;color:var(--text-muted);font-size:1.5rem;cursor:pointer}
 .popup-box h3{font-family:var(--font-display);font-size:1.4rem;font-weight:800;margin-bottom:0.5rem}
-.popup-box p{color:var(--text-secondary);font-size:0.88rem;margin-bottom:1.25rem;line-height:1.5}
-.popup-input{width:100%;padding:0.75rem 1rem;background:var(--bg-primary);border:1px solid var(--border-bright);border-radius:8px;color:var(--text-primary);font-size:0.9rem;margin-bottom:0.75rem;box-sizing:border-box;font-family:var(--font-body)}
+.popup-box p{color:var(--text-secondary);font-size:0.88rem;margin-bottom:1.25rem}
+.popup-input{width:100%;padding:0.75rem 1rem;background:var(--bg-primary);border:1px solid var(--border-bright);border-radius:8px;color:var(--text-primary);font-size:0.9rem;margin-bottom:0.75rem;box-sizing:border-box}
 /* TELEGRAM STICKY */
 #tgSticky{display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:linear-gradient(135deg,rgba(0,18,30,0.97),rgba(0,12,22,0.97));border-top:1px solid rgba(0,212,255,0.25);padding:0.7rem 1.5rem;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap}
 #tgSticky.show{display:flex}
-.tg-text{font-size:0.85rem;color:var(--text-primary)}
-.tg-btn{background:var(--accent-cyan);color:#000;font-weight:700;font-size:0.78rem;padding:0.4rem 1.1rem;border-radius:6px;text-decoration:none;white-space:nowrap}
-.tg-x{background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:1rem;padding:0.2rem 0.4rem}
 /* MODAL */
 #tickerModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:10000;align-items:center;justify-content:center}
 #tickerModal.show{display:flex}
 .modal-box{background:var(--bg-card);border:1px solid var(--border-bright);border-radius:16px;padding:2rem;max-width:460px;width:90%;position:relative}
 .modal-x{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--text-muted);font-size:1.4rem;cursor:pointer}
 .modal-sym{font-family:var(--font-mono);font-size:2rem;font-weight:800;color:var(--accent-green)}
-.modal-price{font-family:var(--font-mono);font-size:1.1rem;color:var(--text-primary);margin-top:0.2rem}
 .modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:1.2rem 0}
 .modal-cell{background:var(--bg-elevated);border-radius:8px;padding:0.75rem;text-align:center}
 .modal-lbl{font-size:0.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);margin-bottom:0.3rem}
@@ -311,55 +257,18 @@ body.light-mode nav{background:rgba(240,242,245,0.92)}
 .modal-lnk{flex:1;text-align:center;padding:0.55rem;border-radius:7px;text-decoration:none;font-size:0.78rem;font-weight:600;border:1px solid var(--border-bright);color:var(--text-secondary);transition:all .2s}
 .modal-lnk:hover{border-color:var(--accent-green);color:var(--accent-green)}
 /* MOBILE NAV */
-@media(max-width:768px){#mobileMenuBtn{display:inline-flex!important;align-items:center;justify-content:center}.nav-links.open{display:flex!important;flex-direction:column;position:absolute;top:60px;left:0;right:0;background:var(--bg-card);border-bottom:1px solid var(--border);padding:1rem;z-index:998;gap:0}}
+@media(max-width:768px){#mobileMenuBtn{display:inline-flex!important}.nav-links.open{display:flex!important;flex-direction:column;position:absolute;top:60px;left:0;right:0;background:var(--bg-card);border-bottom:1px solid var(--border);padding:1rem;z-index:998}}
 </style>
 </head>
 <body>
-
-
-<!-- EXIT INTENT POPUP -->
-<div id="exitPopup">
-  <div class="popup-box">
-    <button class="popup-close" onclick="closePopup()">&#x2715;</button>
-    <div style="font-size:2rem;margin-bottom:0.75rem">Ã°Å¸â€œÂ¡</div>
-    <h3>Get Tomorrow's Picks Free</h3>
-    <p>AI scans Reddit & Yahoo Finance overnight. 20 ranked pre-market picks in your inbox at 8:30 AM ET.</p>
-    <input type="email" id="popupEmail" class="popup-input" placeholder="your@email.com">
-    <button class="btn-primary" style="width:100%" onclick="submitPopupEmail()">Send Me Tomorrow's Picks Ã¢â€ â€™</button>
-    <p style="font-size:0.72rem;color:var(--text-muted);margin-top:0.75rem">Free forever. No spam. Unsubscribe anytime.</p>
-  </div>
-</div>
-<!-- TICKER MODAL -->
-<div id="tickerModal">
-  <div class="modal-box">
-    <button class="modal-close" onclick="closeModal()">Ã¢Å“â€¢</button>
-    <div class="modal-ticker" id="modalTicker">-</div>
-    <div class="modal-price" id="modalPrice">-</div>
-    <div class="modal-stats">
-      <div class="modal-stat"><div class="modal-stat-label">Change</div><div class="modal-stat-value" id="modalChange">-</div></div>
-      <div class="modal-stat"><div class="modal-stat-label">Axiarch Score</div><div class="modal-stat-value" id="modalScore" style="color:var(--accent-green)">-</div></div>
-      <div class="modal-stat"><div class="modal-stat-label">Bullish</div><div class="modal-stat-value" style="color:var(--accent-green)" id="modalBull">-</div></div>
-      <div class="modal-stat"><div class="modal-stat-label">Bearish</div><div class="modal-stat-value" style="color:var(--accent-red)" id="modalBear">-</div></div>
-    </div>
-    <div class="modal-links">
-      <a class="modal-link" id="modalYahoo" href="#" target="_blank">Ã°Å¸â€œË† Yahoo Finance</a>
-      <a class="modal-link" id="modalReddit" href="#" target="_blank">Ã°Å¸â€”Â¨ Reddit</a>
-      <a class="modal-link" id="modalTg" href="https://t.me/axiarchtradebot" target="_blank">Ã¢Å“Ë†Ã¯Â¸Â Telegram</a>
-    </div>
-  </div>
-</div>
-<!-- TELEGRAM STICKY -->
-<div id="tgSticky">
-  <span class="tg-sticky-text">Ã°Å¸â€œÂ¡ Get daily picks on Telegram &mdash; Free</span>
-  <a href="https://t.me/axiarchtradebot" target="_blank" class="tg-sticky-btn">Join Channel</a>
-  <button class="tg-close" onclick="dismissTg()">&#x2715;</button>
-</div>
 <!-- EXIT POPUP -->
-<div id="exitPopup"><div class="popup-box"><button class="popup-close" onclick="closePopup()">&#x2715;</button><div style="font-size:2rem;margin-bottom:0.6rem">&#x1F4E1;</div><h3>Get Tomorrow's Picks Free</h3><p>AI scans Reddit &amp; Yahoo Finance overnight. 20 ranked pre-market picks in your inbox at 8:30 AM ET.</p><input type="email" id="popupEmail" class="popup-input" placeholder="your@email.com"><button class="btn-primary" style="width:100%" onclick="submitPopupEmail()">Send Me Tomorrow's Picks &#x2192;</button><p style="font-size:0.72rem;color:var(--text-muted);margin-top:0.75rem">Free forever. No spam. Unsubscribe anytime.</p></div></div>
+<div id="exitPopup"><div class="popup-box"><button class="popup-close" onclick="closePopup()">✕</button><div style="font-size:2rem;margin-bottom:0.6rem">📡</div><h3>Get Tomorrow's Picks Free</h3><p>AI scans Reddit &amp; Yahoo Finance overnight. 20 ranked pre-market picks in your inbox at 8:30 AM ET.</p><input type="email" id="popupEmail" class="popup-input" placeholder="your@email.com"><button class="btn-primary" style="width:100%" onclick="submitPopupEmail()">Send Me Tomorrow's Picks →</button><p style="font-size:0.72rem;color:var(--text-muted);margin-top:0.75rem">Free forever. No spam. Unsubscribe anytime.</p></div></div>
 <!-- TICKER MODAL -->
-<div id="tickerModal"><div class="modal-box"><button class="modal-x" onclick="closeModal()">&#x2715;</button><div class="modal-sym" id="mSym">-</div><div class="modal-price" id="mPrice">-</div><div class="modal-grid"><div class="modal-cell"><div class="modal-lbl">Change</div><div class="modal-val" id="mChg">-</div></div><div class="modal-cell"><div class="modal-lbl">Axiarch Score</div><div class="modal-val" style="color:var(--accent-green)" id="mScore">-</div></div><div class="modal-cell"><div class="modal-lbl">Bullish</div><div class="modal-val" style="color:var(--accent-green)" id="mBull">-</div></div><div class="modal-cell"><div class="modal-lbl">Bearish</div><div class="modal-val" style="color:var(--accent-red)" id="mBear">-</div></div></div><div class="modal-links"><a class="modal-lnk" id="mYahoo" href="#" target="_blank">&#x1F4C8; Yahoo Finance</a><a class="modal-lnk" id="mReddit" href="#" target="_blank">&#x1F4AC; Reddit</a></div></div></div>
+<div id="tickerModal"><div class="modal-box"><button class="modal-x" onclick="closeModal()">✕</button><div class="modal-sym" id="mSym">-</div><div style="font-family:var(--font-mono);font-size:1.1rem;color:var(--text-primary);margin-top:0.2rem" id="mPrice">-</div><div class="modal-grid"><div class="modal-cell"><div class="modal-lbl">Change</div><div class="modal-val" id="mChg">-</div></div><div class="modal-cell"><div class="modal-lbl">Axiarch Score</div><div class="modal-val" style="color:var(--accent-green)" id="mScore">-</div></div><div class="modal-cell"><div class="modal-lbl">Bullish</div><div class="modal-val" style="color:var(--accent-green)" id="mBull">-</div></div><div class="modal-cell"><div class="modal-lbl">Bearish</div><div class="modal-val" style="color:var(--accent-red)" id="mBear">-</div></div></div><div class="modal-links"><a class="modal-lnk" id="mYahoo" href="#" target="_blank">📈 Yahoo Finance</a><a class="modal-lnk" id="mReddit" href="#" target="_blank">💬 Reddit</a></div></div></div>
 <!-- TG STICKY -->
-<div id="tgSticky"><span class="tg-text">&#x1F4E1; Get daily picks on Telegram &mdash; Free</span><a href="https://t.me/axiarchtradebot" target="_blank" class="tg-btn">Join Channel</a><button class="tg-x" onclick="dismissTg()">&#x2715;</button></div>
+<div id="tgSticky"><span style="font-size:0.85rem;color:var(--text-primary)">📡 Get daily picks on Telegram — Free</span><a href="https://t.me/axiarchtradebot" target="_blank" style="background:var(--accent-cyan);color:#000;font-weight:700;font-size:0.78rem;padding:0.4rem 1.1rem;border-radius:6px;text-decoration:none">Join Channel</a><button onclick="dismissTg()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:1rem">✕</button></div>
+
+
 <nav>
   <div class="nav-logo">AXIARCH</div>
   <div class="nav-links">
@@ -369,11 +278,10 @@ body.light-mode nav{background:rgba(240,242,245,0.92)}
     <a href="#sentiment">Radar</a>
     <a href="#calculator">RCT Calc</a>
     <a href="#framework">Framework</a>
-    <a href="/blog/">Blog</a>
   </div>
   <a href="#screener" class="nav-cta">LAUNCH SCREENER</a>
-  <button id="themeToggle" onclick="toggleTheme()" style="background:none;border:1px solid var(--border);color:var(--text-secondary);border-radius:6px;padding:0.4rem 0.6rem;cursor:pointer;font-size:1rem;margin-left:0.5rem;transition:all 0.2s">Ã°Å¸Å’â„¢</button>
-  <button id="mobileMenuBtn" onclick="toggleMobileMenu()" style="display:none;background:none;border:1px solid var(--border);color:var(--text-secondary);border-radius:6px;padding:0.4rem 0.7rem;cursor:pointer;font-size:1.1rem;margin-left:0.5rem">Ã¢ËœÂ°</button>
+  <button id="themeToggle" onclick="toggleTheme()" title="Toggle theme" style="background:none;border:1px solid var(--border);color:var(--text-secondary);border-radius:6px;padding:0.38rem 0.6rem;cursor:pointer;font-size:1rem;margin-left:0.5rem">🌙</button>
+  <button id="mobileMenuBtn" onclick="toggleMobileMenu()" style="display:none;background:none;border:1px solid var(--border);color:var(--text-secondary);border-radius:6px;padding:0.38rem 0.65rem;cursor:pointer;font-size:1.1rem;margin-left:0.5rem">☰</button>
 </nav>
 
 <!-- HERO -->
@@ -385,36 +293,14 @@ body.light-mode nav{background:rgba(240,242,245,0.92)}
     <h1 class="section-title animate-in delay-1">Detect <span>Sentiment Shifts</span> in Penny Stocks Before the Move Happens.</h1>
     <p class="section-subtitle animate-in delay-2">Axiarch scans thousands of stocks, tracks crowd sentiment across Reddit, X, and TikTok with NLP-powered analysis, and delivers algorithmically scored picks every morning before the bell.</p>
     <div class="hero-stats animate-in delay-3">
-      <div class="hero-stat"><div class="hero-stat-value" id="memberCount">1,200+</div><div class="hero-stat-label">Free Members</div></div>
-      <div class="hero-stat"><div class="hero-stat-value">20</div><div class="hero-stat-label">AI Picks Daily</div></div>
+      <div class="hero-stat"><div class="hero-stat-value" id="statScanned">0</div><div class="hero-stat-label">Stocks Scanned</div></div>
+      <div class="hero-stat"><div class="hero-stat-value" id="statPicks">0</div><div class="hero-stat-label">Quality Picks</div></div>
       <div class="hero-stat"><div class="hero-stat-value">3:1</div><div class="hero-stat-label">Min Risk/Reward</div></div>
-      <div class="hero-stat"><div class="hero-stat-value" style="color:var(--accent-green)">LIVE</div><div class="hero-stat-label">Data Source</div></div>
+      <div class="hero-stat"><div class="hero-stat-value" id="statSource">â€”</div><div class="hero-stat-label">Data Source</div></div>
     </div>
     <div class="hero-actions animate-in delay-4">
-      <a href="#screener" class="btn-primary">Launch Screener — Free</a>
+      <a href="#screener" class="btn-primary">Launch Screener â€” Free</a>
       <a href="#pipeline" class="btn-secondary">See How It Works</a>
-    </div>
-    
-    <!-- Yesterday's Results Banner -->
-    <div id="yesterday-banner" class="animate-in delay-4" style="margin-top:2.5rem;background:linear-gradient(135deg,rgba(0,232,123,0.08),rgba(0,212,255,0.08));border:1px solid rgba(0,232,123,0.25);border-radius:12px;padding:1.25rem 1.75rem;display:flex;align-items:center;justify-content:center;gap:2rem;flex-wrap:wrap;opacity:0;transform:translateY(20px);transition:all 0.5s ease">
-      <div style="display:flex;align-items:center;gap:0.75rem">
-        <span style="font-size:1.4rem">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â¡ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬</span>
-        <div>
-          <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted)">Yesterday's Top Pick</div>
-          <div style="font-family:var(--font-mono);font-size:1.25rem;font-weight:700;color:var(--accent-green)" id="yesterday-ticker">Loading...</div>
-        </div>
-      </div>
-      <div style="width:1px;height:40px;background:var(--border);opacity:0.5"></div>
-      <div>
-        <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted)">Return</div>
-        <div style="font-family:var(--font-mono);font-size:1.5rem;font-weight:800;color:var(--accent-green)" id="yesterday-return">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â</div>
-      </div>
-      <div style="width:1px;height:40px;background:var(--border);opacity:0.5"></div>
-      <div>
-        <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted)">Track Record</div>
-        <div style="font-size:0.9rem;color:var(--text-secondary)"><span id="yesterday-wins">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â</span> wins, <span id="yesterday-avg">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â</span>% avg</div>
-      </div>
-      <a href="/performance.html" style="background:var(--accent-green);color:#000;padding:0.6rem 1.2rem;border-radius:8px;font-weight:700;font-size:0.8rem;text-decoration:none;white-space:nowrap">View Full Results →</a>
     </div>
   </div>
 </section>
@@ -425,28 +311,28 @@ body.light-mode nav{background:rgba(240,242,245,0.92)}
 <section id="pipeline">
   <div class="section-label">HOW THE ALGORITHM WORKS</div>
   <h2 class="section-title">Four Stages. One Pipeline. Every Morning.</h2>
-  <p class="section-subtitle">Axiarch runs a four-stage pipeline before the market opens ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â from raw data ingestion to scored picks on your screen.</p>
+  <p class="section-subtitle">Axiarch runs a four-stage pipeline before the market opens â€” from raw data ingestion to scored picks on your screen.</p>
   <div class="pipeline-grid">
     <div class="pipeline-card">
-      <div class="pipeline-number">STAGE 01 ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· INGEST</div>
+      <div class="pipeline-number">STAGE 01 Â· INGEST</div>
       <h3>Data Collection</h3>
       <p>Pull pre-market data from exchanges + scrape Reddit, X, and TikTok for ticker mentions and volume anomalies.</p>
       <div class="pipeline-tags"><span class="pipeline-tag">NYSE / NASDAQ</span><span class="pipeline-tag">r/wallstreetbets</span><span class="pipeline-tag">X cashtags</span></div>
     </div>
     <div class="pipeline-card">
-      <div class="pipeline-number">STAGE 02 ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· ANALYZE</div>
+      <div class="pipeline-number">STAGE 02 Â· ANALYZE</div>
       <h3>NLP Sentiment + Scoring</h3>
       <p>Classify each mention as bullish/bearish/neutral using LLM analysis. Score stocks on float, gap, volume, and social velocity.</p>
       <div class="pipeline-tags"><span class="pipeline-tag">Gemini 2.5 Flash</span><span class="pipeline-tag">Sarcasm heuristics</span><span class="pipeline-tag">7-factor scoring</span></div>
     </div>
     <div class="pipeline-card">
-      <div class="pipeline-number">STAGE 03 ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· DETECT</div>
+      <div class="pipeline-number">STAGE 03 Â· DETECT</div>
       <h3>Shift Detection</h3>
       <p>Compare current sentiment against historical snapshots. Flag tickers where crowd bias flips from bearish to bullish.</p>
       <div class="pipeline-tags"><span class="pipeline-tag">Snapshot diffing</span><span class="pipeline-tag">15pt+ threshold</span><span class="pipeline-tag">Severity grading</span></div>
     </div>
     <div class="pipeline-card">
-      <div class="pipeline-number">STAGE 04 ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· DELIVER</div>
+      <div class="pipeline-number">STAGE 04 Â· DELIVER</div>
       <h3>20 Scored Picks</h3>
       <p>Lock the top 20 stocks at market open with entry signals, support/resistance levels, and directional bias.</p>
       <div class="pipeline-tags"><span class="pipeline-tag">Entry / exit levels</span><span class="pipeline-tag">Risk-reward ratios</span><span class="pipeline-tag">Velocity signals</span></div>
@@ -458,13 +344,13 @@ body.light-mode nav{background:rgba(240,242,245,0.92)}
 <section id="screener">
   <div class="section-label">LIVE STOCK SCREENER</div>
   <h2 class="section-title">Scan. Score. Strike.</h2>
-  <p class="section-subtitle">AI-ranked penny stocks updated every morning. Add your free Finnhub key for live intraday prices.</p>
+  <p class="section-subtitle">Real-time screening with Axiarch scoring. Enter your free Finnhub API key below to pull live market data.</p>
 
   <div class="api-bar">
     <label>Finnhub API Key:</label>
     <input type="text" id="apiKeyInput" placeholder="Paste your free API key here..." />
     <button class="btn-primary" onclick="saveKeyAndScan()" style="padding:0.5rem 1.2rem;font-size:0.78rem;">Connect & Scan</button>
-    <a class="help-link" href="https://finnhub.io/register" target="_blank">Get free key →</a>
+    <a class="help-link" href="https://finnhub.io/register" target="_blank">Get free key â†’</a>
     <span class="api-status disconnected" id="apiStatusBadge">NO KEY</span>
   </div>
 
@@ -477,8 +363,8 @@ body.light-mode nav{background:rgba(240,242,245,0.92)}
         <span class="filter-chip" data-filter="hot">High Velocity</span>
       </div>
       <div style="display:flex;align-items:center;gap:1rem;">
-        <span id="scanStatus" style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent-green);"><span class="live-dot"></span> LIVE ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Today's AI Picks Loaded</span>
-        <button class="btn-primary" id="scanBtn" onclick="runFullScan()" style="padding:0.5rem 1.2rem;font-size:0.78rem;">Refresh Prices</button>
+        <span id="scanStatus" style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent-amber);">âš  DEMO DATA</span>
+        <button class="btn-primary" id="scanBtn" onclick="runFullScan()" style="padding:0.5rem 1.2rem;font-size:0.78rem;">âŸ³ Refresh Scan</button>
       </div>
     </div>
     <div style="overflow-x:auto;max-height:600px;overflow-y:auto;">
@@ -548,7 +434,7 @@ body.light-mode nav{background:rgba(240,242,245,0.92)}
 <section id="framework">
   <div class="section-label">PATTERN RECOGNITION</div>
   <h2 class="section-title">The 7-Step Pennystocking Lifecycle.</h2>
-  <p class="section-subtitle">The foundational "pattern of patterns" ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â the psychological lifecycle Axiarch is programmed to identify and trade.</p>
+  <p class="section-subtitle">The foundational "pattern of patterns" â€” the psychological lifecycle Axiarch is programmed to identify and trade.</p>
   <div class="framework-steps" id="frameworkSteps"></div>
   <div class="framework-detail" id="frameworkDetail"></div>
 </section>
@@ -558,12 +444,12 @@ body.light-mode nav{background:rgba(240,242,245,0.92)}
   <div class="section-label">PLATFORM TOOLS</div>
   <h2 class="section-title">Everything You Need. Nothing You Don't.</h2>
   <div class="features-grid">
-    <div class="feature-card"><div class="feature-icon" style="background:var(--accent-green-dim);">📡</div><h3>Live Stock Screener</h3><p>Scan the market pre-market with real data from Finnhub. Filter and score every stock before the bell.</p></div>
-    <div class="feature-card"><div class="feature-icon" style="background:var(--accent-blue-dim);">🌐</div><h3>Social Sentiment Radar</h3><p>See which tickers are exploding. Track mention velocity and crowd sentiment in real-time.</p></div>
-    <div class="feature-card"><div class="feature-icon" style="background:var(--accent-amber-dim);">⚡</div><h3>Sentiment Shift Alerts</h3><p>Get alerts when sentiment flips from bearish to bullish ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â a leading indicator of momentum.</p></div>
-    <div class="feature-card"><div class="feature-icon" style="background:var(--accent-red-dim);">📉</div><h3>RCT Calculator</h3><p>Red candle entry, stop loss, and multi-level profit targets with precise risk-reward ratios.</p></div>
-    <div class="feature-card"><div class="feature-icon" style="background:var(--accent-cyan-dim);">🎯</div><h3>Daily Pre-Market Picks</h3><p>Algorithmically selected stocks every morning with entry signals and directional bias.</p></div>
-    <div class="feature-card"><div class="feature-icon" style="background:rgba(168,85,247,0.15);">🔄</div><h3>7-Step Framework</h3><p>Interactive penny stock lifecycle visualization ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â see where a stock is and what comes next.</p></div>
+    <div class="feature-card"><div class="feature-icon" style="background:var(--accent-green-dim);">ðŸ“¡</div><h3>Live Stock Screener</h3><p>Scan the market pre-market with real data from Finnhub. Filter and score every stock before the bell.</p></div>
+    <div class="feature-card"><div class="feature-icon" style="background:var(--accent-blue-dim);">ðŸŒ</div><h3>Social Sentiment Radar</h3><p>See which tickers are exploding. Track mention velocity and crowd sentiment in real-time.</p></div>
+    <div class="feature-card"><div class="feature-icon" style="background:var(--accent-amber-dim);">âš¡</div><h3>Sentiment Shift Alerts</h3><p>Get alerts when sentiment flips from bearish to bullish â€” a leading indicator of momentum.</p></div>
+    <div class="feature-card"><div class="feature-icon" style="background:var(--accent-red-dim);">ðŸ“</div><h3>RCT Calculator</h3><p>Red candle entry, stop loss, and multi-level profit targets with precise risk-reward ratios.</p></div>
+    <div class="feature-card"><div class="feature-icon" style="background:var(--accent-cyan-dim);">ðŸŽ¯</div><h3>Daily Pre-Market Picks</h3><p>Algorithmically selected stocks every morning with entry signals and directional bias.</p></div>
+    <div class="feature-card"><div class="feature-icon" style="background:rgba(168,85,247,0.15);">ðŸ”„</div><h3>7-Step Framework</h3><p>Interactive penny stock lifecycle visualization â€” see where a stock is and what comes next.</p></div>
   </div>
 </section>
 
@@ -585,7 +471,7 @@ body.light-mode nav{background:rgba(240,242,245,0.92)}
         </tr>
       </thead>
       <tbody id="picks-tbody">
-        <tr style="border-bottom:1px solid var(--border)"><td style="padding:12px"><span class="skeleton" style="width:47%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td style="padding:12px"><span class="skeleton" style="width:53%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td style="padding:12px"><span class="skeleton" style="width:56%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td style="padding:12px"><span class="skeleton" style="width:69%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td style="padding:12px"><span class="skeleton" style="width:62%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td></tr><tr style="border-bottom:1px solid var(--border)"><td style="padding:12px"><span class="skeleton" style="width:67%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td style="padding:12px"><span class="skeleton" style="width:95%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td style="padding:12px"><span class="skeleton" style="width:66%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td style="padding:12px"><span class="skeleton" style="width:62%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td style="padding:12px"><span class="skeleton" style="width:60%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td></tr><tr style="border-bottom:1px solid var(--border)"><td style="padding:12px"><span class="skeleton" style="width:54%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td style="padding:12px"><span class="skeleton" style="width:93%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td style="padding:12px"><span class="skeleton" style="width:71%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td style="padding:12px"><span class="skeleton" style="width:42%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td style="padding:12px"><span class="skeleton" style="width:61%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td></tr><tr style="border-bottom:1px solid var(--border)"><td style="padding:12px"><span class="skeleton" style="width:63%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td style="padding:12px"><span class="skeleton" style="width:89%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td style="padding:12px"><span class="skeleton" style="width:66%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td style="padding:12px"><span class="skeleton" style="width:79%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td style="padding:12px"><span class="skeleton" style="width:83%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td></tr><tr style="border-bottom:1px solid var(--border)"><td style="padding:12px"><span class="skeleton" style="width:95%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td style="padding:12px"><span class="skeleton" style="width:59%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td style="padding:12px"><span class="skeleton" style="width:91%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td style="padding:12px"><span class="skeleton" style="width:70%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td style="padding:12px"><span class="skeleton" style="width:40%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td></tr>
+        <tr><td colspan="5" style="padding:2rem;text-align:center;color:var(--text-muted);">Loading picks...</td></tr>
       </tbody>
     </table>
   </div>
@@ -602,41 +488,17 @@ body.light-mode nav{background:rgba(240,242,245,0.92)}
 </section>
 
 
-<!-- SHARE BAR -->
-<div style="text-align:center;padding:2rem;max-width:700px;margin:0 auto;">
-  <p style="color:#556178;font-size:0.8rem;margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:.1em;">Share Axiarch</p>
-  <div style="display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;">
-    <a href="https://twitter.com/intent/tweet?text=Free%20AI%20penny%20stock%20picks%20every%20morning%20before%20the%20bell%20%E2%80%94%20from%20%40axiarchtrading%20%F0%9F%9A%80&url=https://axiarchtrading.netlify.app" target="_blank" style="display:flex;align-items:center;gap:6px;background:#0f1420;border:1px solid #1e2a3e;color:#8892a8;padding:0.6rem 1.2rem;border-radius:8px;text-decoration:none;font-size:0.82rem;transition:all .2s;" onmouseover="this.style.borderColor='#1DA1F2';this.style.color='#1DA1F2'" onmouseout="this.style.borderColor='#1e2a3e';this.style.color='#8892a8'">ÃƒÂ°Ã‚ÂÃ¢â‚¬Â¢Ã‚Â Share on X</a>
-    <a href="https://www.reddit.com/submit?url=https://axiarchtrading.netlify.app&title=Free%20AI%20pre-market%20penny%20stock%20picks%20-%20Axiarch" target="_blank" style="display:flex;align-items:center;gap:6px;background:#0f1420;border:1px solid #1e2a3e;color:#8892a8;padding:0.6rem 1.2rem;border-radius:8px;text-decoration:none;font-size:0.82rem;transition:all .2s;" onmouseover="this.style.borderColor='#FF4500';this.style.color='#FF4500'" onmouseout="this.style.borderColor='#1e2a3e';this.style.color='#8892a8'">Reddit</a>
-    <a href="https://t.me/axiarchtradebot" target="_blank" style="display:flex;align-items:center;gap:6px;background:#0f1420;border:1px solid #1e2a3e;color:#8892a8;padding:0.6rem 1.2rem;border-radius:8px;text-decoration:none;font-size:0.82rem;transition:all .2s;" onmouseover="this.style.borderColor='#00d4aa';this.style.color='#00d4aa'" onmouseout="this.style.borderColor='#1e2a3e';this.style.color='#8892a8'">ÃƒÂ¢Ã…â€œÃ‹â€ ÃƒÂ¯Ã‚Â¸Ã‚Â Telegram Channel</a>
-  </div>
-</div>
 <!-- EMAIL SIGNUP -->
 <section id="signup" style="padding:5rem 2rem;max-width:700px;margin:0 auto;text-align:center;">
   <div class="section-label" style="justify-content:center;">EARLY ACCESS</div>
   <h2 class="section-title">Get Picks in Your Inbox. Free.</h2>
-  <p class="section-subtitle">Every morning before the bell ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â top AI picks, entry levels, and sentiment scores. No spam. Unsubscribe anytime.</p>
+  <p class="section-subtitle">Every morning before the bell — top AI picks, entry levels, and sentiment scores. No spam. Unsubscribe anytime.</p>
   <div id="signup-form" style="display:flex;gap:0.75rem;margin-top:2rem;flex-wrap:wrap;justify-content:center;">
     <input type="email" id="signupEmail" placeholder="your@email.com" style="flex:1;min-width:240px;max-width:340px;padding:0.85rem 1.2rem;background:#0f1420;border:1px solid #2a3a55;border-radius:8px;color:#e8ecf4;font-size:0.95rem;font-family:'Outfit',sans-serif;outline:none;" onfocus="this.style.borderColor='#00e87b'" onblur="this.style.borderColor='#2a3a55'">
-    <button onclick="submitSignup()" style="background:#00e87b;color:#000;font-weight:700;font-size:0.9rem;padding:0.85rem 2rem;border:none;border-radius:8px;cursor:pointer;font-family:'Outfit',sans-serif;letter-spacing:0.02em;transition:all .2s;" onmouseover="this.style.boxShadow='0 0 20px rgba(0,232,123,0.4)'" onmouseout="this.style.boxShadow='none'">Get Free Picks ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢</button>
+    <button onclick="submitSignup()" style="background:#00e87b;color:#000;font-weight:700;font-size:0.9rem;padding:0.85rem 2rem;border:none;border-radius:8px;cursor:pointer;font-family:'Outfit',sans-serif;letter-spacing:0.02em;transition:all .2s;" onmouseover="this.style.boxShadow='0 0 20px rgba(0,232,123,0.4)'" onmouseout="this.style.boxShadow='none'">Get Free Picks →</button>
   </div>
   <div id="signup-msg" style="margin-top:1rem;font-size:0.875rem;min-height:24px;"></div>
-  <!-- SOCIAL PROOF -->
-<div style="margin-top:2rem;display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;opacity:0.7">
-  <div style="text-align:center">
-    <div style="font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;color:var(--accent-green)">20</div>
-    <div style="font-size:0.7rem;color:var(--text-muted)">Daily AI Picks</div>
-  </div>
-  <div style="text-align:center">
-    <div style="font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;color:var(--accent-green)">100%</div>
-    <div style="font-size:0.7rem;color:var(--text-muted)">Free Forever</div>
-  </div>
-  <div style="text-align:center">
-    <div style="font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;color:var(--accent-green)">8:30 AM</div>
-    <div style="font-size:0.7rem;color:var(--text-muted)">Daily Delivery</div>
-  </div>
-</div>
-<p style="margin-top:1.5rem;font-size:0.75rem;color:#556178;">Join thousands of traders getting free pre-market intelligence. No credit card required. Unsubscribe anytime.</p>
+  <p style="margin-top:1rem;font-size:0.75rem;color:#556178;">Currently free. Subscription tier coming soon at $29-49/mo. Lock in free access now.</p>
 </section>
 <footer>
   <div class="footer-brand">AXIARCH</div>
@@ -646,7 +508,7 @@ body.light-mode nav{background:rgba(240,242,245,0.92)}
 
 <script>
 // ================================================================
-//  AXIARCH ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â LIVE DATA ENGINE
+//  AXIARCH â€” LIVE DATA ENGINE
 //  Uses Finnhub.io (free, CORS-friendly, 60 calls/min)
 //  Get your free key: https://finnhub.io/register
 // ================================================================
@@ -831,18 +693,18 @@ async function runFullScan() {
   if (isScanning) return;
 
   if (!finnhubKey) {
-    // No API key ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â use demo data
-    LIVE_DATA = FALLBACK_DATA; loadPicksIntoScreener();
+    // No API key â€” use demo data
+    LIVE_DATA = FALLBACK_DATA;
     dataSource = 'demo';
     renderAll();
-    document.getElementById('scanStatus').innerHTML = '<span style="color:var(--accent-amber);">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â  DEMO ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Enter Finnhub API key above for live data</span>';
+    document.getElementById('scanStatus').innerHTML = '<span style="color:var(--accent-amber);">âš  DEMO â€” Enter Finnhub API key above for live data</span>';
     return;
   }
 
   isScanning = true;
   const btn = document.getElementById('scanBtn');
   btn.disabled = true;
-  btn.textContent = 'ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â³ Scanning...';
+  btn.textContent = 'âŸ³ Scanning...';
 
   try {
     const quotes = await fetchAllQuotes(WATCHLIST);
@@ -851,21 +713,21 @@ async function runFullScan() {
       dataSource = 'live';
       document.getElementById('scanStatus').innerHTML =
         `<span style="color:var(--accent-green);display:flex;align-items:center;gap:6px;">`+
-        `<span class="live-dot"></span> LIVE ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· ${LIVE_DATA.length} stocks ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· ${new Date().toLocaleTimeString()}</span>`;
+        `<span class="live-dot"></span> LIVE Â· ${LIVE_DATA.length} stocks Â· ${new Date().toLocaleTimeString()}</span>`;
     } else {
       throw new Error('No valid quotes returned');
     }
   } catch (err) {
     console.error('Scan failed:', err);
-    if (LIVE_DATA.length === 0) LIVE_DATA = FALLBACK_DATA; loadPicksIntoScreener();
+    if (LIVE_DATA.length === 0) LIVE_DATA = FALLBACK_DATA;
     dataSource = 'demo';
     document.getElementById('scanStatus').innerHTML =
-      `<span style="color:var(--accent-red);">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ Scan failed: ${err.message}. Check API key.</span>`;
+      `<span style="color:var(--accent-red);">âœ• Scan failed: ${err.message}. Check API key.</span>`;
   }
 
   renderAll();
   btn.disabled = false;
-  btn.textContent = 'ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â³ Refresh Scan';
+  btn.textContent = 'âŸ³ Refresh Scan';
   isScanning = false;
 }
 
@@ -917,8 +779,8 @@ function renderScreener() {
       <td class="ticker-cell">${t.sym}</td>
       <td style="font-family:var(--font-mono);">$${t.price.toFixed(2)}</td>
       <td class="${chgCls}" style="font-family:var(--font-mono);font-weight:600;">${t.change>=0?'+':''}${t.change}%</td>
-      <td style="font-family:var(--font-mono);">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â</td>
-      <td style="font-family:var(--font-mono);">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â</td>
+      <td style="font-family:var(--font-mono);">â€”</td>
+      <td style="font-family:var(--font-mono);">â€”</td>
       <td><div class="score-bar"><div class="score-bar-fill" style="width:${t.score}%;background:${scoreColor};"></div><span class="score-bar-value" style="color:${scoreColor};">${t.score}</span></div></td>
       <td style="font-family:var(--font-mono);font-size:0.78rem;"><span class="positive">${t.bull}%</span> / <span class="negative">${t.bear}%</span></td>
       <td><span class="velocity-badge ${vel[1]}">${vel[0]}</span></td>
@@ -954,7 +816,7 @@ function renderShiftAlerts() {
     return `<div style="display:flex;align-items:center;justify-content:space-between;padding:0.7rem 0;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:0.4rem;">
       <div style="display:flex;align-items:center;gap:0.7rem;">
         <span style="font-family:var(--font-mono);font-weight:700;color:var(--accent-cyan);">${t.sym}</span>
-        <span style="font-size:0.72rem;color:var(--text-muted);">${isUp?'BEARISH':'BULLISH'} ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ <span style="color:${isUp?'var(--accent-green)':'var(--accent-red)'};">${isUp?'BULLISH':'BEARISH'}</span></span>
+        <span style="font-size:0.72rem;color:var(--text-muted);">${isUp?'BEARISH':'BULLISH'} â†’ <span style="color:${isUp?'var(--accent-green)':'var(--accent-red)'};">${isUp?'BULLISH':'BEARISH'}</span></span>
       </div>
       <div style="display:flex;align-items:center;gap:0.6rem;">
         <span style="font-family:var(--font-mono);font-size:0.75rem;font-weight:700;color:${isUp?'var(--accent-green)':'var(--accent-red)'};">${isUp?'+':'-'}${pts}pt</span>
@@ -1021,7 +883,7 @@ function calculateRCT() {
 // ---- FRAMEWORK ----
 const FW = [
   {num:1,name:'Pre-Pump',tag:'The Quiet Accumulation',desc:'The stock is unknown. Insiders accumulate at rock-bottom prices. Volume is low, price is flat.',psych:'Insider Greed',vol:'Very Low',action:'Watch & Wait',risk:'Low'},
-  {num:2,name:'Ramp',tag:'The Slow Build',desc:'Price creeps upward on increasing volume. Promotion kicks in ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â newsletters, social media, paid articles.',psych:'Early FOMO',vol:'Rising',action:'Small Position',risk:'Medium'},
+  {num:2,name:'Ramp',tag:'The Slow Build',desc:'Price creeps upward on increasing volume. Promotion kicks in â€” newsletters, social media, paid articles.',psych:'Early FOMO',vol:'Rising',action:'Small Position',risk:'Medium'},
   {num:3,name:'Supernova',tag:'Parabolic Explosion',desc:'The stock goes parabolic. Everyone talks about it. Volume explodes. Most traders get trapped buying at the top.',psych:'Mass Euphoria',vol:'Extreme',action:'SELL / Short',risk:'Extreme'},
   {num:4,name:'Cliff Dive',tag:'The Crash',desc:'Reality sets in. Violent crash. Bagholders in denial. Panic sellers dump shares.',psych:'Panic & Denial',vol:'High',action:'Avoid',risk:'Extreme'},
   {num:5,name:'Dip Buy',tag:'Dead Cat Bounce',desc:'Bottom fishers move in. Stock stabilizes briefly, may bounce 20-50%. This bounce traps more buyers.',psych:'False Hope',vol:'Moderate',action:'Quick Scalp Only',risk:'High'},
@@ -1092,7 +954,7 @@ window.addEventListener('scroll', () => {
   }
 
   // Load demo data first, then try live
-  LIVE_DATA = FALLBACK_DATA; loadPicksIntoScreener();
+  LIVE_DATA = FALLBACK_DATA;
   initCharts();
   renderFW();
   calculateRCT();
@@ -1108,7 +970,7 @@ window.addEventListener('scroll', () => {
 })();
 
 // ================================================================
-//  AXIARCH LIVE PICKS ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â loaded from picks.json (auto-updated daily)
+//  AXIARCH LIVE PICKS â€” loaded from picks.json (auto-updated daily)
 // ================================================================
 async function loadLivePicks() {
   try {
@@ -1150,7 +1012,7 @@ async function loadLivePicks() {
     if (statsEl) {
       statsEl.innerHTML = [
         { label: 'Tickers Ranked', value: picks.length },
-        { label: 'Top Pick', value: '$' + (picks[0]?.ticker || 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â') },
+        { label: 'Top Pick', value: '$' + (picks[0]?.ticker || 'â€”') },
         { label: 'Sources', value: 'Reddit + Yahoo + News' },
         { label: 'Updated', value: picks[0]?.generatedAt ? new Date(picks[0].generatedAt).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}) + ' ET' : 'Today' },
       ].map(s => `
@@ -1163,7 +1025,7 @@ async function loadLivePicks() {
     // Render picks table
     const tbody = document.getElementById('picks-tbody');
     if (tbody && picks.length) {
-      const medals = ['ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â¥ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡','ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â¥Ãƒâ€¹Ã¢â‚¬Â ','ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â¥ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â°'];
+      const medals = ['ðŸ¥‡','ðŸ¥ˆ','ðŸ¥‰'];
       tbody.innerHTML = picks.map((p, i) => {
         const medal = medals[i] || '#' + p.rank;
         const maxScore = picks[0].score;
@@ -1183,7 +1045,7 @@ async function loadLivePicks() {
             </div>
           </td>
           <td style="padding:12px 12px;">${p.sources.map(s=>`<span style="font-size:0.7rem;background:var(--accent-green-dim);color:var(--accent-green);padding:2px 8px;border-radius:4px;font-family:var(--font-mono);">${s}</span>`).join(' ')}</td>
-          <td style="padding:12px 12px;color:var(--text-secondary);font-size:0.82rem;">${p.signal || 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â'}</td>
+          <td style="padding:12px 12px;color:var(--text-secondary);font-size:0.82rem;">${p.signal || 'â€”'}</td>
         </tr>`;
       }).join('');
       const updEl = document.getElementById('picks-updated');
@@ -1196,7 +1058,7 @@ async function loadLivePicks() {
 }
 
 // ================================================================
-//  EMAIL SIGNUP ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â saves to HubSpot via Netlify serverless function
+//  EMAIL SIGNUP — saves to HubSpot via Netlify serverless function
 // ================================================================
 async function submitSignup() {
   const email = document.getElementById('signupEmail').value.trim();
@@ -1214,7 +1076,7 @@ async function submitSignup() {
     });
     if (res.ok) {
       msg.style.color = '#00e87b';
-      msg.textContent = 'ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ You\'re in! Watch for tomorrow\'s picks at 8:30 AM ET.';
+      msg.textContent = '✅ You\'re in! Watch for tomorrow\'s picks at 8:30 AM ET.';
       document.getElementById('signupEmail').value = '';
       document.getElementById('signup-form').style.display = 'none';
     } else {
@@ -1223,233 +1085,30 @@ async function submitSignup() {
   } catch(e) {
     // Fallback: save locally and show success anyway (picks up next deploy)
     msg.style.color = '#00e87b';
-    msg.textContent = 'ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ You\'re on the list! Picks land in your inbox tomorrow morning.';
+    msg.textContent = '✅ You\'re on the list! Picks land in your inbox tomorrow morning.';
     document.getElementById('signupEmail').value = '';
     // Try to ping the backup endpoint
     try { await fetch(`https://formspree.io/f/axiarch?email=${encodeURIComponent(email)}`, { method:'POST', body: JSON.stringify({email}), headers:{'Content-Type':'application/json'} }); } catch {}
   } finally {
-    btn.textContent = 'Get Free Picks ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢'; btn.disabled = false;
+    btn.textContent = 'Get Free Picks →'; btn.disabled = false;
   }
-}
-
-
-// ================================================================
-//  LOAD PICKS INTO SCREENER ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â no API key needed
-//  Maps picks.json tickers into screener format using Yahoo Finance
-// ================================================================
-async function loadPicksIntoScreener() {
-  try {
-    const res = await fetch('picks.json?v=' + Date.now());
-    if (!res.ok) return;
-    const { picks } = await res.json();
-    if (!picks?.length) return;
-
-    // Build screener rows from picks data
-    // Fetch Yahoo Finance prices for top 15 picks (no API key needed)
-    const tickers = picks.slice(0, 15).map(p => p.ticker);
-    const priceData = await fetchYahooBatch(tickers);
-
-    const screenerData = picks.slice(0, 15).map((p, i) => {
-      const yq = priceData[p.ticker] || {};
-      const price = yq.price || (0.5 + Math.random() * 9.5);
-      const change = yq.change || (p.score > 40 ? (Math.random() * 20 + 2).toFixed(2) : (Math.random() * 10 - 5).toFixed(2));
-      const bull = Math.min(95, Math.round(p.score * 1.2));
-      const bear = 100 - bull;
-      const velocity = Math.round(p.score * 8 + Math.random() * 100);
-      return {
-        sym: p.ticker,
-        price: parseFloat(price.toFixed(2)),
-        change: parseFloat(change),
-        score: p.score,
-        bull,
-        bear,
-        velocity,
-        bias: bull > 55 ? 'LONG' : bear > 55 ? 'SHORT' : 'NEUTRAL',
-        sources: p.sources,
-        signal: p.signal
-      };
-    });
-
-    // Merge with existing LIVE_DATA (picks go to top)
-    const existingSyms = new Set(screenerData.map(d => d.sym));
-    const rest = FALLBACK_DATA.filter(d => !existingSyms.has(d.sym));
-    LIVE_DATA = [...screenerData, ...rest];
-    dataSource = 'picks';
-
-    document.getElementById('scanStatus').innerHTML =
-      '<span style="color:var(--accent-green);display:flex;align-items:center;gap:6px;">' +
-      '<span class="live-dot"></span> AI PICKS ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â ' + screenerData.length + ' tickers ranked Ãƒâ€šÃ‚Â· Updated this morning</span>';
-
-    renderAll();
-    updateTickerTape();
-  } catch(e) {
-    console.log('picks screener load failed, using demo data:', e.message);
-  }
-}
-
-// Fetch Yahoo Finance quotes via their public API (no key needed)
-async function fetchYahooBatch(tickers) {
-  const result = {};
-  try {
-    // Yahoo Finance v8 public endpoint ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â no auth needed
-    const symbols = tickers.join(',');
-    const url = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${symbols}&fields=regularMarketPrice,regularMarketChangePercent`;
-    const res = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0' } });
-    if (!res.ok) return result;
-    const data = await res.json();
-    const quotes = data?.quoteResponse?.result || [];
-    quotes.forEach(q => {
-      result[q.symbol] = {
-        price: q.regularMarketPrice,
-        change: q.regularMarketChangePercent
-      };
-    });
-  } catch(e) { /* silent fail ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â use generated data */ }
-  return result;
 }
 
 // Allow Enter key on email input
 document.getElementById('signupEmail')?.addEventListener('keydown', e => { if (e.key === 'Enter') submitSignup(); });
 
-// ---- YESTERDAY'S RESULTS BANNER ----
-async function loadYesterdayResults() {
-  try {
-    const res = await fetch('performance.json?v=' + Date.now());
-    if (!res.ok) return;
-    const { picks } = await res.json();
-    if (!picks?.length) return;
-
-    // Find best pick
-    const best = picks.reduce((max, p) => p.pctChange > max.pctChange ? p : max, picks[0]);
-    const winners = picks.filter(p => p.pctChange > 0).length;
-    const avgReturn = (picks.reduce((s, p) => s + p.pctChange, 0) / picks.length).toFixed(1);
-
-    // Update banner
-    document.getElementById('yesterday-ticker').textContent = '$' + best.ticker;
-    document.getElementById('yesterday-return').textContent = '+' + best.pctChange.toFixed(1) + '%';
-    document.getElementById('yesterday-wins').textContent = winners + '/' + picks.length;
-    document.getElementById('yesterday-avg').textContent = '+' + avgReturn;
-
-    // Show banner with animation
-    const banner = document.getElementById('yesterday-banner');
-    banner.style.opacity = '1';
-    banner.style.transform = 'translateY(0)';
-  } catch(e) {
-    console.log('Yesterday results load failed:', e.message);
-  }
-}
-
-// Load yesterday's results on page load
-loadYesterdayResults();
-
-
-// ================================================================
-// AXIARCH UPGRADES Ã¢â‚¬â€ popup, theme, mobile nav, modal, PWA
-// ================================================================
-
-// EXIT INTENT POPUP
-if(!localStorage.getItem('ax_popup_shown')){
-  document.addEventListener('mouseleave',function(e){
-    if(e.clientY<=0){
-      document.getElementById('exitPopup').classList.add('show');
-      localStorage.setItem('ax_popup_shown','1');
-    }
-  },{once:true});
-}
-function closePopup(){document.getElementById('exitPopup').classList.remove('show');}
-async function submitPopupEmail(){
-  const email=document.getElementById('popupEmail').value.trim();
-  if(!email||!email.includes('@'))return;
-  try{
-    await fetch('/.netlify/functions/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
-  }catch(e){}
-  closePopup();
-  const msg=document.getElementById('signup-msg');
-  if(msg){msg.style.color='#00e87b';msg.textContent='Ã¢Å“â€¦ You're in! Picks land at 8:30 AM ET.';}
-}
-
-// TELEGRAM STICKY BAR
-if(!localStorage.getItem('ax_tg_dismissed')){
-  setTimeout(()=>document.getElementById('tgSticky').classList.add('show'),5000);
-}
-function dismissTg(){
-  document.getElementById('tgSticky').classList.remove('show');
-  localStorage.setItem('ax_tg_dismissed','1');
-}
-
-// DARK/LIGHT MODE
-function toggleTheme(){
-  const isLight=document.body.classList.toggle('light-mode');
-  document.getElementById('themeToggle').textContent=isLight?'Ã¢Ëœâ‚¬Ã¯Â¸Â':'Ã°Å¸Å’â„¢';
-  localStorage.setItem('ax_theme',isLight?'light':'dark');
-}
-(function initTheme(){
-  if(localStorage.getItem('ax_theme')==='light'){
-    document.body.classList.add('light-mode');
-    const btn=document.getElementById('themeToggle');
-    if(btn)btn.textContent='Ã¢Ëœâ‚¬Ã¯Â¸Â';
-  }
-})();
-
-// MOBILE NAV
-function toggleMobileMenu(){
-  document.querySelector('.nav-links').classList.toggle('mobile-open');
-}
-
-// TICKER MODAL
-function openModal(sym,price,change,score,bull,bear){
-  document.getElementById('modalTicker').textContent='
-</html>
-
-+sym;
-  document.getElementById('modalPrice').textContent='
-</html>
-
-+(price||0).toFixed(2);
-  const chgEl=document.getElementById('modalChange');
-  chgEl.textContent=(change>=0?'+':'')+change+'%';
-  chgEl.style.color=change>=0?'var(--accent-green)':'var(--accent-red)';
-  document.getElementById('modalScore').textContent=score;
-  document.getElementById('modalBull').textContent=bull+'%';
-  document.getElementById('modalBear').textContent=bear+'%';
-  document.getElementById('modalYahoo').href='https://finance.yahoo.com/quote/'+sym;
-  document.getElementById('modalReddit').href='https://www.reddit.com/search/?q='+sym+'&sort=new';
-  document.getElementById('tickerModal').classList.add('show');
-}
-function closeModal(){document.getElementById('tickerModal').classList.remove('show');}
-document.getElementById('tickerModal')?.addEventListener('click',function(e){if(e.target===this)closeModal();});
-
-// MEMBER COUNTER ANIMATION
-(function animateCounter(){
-  const el=document.getElementById('memberCount');
-  if(!el)return;
-  let count=0;const target=1200;
-  const step=Math.ceil(target/60);
-  const timer=setInterval(()=>{
-    count=Math.min(count+step,target);
-    el.textContent=count.toLocaleString()+'+';
-    if(count>=target)clearInterval(timer);
-  },25);
-})();
-
-// SERVICE WORKER
-if('serviceWorker' in navigator){
-  window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('/sw.js').catch(()=>{});
-  });
-}
 
 // === AXIARCH UPGRADES ===
 // Exit popup
 (function(){if(!localStorage.getItem('ax_pop')){document.addEventListener('mouseleave',function(e){if(e.clientY<=0){document.getElementById('exitPopup').classList.add('show');localStorage.setItem('ax_pop','1');}},{once:true});}})();
 function closePopup(){document.getElementById('exitPopup').classList.remove('show');}
-async function submitPopupEmail(){const em=document.getElementById('popupEmail').value.trim();if(!em||!em.includes('@'))return;try{await fetch('/.netlify/functions/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:em})});}catch(e){}closePopup();const m=document.getElementById('signup-msg');if(m){m.style.color='#00e87b';m.textContent='You're in! Picks at 8:30 AM ET.';}}
+async function submitPopupEmail(){const em=document.getElementById('popupEmail').value.trim();if(!em||!em.includes('@'))return;try{await fetch('/.netlify/functions/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:em})});}catch(e){}closePopup();const m=document.getElementById('signup-msg');if(m){m.style.color='#00e87b';m.textContent="You're in! Picks at 8:30 AM ET.";}}
 // Telegram sticky
 (function(){if(!localStorage.getItem('ax_tg')){setTimeout(()=>document.getElementById('tgSticky').classList.add('show'),5000);}})();
 function dismissTg(){document.getElementById('tgSticky').classList.remove('show');localStorage.setItem('ax_tg','1');}
 // Theme toggle
-function toggleTheme(){const on=document.body.classList.toggle('light-mode');document.getElementById('themeToggle').innerHTML=on?'&#x2600;&#xFE0F;':'&#x1F319;';localStorage.setItem('ax_theme',on?'light':'dark');}
-(function(){if(localStorage.getItem('ax_theme')==='light'){document.body.classList.add('light-mode');const b=document.getElementById('themeToggle');if(b)b.innerHTML='&#x2600;&#xFE0F;';}})();
+function toggleTheme(){const on=document.body.classList.toggle('light-mode');document.getElementById('themeToggle').textContent=on?'☀️':'🌙';localStorage.setItem('ax_theme',on?'light':'dark');}
+(function(){if(localStorage.getItem('ax_theme')==='light'){document.body.classList.add('light-mode');const b=document.getElementById('themeToggle');if(b)b.textContent='☀️';}})();
 // Mobile nav
 function toggleMobileMenu(){document.querySelector('.nav-links').classList.toggle('open');}
 // Ticker modal
