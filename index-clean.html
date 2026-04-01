@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Axiarch — AI-Powered Penny Stock Analysis</title>
+<meta name="description" content="Free daily penny stock picks powered by AI sentiment analysis. Scans Reddit, news, and social media to find momentum before the move.">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R3CR8K540K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-R3CR8K540K');
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=SF+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Clean, professional color palette */
+  --bg-main: #ffffff;
+  --bg-secondary: #f8f9fb;
+  --bg-card: #ffffff;
+  --border: #e2e5eb;
+  --border-light: #f0f2f5;
+  
+  --text-primary: #1a1d23;
+  --text-secondary: #5a6475;
+  --text-muted: #8892a3;
+  
+  --accent-primary: #4F46E5; /* Professional indigo */
+  --accent-primary-light: #6366F1;
+  --accent-primary-bg: #EEF2FF;
+  
+  --success: #10B981; /* Softer green */
+  --success-bg: #ECFDF5;
+  --danger: #EF4444; /* Softer red */
+  --danger-bg: #FEF2F2;
+  --warning: #F59E0B;
+  --warning-bg: #FFFBEB;
+  
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.07);
+  --shadow-lg: 0 10px 40px rgba(0,0,0,0.08);
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-main: #0f1117;
+    --bg-secondary: #1a1d26;
+    --bg-card: #1a1d26;
+    --border: #2a2e3a;
+    --border-light: #22252f;
+    
+    --text-primary: #f0f2f5;
+    --text-secondary: #a1a7b8;
+    --text-muted: #6b7280;
+    
+    --accent-primary: #6366F1;
+    --accent-primary-light: #818CF8;
+    --accent-primary-bg: rgba(99, 102, 241, 0.1);
+    
+    --success-bg: rgba(16, 185, 129, 0.1);
+    --danger-bg: rgba(239, 68, 68, 0.1);
+    --warning-bg: rgba(245, 158, 11, 0.1);
+  }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg-main);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Navigation */
+nav {
+  background: var(--bg-main);
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+@media (prefers-color-scheme: dark) {
+  nav {
+    background: rgba(15, 17, 23, 0.95);
+  }
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--accent-primary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-links a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover {
+  color: var(--accent-primary);
+}
+
+.nav-cta {
+  background: var(--accent-primary);
+  color: white;
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.nav-cta:hover {
+  background: var(--accent-primary-light);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Hero Section */
+.hero {
+  padding: 5rem 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  background: var(--accent-primary-bg);
+  color: var(--accent-primary);
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.pulse {
+  width: 8px;
+  height: 8px;
+  background: var(--accent-primary);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+h1 {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  line-height: 1.1;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.02em;
+}
+
+.hero h1 span {
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-primary-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 3rem;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: var(--accent-primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--accent-primary-light);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--accent-primary);
+  border: 2px solid var(--accent-primary);
+}
+
+.btn-secondary:hover {
+  background: var(--accent-primary-bg);
+}
+
+/* Live Ticker */
+.ticker-container {
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 0.75rem 0;
+  overflow: hidden;
+  margin: 3rem 0;
+}
+
+.ticker-scroll {
+  display: flex;
+  gap: 2rem;
+  animation: scroll 30s linear infinite;
+}
+
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.ticker-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  font-family: 'SF Mono', monospace;
+  font-size: 0.875rem;
+}
+
+.ticker-symbol {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.ticker-up {
+  color: var(--success);
+}
+
+.ticker-down {
+  color: var(--danger);
+}
+
+/* Main Content */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.section {
+  padding: 4rem 0;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-label {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: var(--accent-primary-bg);
+  color: var(--accent-primary);
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.section-subtitle {
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Picks Table */
+.picks-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.picks-header {
+  padding: 1.5rem;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+}
+
+.picks-header h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.picks-header p {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.picks-table {
+  width: 100%;
+}
+
+.picks-table th {
+  text-align: left;
+  padding: 1rem 1.5rem;
+  background: var(--bg-secondary);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+}
+
+.picks-table td {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.picks-table tbody tr:hover {
+  background: var(--bg-secondary);
+}
+
+.ticker-cell {
+  font-weight: 700;
+  font-size: 1.125rem;
+  font-family: 'SF Mono', monospace;
+}
+
+.rank-badge {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background: var(--accent-primary-bg);
+  color: var(--accent-primary);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.875rem;
+}
+
+.score-bar {
+  height: 8px;
+  background: var(--bg-secondary);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 0.25rem;
+}
+
+.score-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-primary-light));
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.source-tag {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  background: var(--bg-secondary);
+  border-radius: 4px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-right: 0.25rem;
+}
+
+/* Features */
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.feature-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2rem;
+  transition: all 0.2s;
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--accent-primary);
+}
+
+.feature-icon {
+  width: 48px;
+  height: 48px;
+  background: var(--accent-primary-bg);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.feature-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.feature-description {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* CTA Section */
+.cta-section {
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-primary-light));
+  color: white;
+  padding: 4rem 2rem;
+  border-radius: 20px;
+  text-align: center;
+  margin: 4rem 0;
+}
+
+.cta-title {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.cta-subtitle {
+  font-size: 1.125rem;
+  opacity: 0.9;
+  margin-bottom: 2rem;
+}
+
+.cta-button {
+  background: white;
+  color: var(--accent-primary);
+  padding: 0.875rem 2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
+}
+
+.cta-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+/* Footer */
+footer {
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+  padding: 3rem 0 2rem;
+  margin-top: 6rem;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.footer-brand h3 {
+  font-size: 1.5rem;
+  color: var(--accent-primary);
+  margin-bottom: 0.5rem;
+}
+
+.footer-brand p {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.footer-links h4 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.footer-links a {
+  display: block;
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: 0.25rem 0;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover {
+  color: var(--accent-primary);
+}
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 2rem auto 0;
+  padding: 2rem 1.5rem 0;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+  
+  .hero-stats {
+    gap: 1.5rem;
+  }
+  
+  .picks-table {
+    font-size: 0.875rem;
+  }
+  
+  .picks-table th,
+  .picks-table td {
+    padding: 0.75rem 1rem;
+  }
+}
+</style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-container">
+      <a href="/" class="nav-logo">
+        <span>📊</span> AXIARCH
+      </a>
+      <div class="nav-links">
+        <a href="#picks">Today's Picks</a>
+        <a href="#how">How It Works</a>
+        <a href="/performance.html">Track Record</a>
+      </div>
+      <a href="https://t.me/axiarchtradebot" class="nav-cta" target="_blank">
+        Join Telegram →
+      </a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-badge">
+      <div class="pulse"></div>
+      <span>Live Algorithm Running</span>
+    </div>
+    <h1>Find Penny Stock Momentum<br><span>Before the Crowd</span></h1>
+    <p class="hero-subtitle">
+      AI scans Reddit, news, and social media overnight. Get 10-20 pre-market picks every morning at 8:30 AM.
+    </p>
+    
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-value">+4.1%</div>
+        <div class="stat-label">Avg Daily Return</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">65%</div>
+        <div class="stat-label">Win Rate</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">8:30</div>
+        <div class="stat-label">AM Daily</div>
+      </div>
+    </div>
+    
+    <div class="hero-actions">
+      <a href="https://t.me/axiarchtradebot" class="btn btn-primary" target="_blank">
+        📱 Get Free Picks on Telegram
+      </a>
+      <a href="#picks" class="btn btn-secondary">
+        📊 View Today's Picks
+      </a>
+    </div>
+  </section>
+
+  <!-- Live Ticker -->
+  <div class="ticker-container">
+    <div class="ticker-scroll" id="ticker"></div>
+  </div>
+
+  <!-- Today's Picks -->
+  <section class="section" id="picks">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">AI Analysis Complete</div>
+        <h2 class="section-title">Today's Top Picks</h2>
+        <p class="section-subtitle">
+          Algorithm v2.0 with volatility filters and momentum decay. Entry = Market Open (9:30 AM).
+        </p>
+      </div>
+      
+      <div class="picks-card">
+        <div class="picks-header">
+          <h3>📈 Pre-Market Intelligence Report</h3>
+          <p id="picks-time">Loading latest analysis...</p>
+        </div>
+        <table class="picks-table">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Ticker</th>
+              <th>Score</th>
+              <th>Sources</th>
+              <th>Signal</th>
+            </tr>
+          </thead>
+          <tbody id="picks-body">
+            <!-- Populated by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Why It Works</div>
+        <h2 class="section-title">The Edge</h2>
+        <p class="section-subtitle">
+          Sentiment shifts happen on social media before price moves. We catch them early.
+        </p>
+      </div>
+      
+      <div class="features">
+        <div class="feature-card">
+          <div class="feature-icon">🤖</div>
+          <h3 class="feature-title">AI Sentiment Analysis</h3>
+          <p class="feature-description">
+            Natural language processing scans thousands of posts to detect bullish momentum building across Reddit, Twitter, and TikTok.
+          </p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3 class="feature-title">Pre-Market Delivery</h3>
+          <p class="feature-description">
+            Get picks at 8:30 AM before markets open. Full hour to research and plan your entries while others are still sleeping.
+          </p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3 class="feature-title">Transparent Tracking</h3>
+          <p class="feature-description">
+            Every pick tracked with real open-to-close performance. No cherry-picking, no hindsight bias. View full history anytime.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="container">
+    <div class="cta-section">
+      <h2 class="cta-title">Start Getting Free Picks Tomorrow</h2>
+      <p class="cta-subtitle">
+        Join 500+ traders getting AI-powered picks every morning
+      </p>
+      <a href="https://t.me/axiarchtradebot" class="cta-button" target="_blank">
+        📱 Join Telegram Channel →
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3>AXIARCH</h3>
+        <p>AI-Powered Trading Intelligence</p>
+      </div>
+      
+      <div class="footer-links">
+        <h4>Resources</h4>
+        <a href="/performance.html">Performance</a>
+        <a href="https://t.me/axiarchtradebot" target="_blank">Telegram</a>
+        <a href="https://github.com/XxArmaMortalxX/axiarch-trading" target="_blank">GitHub</a>
+      </div>
+      
+      <div class="footer-links">
+        <h4>Legal</h4>
+        <p style="color: var(--text-muted); font-size: 0.875rem; line-height: 1.6;">
+          Not financial advice.<br>
+          For research only.<br>
+          Trade at your own risk.
+        </p>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>© 2026 Axiarch Trading. Educational purposes only. Past performance does not guarantee future results.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Load picks data
+    async function loadPicks() {
+      try {
+        const response = await fetch('/picks.json');
+        const data = await response.json();
+        
+        // Update time
+        document.getElementById('picks-time').textContent = 
+          `Generated ${new Date(data.generatedAt).toLocaleString()}`;
+        
+        // Populate table
+        const tbody = document.getElementById('picks-body');
+        tbody.innerHTML = data.topPicks.slice(0, 10).map((pick, i) => `
+          <tr>
+            <td><span class="rank-badge">${i + 1}</span></td>
+            <td class="ticker-cell">$${pick.ticker}</td>
+            <td>
+              <div>${pick.total}</div>
+              <div class="score-bar">
+                <div class="score-fill" style="width: ${(pick.total / data.topPicks[0].total) * 100}%"></div>
+              </div>
+            </td>
+            <td>${pick.sources.map(s => `<span class="source-tag">${s}</span>`).join('')}</td>
+            <td style="color: var(--text-secondary); font-size: 0.875rem;">
+              ${pick.details ? pick.details.slice(0, 2).join(' • ') : ''}
+            </td>
+          </tr>
+        `).join('');
+        
+        // Update ticker
+        const ticker = document.getElementById('ticker');
+        const tickerHTML = data.topPicks.slice(0, 10).map(pick => `
+          <span class="ticker-item">
+            <span class="ticker-symbol">$${pick.ticker}</span>
+            <span class="ticker-up">Score: ${pick.total}</span>
+          </span>
+        `).join('');
+        ticker.innerHTML = tickerHTML + tickerHTML; // Duplicate for smooth scroll
+        
+      } catch (error) {
+        console.error('Failed to load picks:', error);
+      }
+    }
+    
+    // Track events
+    document.addEventListener('DOMContentLoaded', () => {
+      loadPicks();
+      
+      // Track telegram clicks
+      document.querySelectorAll('a[href*="t.me"]').forEach(link => {
+        link.addEventListener('click', () => {
+          gtag('event', 'click', {
+            'event_category': 'engagement',
+            'event_label': 'telegram_join'
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>
