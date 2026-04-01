@@ -1,20 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Axiarch scans Reddit, Yahoo Finance, and financial news overnight to rank penny stocks by sentiment score. Get 20 AI-powered pre-market picks every morning, free.">
-<meta name="keywords" content="penny stocks, pre-market picks, AI stock scanner, Reddit penny stocks, day trading, stock sentiment, free stock picks">
-<link rel="canonical" href="https://axiarchtrading.netlify.app/">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://axiarchtrading.netlify.app/">
-<meta property="og:title" content="Axiarch - Free AI Penny Stock Picks Before the Bell">
-<meta property="og:description" content="AI scans Reddit, Yahoo Finance and financial news overnight. Get 20 ranked pre-market picks every morning. 100% free.">
-<meta property="og:site_name" content="Axiarch Trading Intelligence">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Axiarch - Free AI Penny Stock Picks Before the Bell">
-<meta name="twitter:description" content="AI scans Reddit, Yahoo Finance and financial news overnight. 20 ranked pre-market picks every morning. Free.">
-<title>Axiarch Algorithm â€” Penny Stock Sentiment Intelligence</title>
+<title>Axiarch Algorithm — Penny Stock Sentiment Intelligence</title>
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#06080c">
 <meta name="mobile-web-app-capable" content="yes">
@@ -296,10 +285,10 @@ body.light-mode nav{background:rgba(240,242,245,0.92)}
       <div class="hero-stat"><div class="hero-stat-value" id="statScanned">0</div><div class="hero-stat-label">Stocks Scanned</div></div>
       <div class="hero-stat"><div class="hero-stat-value" id="statPicks">0</div><div class="hero-stat-label">Quality Picks</div></div>
       <div class="hero-stat"><div class="hero-stat-value">3:1</div><div class="hero-stat-label">Min Risk/Reward</div></div>
-      <div class="hero-stat"><div class="hero-stat-value" id="statSource">â€”</div><div class="hero-stat-label">Data Source</div></div>
+      <div class="hero-stat"><div class="hero-stat-value" id="statSource">—</div><div class="hero-stat-label">Data Source</div></div>
     </div>
     <div class="hero-actions animate-in delay-4">
-      <a href="#screener" class="btn-primary">Launch Screener â€” Free</a>
+      <a href="#screener" class="btn-primary">Launch Screener — Free</a>
       <a href="#pipeline" class="btn-secondary">See How It Works</a>
     </div>
   </div>
@@ -311,7 +300,7 @@ body.light-mode nav{background:rgba(240,242,245,0.92)}
 <section id="pipeline">
   <div class="section-label">HOW THE ALGORITHM WORKS</div>
   <h2 class="section-title">Four Stages. One Pipeline. Every Morning.</h2>
-  <p class="section-subtitle">Axiarch runs a four-stage pipeline before the market opens â€” from raw data ingestion to scored picks on your screen.</p>
+  <p class="section-subtitle">Axiarch runs a four-stage pipeline before the market opens — from raw data ingestion to scored picks on your screen.</p>
   <div class="pipeline-grid">
     <div class="pipeline-card">
       <div class="pipeline-number">STAGE 01 · INGEST</div>
@@ -350,7 +339,7 @@ body.light-mode nav{background:rgba(240,242,245,0.92)}
     <label>Finnhub API Key:</label>
     <input type="text" id="apiKeyInput" placeholder="Paste your free API key here..." />
     <button class="btn-primary" onclick="saveKeyAndScan()" style="padding:0.5rem 1.2rem;font-size:0.78rem;">Connect & Scan</button>
-    <a class="help-link" href="https://finnhub.io/register" target="_blank">Get free key â†’</a>
+    <a class="help-link" href="https://finnhub.io/register" target="_blank">Get free key →</a>
     <span class="api-status disconnected" id="apiStatusBadge">NO KEY</span>
   </div>
 
@@ -363,8 +352,8 @@ body.light-mode nav{background:rgba(240,242,245,0.92)}
         <span class="filter-chip" data-filter="hot">High Velocity</span>
       </div>
       <div style="display:flex;align-items:center;gap:1rem;">
-        <span id="scanStatus" style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent-amber);">âš  DEMO DATA</span>
-        <button class="btn-primary" id="scanBtn" onclick="runFullScan()" style="padding:0.5rem 1.2rem;font-size:0.78rem;">âŸ³ Refresh Scan</button>
+        <span id="scanStatus" style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent-amber);">⚠ DEMO DATA</span>
+        <button class="btn-primary" id="scanBtn" onclick="runFullScan()" style="padding:0.5rem 1.2rem;font-size:0.78rem;">⟳ Refresh Scan</button>
       </div>
     </div>
     <div style="overflow-x:auto;max-height:600px;overflow-y:auto;">
@@ -434,7 +423,7 @@ body.light-mode nav{background:rgba(240,242,245,0.92)}
 <section id="framework">
   <div class="section-label">PATTERN RECOGNITION</div>
   <h2 class="section-title">The 7-Step Pennystocking Lifecycle.</h2>
-  <p class="section-subtitle">The foundational "pattern of patterns" â€” the psychological lifecycle Axiarch is programmed to identify and trade.</p>
+  <p class="section-subtitle">The foundational "pattern of patterns" — the psychological lifecycle Axiarch is programmed to identify and trade.</p>
   <div class="framework-steps" id="frameworkSteps"></div>
   <div class="framework-detail" id="frameworkDetail"></div>
 </section>
@@ -444,62 +433,23 @@ body.light-mode nav{background:rgba(240,242,245,0.92)}
   <div class="section-label">PLATFORM TOOLS</div>
   <h2 class="section-title">Everything You Need. Nothing You Don't.</h2>
   <div class="features-grid">
-    <div class="feature-card"><div class="feature-icon" style="background:var(--accent-green-dim);">ðŸ“¡</div><h3>Live Stock Screener</h3><p>Scan the market pre-market with real data from Finnhub. Filter and score every stock before the bell.</p></div>
-    <div class="feature-card"><div class="feature-icon" style="background:var(--accent-blue-dim);">ðŸŒ</div><h3>Social Sentiment Radar</h3><p>See which tickers are exploding. Track mention velocity and crowd sentiment in real-time.</p></div>
-    <div class="feature-card"><div class="feature-icon" style="background:var(--accent-amber-dim);">âš¡</div><h3>Sentiment Shift Alerts</h3><p>Get alerts when sentiment flips from bearish to bullish â€” a leading indicator of momentum.</p></div>
-    <div class="feature-card"><div class="feature-icon" style="background:var(--accent-red-dim);">ðŸ“</div><h3>RCT Calculator</h3><p>Red candle entry, stop loss, and multi-level profit targets with precise risk-reward ratios.</p></div>
-    <div class="feature-card"><div class="feature-icon" style="background:var(--accent-cyan-dim);">ðŸŽ¯</div><h3>Daily Pre-Market Picks</h3><p>Algorithmically selected stocks every morning with entry signals and directional bias.</p></div>
-    <div class="feature-card"><div class="feature-icon" style="background:rgba(168,85,247,0.15);">ðŸ”„</div><h3>7-Step Framework</h3><p>Interactive penny stock lifecycle visualization â€” see where a stock is and what comes next.</p></div>
+    <div class="feature-card"><div class="feature-icon" style="background:var(--accent-green-dim);">📡</div><h3>Live Stock Screener</h3><p>Scan the market pre-market with real data from Finnhub. Filter and score every stock before the bell.</p></div>
+    <div class="feature-card"><div class="feature-icon" style="background:var(--accent-blue-dim);">🌐</div><h3>Social Sentiment Radar</h3><p>See which tickers are exploding. Track mention velocity and crowd sentiment in real-time.</p></div>
+    <div class="feature-card"><div class="feature-icon" style="background:var(--accent-amber-dim);">⚡</div><h3>Sentiment Shift Alerts</h3><p>Get alerts when sentiment flips from bearish to bullish — a leading indicator of momentum.</p></div>
+    <div class="feature-card"><div class="feature-icon" style="background:var(--accent-red-dim);">📐</div><h3>RCT Calculator</h3><p>Red candle entry, stop loss, and multi-level profit targets with precise risk-reward ratios.</p></div>
+    <div class="feature-card"><div class="feature-icon" style="background:var(--accent-cyan-dim);">🎯</div><h3>Daily Pre-Market Picks</h3><p>Algorithmically selected stocks every morning with entry signals and directional bias.</p></div>
+    <div class="feature-card"><div class="feature-icon" style="background:rgba(168,85,247,0.15);">🔄</div><h3>7-Step Framework</h3><p>Interactive penny stock lifecycle visualization — see where a stock is and what comes next.</p></div>
   </div>
-</section>
-
-<!-- TODAY'S PICKS -->
-<section id="todays-picks">
-  <div class="section-label">TODAY'S AI PICKS</div>
-  <h2 class="section-title">Live Pre-Market Intelligence.</h2>
-  <p class="section-subtitle">Updated every morning before the bell. Ranked by AI sentiment score across Reddit, Yahoo Finance, and financial news.</p>
-  <div id="picks-stats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:2rem;"></div>
-  <div id="picks-table-wrap" style="overflow-x:auto;">
-    <table id="picks-table" style="width:100%;border-collapse:collapse;font-size:0.875rem;">
-      <thead>
-        <tr style="border-bottom:1px solid var(--border);color:var(--text-muted);font-family:var(--font-mono);font-size:0.7rem;letter-spacing:.08em;text-transform:uppercase;">
-          <th style="padding:10px 12px;text-align:left;">Rank</th>
-          <th style="padding:10px 12px;text-align:left;">Ticker</th>
-          <th style="padding:10px 12px;text-align:left;">AI Score</th>
-          <th style="padding:10px 12px;text-align:left;">Source</th>
-          <th style="padding:10px 12px;text-align:left;">Signal</th>
-        </tr>
-      </thead>
-      <tbody id="picks-tbody">
-        <tr><td colspan="5" style="padding:2rem;text-align:center;color:var(--text-muted);">Loading picks...</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <p style="margin-top:1rem;font-size:0.75rem;color:var(--text-muted);font-family:var(--font-mono);" id="picks-updated"></p>
 </section>
 
 <!-- PERFORMANCE -->
 <section id="performance">
   <div class="section-label">ALGORITHM PERFORMANCE</div>
-  <h2 class="section-title">Real Results. Transparent.</h2>
-  <p class="section-subtitle">Live tracking of every pick flagged by Axiarch. Updated at market close each day.</p>
-  <div id="perf-stats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:2rem;"></div>
+  <h2 class="section-title">Backtest Results. Transparent.</h2>
+  <p class="section-subtitle">Simulated historical performance. Past results do not guarantee future performance.</p>
   <div class="chart-box"><canvas id="performanceChart" height="300"></canvas></div>
 </section>
 
-
-<!-- EMAIL SIGNUP -->
-<section id="signup" style="padding:5rem 2rem;max-width:700px;margin:0 auto;text-align:center;">
-  <div class="section-label" style="justify-content:center;">EARLY ACCESS</div>
-  <h2 class="section-title">Get Picks in Your Inbox. Free.</h2>
-  <p class="section-subtitle">Every morning before the bell — top AI picks, entry levels, and sentiment scores. No spam. Unsubscribe anytime.</p>
-  <div id="signup-form" style="display:flex;gap:0.75rem;margin-top:2rem;flex-wrap:wrap;justify-content:center;">
-    <input type="email" id="signupEmail" placeholder="your@email.com" style="flex:1;min-width:240px;max-width:340px;padding:0.85rem 1.2rem;background:#0f1420;border:1px solid #2a3a55;border-radius:8px;color:#e8ecf4;font-size:0.95rem;font-family:'Outfit',sans-serif;outline:none;" onfocus="this.style.borderColor='#00e87b'" onblur="this.style.borderColor='#2a3a55'">
-    <button onclick="submitSignup()" style="background:#00e87b;color:#000;font-weight:700;font-size:0.9rem;padding:0.85rem 2rem;border:none;border-radius:8px;cursor:pointer;font-family:'Outfit',sans-serif;letter-spacing:0.02em;transition:all .2s;" onmouseover="this.style.boxShadow='0 0 20px rgba(0,232,123,0.4)'" onmouseout="this.style.boxShadow='none'">Get Free Picks →</button>
-  </div>
-  <div id="signup-msg" style="margin-top:1rem;font-size:0.875rem;min-height:24px;"></div>
-  <p style="margin-top:1rem;font-size:0.75rem;color:#556178;">Currently free. Subscription tier coming soon at $29-49/mo. Lock in free access now.</p>
-</section>
 <footer>
   <div class="footer-brand">AXIARCH</div>
   <div>Algorithmic Trading Intelligence</div>
@@ -508,7 +458,7 @@ body.light-mode nav{background:rgba(240,242,245,0.92)}
 
 <script>
 // ================================================================
-//  AXIARCH â€” LIVE DATA ENGINE
+//  AXIARCH — LIVE DATA ENGINE
 //  Uses Finnhub.io (free, CORS-friendly, 60 calls/min)
 //  Get your free key: https://finnhub.io/register
 // ================================================================
@@ -693,18 +643,18 @@ async function runFullScan() {
   if (isScanning) return;
 
   if (!finnhubKey) {
-    // No API key â€” use demo data
+    // No API key — use demo data
     LIVE_DATA = FALLBACK_DATA;
     dataSource = 'demo';
     renderAll();
-    document.getElementById('scanStatus').innerHTML = '<span style="color:var(--accent-amber);">âš  DEMO â€” Enter Finnhub API key above for live data</span>';
+    document.getElementById('scanStatus').innerHTML = '<span style="color:var(--accent-amber);">⚠ DEMO — Enter Finnhub API key above for live data</span>';
     return;
   }
 
   isScanning = true;
   const btn = document.getElementById('scanBtn');
   btn.disabled = true;
-  btn.textContent = 'âŸ³ Scanning...';
+  btn.textContent = '⟳ Scanning...';
 
   try {
     const quotes = await fetchAllQuotes(WATCHLIST);
@@ -722,12 +672,12 @@ async function runFullScan() {
     if (LIVE_DATA.length === 0) LIVE_DATA = FALLBACK_DATA;
     dataSource = 'demo';
     document.getElementById('scanStatus').innerHTML =
-      `<span style="color:var(--accent-red);">âœ• Scan failed: ${err.message}. Check API key.</span>`;
+      `<span style="color:var(--accent-red);">✕ Scan failed: ${err.message}. Check API key.</span>`;
   }
 
   renderAll();
   btn.disabled = false;
-  btn.textContent = 'âŸ³ Refresh Scan';
+  btn.textContent = '⟳ Refresh Scan';
   isScanning = false;
 }
 
@@ -779,8 +729,8 @@ function renderScreener() {
       <td class="ticker-cell">${t.sym}</td>
       <td style="font-family:var(--font-mono);">$${t.price.toFixed(2)}</td>
       <td class="${chgCls}" style="font-family:var(--font-mono);font-weight:600;">${t.change>=0?'+':''}${t.change}%</td>
-      <td style="font-family:var(--font-mono);">â€”</td>
-      <td style="font-family:var(--font-mono);">â€”</td>
+      <td style="font-family:var(--font-mono);">—</td>
+      <td style="font-family:var(--font-mono);">—</td>
       <td><div class="score-bar"><div class="score-bar-fill" style="width:${t.score}%;background:${scoreColor};"></div><span class="score-bar-value" style="color:${scoreColor};">${t.score}</span></div></td>
       <td style="font-family:var(--font-mono);font-size:0.78rem;"><span class="positive">${t.bull}%</span> / <span class="negative">${t.bear}%</span></td>
       <td><span class="velocity-badge ${vel[1]}">${vel[0]}</span></td>
@@ -816,7 +766,7 @@ function renderShiftAlerts() {
     return `<div style="display:flex;align-items:center;justify-content:space-between;padding:0.7rem 0;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:0.4rem;">
       <div style="display:flex;align-items:center;gap:0.7rem;">
         <span style="font-family:var(--font-mono);font-weight:700;color:var(--accent-cyan);">${t.sym}</span>
-        <span style="font-size:0.72rem;color:var(--text-muted);">${isUp?'BEARISH':'BULLISH'} â†’ <span style="color:${isUp?'var(--accent-green)':'var(--accent-red)'};">${isUp?'BULLISH':'BEARISH'}</span></span>
+        <span style="font-size:0.72rem;color:var(--text-muted);">${isUp?'BEARISH':'BULLISH'} → <span style="color:${isUp?'var(--accent-green)':'var(--accent-red)'};">${isUp?'BULLISH':'BEARISH'}</span></span>
       </div>
       <div style="display:flex;align-items:center;gap:0.6rem;">
         <span style="font-family:var(--font-mono);font-size:0.75rem;font-weight:700;color:${isUp?'var(--accent-green)':'var(--accent-red)'};">${isUp?'+':'-'}${pts}pt</span>
@@ -883,7 +833,7 @@ function calculateRCT() {
 // ---- FRAMEWORK ----
 const FW = [
   {num:1,name:'Pre-Pump',tag:'The Quiet Accumulation',desc:'The stock is unknown. Insiders accumulate at rock-bottom prices. Volume is low, price is flat.',psych:'Insider Greed',vol:'Very Low',action:'Watch & Wait',risk:'Low'},
-  {num:2,name:'Ramp',tag:'The Slow Build',desc:'Price creeps upward on increasing volume. Promotion kicks in â€” newsletters, social media, paid articles.',psych:'Early FOMO',vol:'Rising',action:'Small Position',risk:'Medium'},
+  {num:2,name:'Ramp',tag:'The Slow Build',desc:'Price creeps upward on increasing volume. Promotion kicks in — newsletters, social media, paid articles.',psych:'Early FOMO',vol:'Rising',action:'Small Position',risk:'Medium'},
   {num:3,name:'Supernova',tag:'Parabolic Explosion',desc:'The stock goes parabolic. Everyone talks about it. Volume explodes. Most traders get trapped buying at the top.',psych:'Mass Euphoria',vol:'Extreme',action:'SELL / Short',risk:'Extreme'},
   {num:4,name:'Cliff Dive',tag:'The Crash',desc:'Reality sets in. Violent crash. Bagholders in denial. Panic sellers dump shares.',psych:'Panic & Denial',vol:'High',action:'Avoid',risk:'Extreme'},
   {num:5,name:'Dip Buy',tag:'Dead Cat Bounce',desc:'Bottom fishers move in. Stock stabilizes briefly, may bounce 20-50%. This bounce traps more buyers.',psych:'False Hope',vol:'Moderate',action:'Quick Scalp Only',risk:'High'},
@@ -964,139 +914,7 @@ window.addEventListener('scroll', () => {
   if (finnhubKey) {
     setTimeout(() => runFullScan(), 800);
   }
-
-  // Load live picks from picks.json
-  loadLivePicks();
 })();
-
-// ================================================================
-//  AXIARCH LIVE PICKS â€” loaded from picks.json (auto-updated daily)
-// ================================================================
-async function loadLivePicks() {
-  try {
-    const res = await fetch('picks.json?v=' + Date.now());
-    if (!res.ok) throw new Error('No picks data');
-    const { picks, stats } = await res.json();
-
-    // Update hero stats
-    document.getElementById('statScanned').textContent = (stats.stocksScanned || 24) + '+';
-    document.getElementById('statPicks').textContent = stats.totalPicks || 20;
-    if (document.getElementById('statSource')) document.getElementById('statSource').textContent = 'Reddit+Yahoo';
-
-    // Update ticker tape with real tickers
-    const tickerItems = picks.slice(0, 10).map(p =>
-      `<span class="ticker-item"><span class="ticker-sym">${p.ticker}</span><span class="ticker-chg pos">Score: ${p.score}</span></span>`
-    ).join('');
-    const tape = document.getElementById('tickerTape');
-    if (tape) tape.innerHTML = tickerItems + tickerItems; // duplicate for seamless scroll
-
-    // Render performance stats
-    if (stats.winRate !== undefined) {
-      const perfEl = document.getElementById('perf-stats');
-      if (perfEl) {
-        perfEl.innerHTML = [
-          { label: 'Win Rate', value: stats.winRate + '%', color: '#00e87b' },
-          { label: 'Avg Return', value: '+' + stats.avgReturn + '%', color: '#00e87b' },
-          { label: 'Picks Tracked', value: stats.trackedPicks, color: '#3b82f6' },
-          stats.bestPick ? { label: 'Best Pick', value: '$' + stats.bestPick.ticker + ' +' + stats.bestPick.pct + '%', color: '#ffb830' } : null,
-        ].filter(Boolean).map(s => `
-          <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;text-align:center;">
-            <div style="font-family:var(--font-mono);font-size:1.5rem;font-weight:700;color:${s.color};">${s.value}</div>
-            <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.3rem;text-transform:uppercase;letter-spacing:.08em;">${s.label}</div>
-          </div>`).join('');
-      }
-    }
-
-    // Render picks stats bar
-    const statsEl = document.getElementById('picks-stats');
-    if (statsEl) {
-      statsEl.innerHTML = [
-        { label: 'Tickers Ranked', value: picks.length },
-        { label: 'Top Pick', value: '$' + (picks[0]?.ticker || 'â€”') },
-        { label: 'Sources', value: 'Reddit + Yahoo + News' },
-        { label: 'Updated', value: picks[0]?.generatedAt ? new Date(picks[0].generatedAt).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}) + ' ET' : 'Today' },
-      ].map(s => `
-        <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;text-align:center;">
-          <div style="font-family:var(--font-mono);font-size:1.3rem;font-weight:700;color:var(--accent-green);">${s.value}</div>
-          <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.3rem;text-transform:uppercase;letter-spacing:.08em;">${s.label}</div>
-        </div>`).join('');
-    }
-
-    // Render picks table
-    const tbody = document.getElementById('picks-tbody');
-    if (tbody && picks.length) {
-      const medals = ['ðŸ¥‡','ðŸ¥ˆ','ðŸ¥‰'];
-      tbody.innerHTML = picks.map((p, i) => {
-        const medal = medals[i] || '#' + p.rank;
-        const maxScore = picks[0].score;
-        const barPct = Math.round((p.score / maxScore) * 100);
-        const rowBg = i === 0 ? 'background:rgba(0,232,123,0.04);' : i < 3 ? 'background:rgba(0,232,123,0.02);' : '';
-        return `<tr style="border-bottom:1px solid var(--border);transition:background .15s;${rowBg}" onmouseover="this.style.background='var(--bg-card-hover)'" onmouseout="this.style.background='${i===0?'rgba(0,232,123,0.04)':i<3?'rgba(0,232,123,0.02)':''}'">
-          <td style="padding:12px 12px;font-size:1rem;">${medal}</td>
-          <td style="padding:12px 12px;">
-            <a href="https://finance.yahoo.com/quote/${p.ticker}" target="_blank" style="font-family:var(--font-mono);font-weight:700;font-size:1rem;color:var(--accent-green);text-decoration:none;">$${p.ticker}</a>
-          </td>
-          <td style="padding:12px 12px;">
-            <div style="display:flex;align-items:center;gap:8px;">
-              <span style="font-family:var(--font-mono);font-weight:600;color:var(--text-primary);">${p.score}</span>
-              <div style="flex:1;height:4px;background:var(--border);border-radius:2px;max-width:80px;">
-                <div style="width:${barPct}%;height:100%;background:var(--accent-green);border-radius:2px;"></div>
-              </div>
-            </div>
-          </td>
-          <td style="padding:12px 12px;">${p.sources.map(s=>`<span style="font-size:0.7rem;background:var(--accent-green-dim);color:var(--accent-green);padding:2px 8px;border-radius:4px;font-family:var(--font-mono);">${s}</span>`).join(' ')}</td>
-          <td style="padding:12px 12px;color:var(--text-secondary);font-size:0.82rem;">${p.signal || 'â€”'}</td>
-        </tr>`;
-      }).join('');
-      const updEl = document.getElementById('picks-updated');
-      if (updEl && picks[0]?.generatedAt) updEl.textContent = '// Last scan: ' + new Date(picks[0].generatedAt).toLocaleString('en-US');
-    }
-  } catch(e) {
-    const tbody = document.getElementById('picks-tbody');
-    if (tbody) tbody.innerHTML = '<tr><td colspan="5" style="padding:2rem;text-align:center;color:var(--text-muted);">Picks update every morning pre-market. Check back at 8:30 AM ET.</td></tr>';
-  }
-}
-
-// ================================================================
-//  EMAIL SIGNUP — saves to HubSpot via Netlify serverless function
-// ================================================================
-async function submitSignup() {
-  const email = document.getElementById('signupEmail').value.trim();
-  const msg = document.getElementById('signup-msg');
-  if (!email || !email.includes('@')) {
-    msg.style.color = '#ff3b5c'; msg.textContent = 'Please enter a valid email address.'; return;
-  }
-  const btn = event.target;
-  btn.textContent = 'Saving...'; btn.disabled = true;
-  try {
-    const res = await fetch('/.netlify/functions/subscribe', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email })
-    });
-    if (res.ok) {
-      msg.style.color = '#00e87b';
-      msg.textContent = '✅ You\'re in! Watch for tomorrow\'s picks at 8:30 AM ET.';
-      document.getElementById('signupEmail').value = '';
-      document.getElementById('signup-form').style.display = 'none';
-    } else {
-      throw new Error('Server error');
-    }
-  } catch(e) {
-    // Fallback: save locally and show success anyway (picks up next deploy)
-    msg.style.color = '#00e87b';
-    msg.textContent = '✅ You\'re on the list! Picks land in your inbox tomorrow morning.';
-    document.getElementById('signupEmail').value = '';
-    // Try to ping the backup endpoint
-    try { await fetch(`https://formspree.io/f/axiarch?email=${encodeURIComponent(email)}`, { method:'POST', body: JSON.stringify({email}), headers:{'Content-Type':'application/json'} }); } catch {}
-  } finally {
-    btn.textContent = 'Get Free Picks →'; btn.disabled = false;
-  }
-}
-
-// Allow Enter key on email input
-document.getElementById('signupEmail')?.addEventListener('keydown', e => { if (e.key === 'Enter') submitSignup(); });
-
 
 // === AXIARCH UPGRADES ===
 // Exit popup
@@ -1114,13 +932,10 @@ function toggleMobileMenu(){document.querySelector('.nav-links').classList.toggl
 // Ticker modal
 function openModal(sym,price,change,score,bull,bear){document.getElementById('mSym').textContent='
 </html>
-
 +sym;document.getElementById('mPrice').textContent='
 </html>
-
 +parseFloat(price).toFixed(2);const c=document.getElementById('mChg');c.textContent=(change>=0?'+':'')+change+'%';c.style.color=change>=0?'var(--accent-green)':'var(--accent-red)';document.getElementById('mScore').textContent=score;document.getElementById('mBull').textContent=bull+'%';document.getElementById('mBear').textContent=bear+'%';document.getElementById('mYahoo').href='https://finance.yahoo.com/quote/'+sym;document.getElementById('mReddit').href='https://www.reddit.com/search/?q='+encodeURIComponent('
 </html>
-
 +sym)+'&sort=new';document.getElementById('tickerModal').classList.add('show');}
 function closeModal(){document.getElementById('tickerModal').classList.remove('show');}
 document.addEventListener('click',function(e){if(e.target===document.getElementById('tickerModal'))closeModal();if(e.target===document.getElementById('exitPopup'))closePopup();});
@@ -1131,4 +946,3 @@ if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.ser
 </script>
 </body>
 </html>
-
