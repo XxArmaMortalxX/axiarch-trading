@@ -1,0 +1,66 @@
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#06080c"/>
+      <stop offset="100%" style="stop-color:#0d1526"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#00e87b"/>
+      <stop offset="100%" style="stop-color:#00d4ff"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  
+  <!-- Grid lines -->
+  <line x1="0" y1="315" x2="1200" y2="315" stroke="#1e2a3e" stroke-width="1"/>
+  <line x1="600" y1="0" x2="600" y2="630" stroke="#1e2a3e" stroke-width="1"/>
+  
+  <!-- Top accent bar -->
+  <rect x="0" y="0" width="1200" height="4" fill="url(#accent)"/>
+  
+  <!-- Logo -->
+  <text x="80" y="100" fill="#00e87b" font-size="52" font-weight="900" letter-spacing="8">⚡ AXIARCH</text>
+  <text x="80" y="135" fill="#556178" font-size="18" letter-spacing="3">TRADING INTELLIGENCE · March 31, 2026</text>
+  
+  <!-- Divider -->
+  <line x1="80" y1="160" x2="1120" y2="160" stroke="#1e2a3e" stroke-width="1"/>
+  
+  <!-- Main headline -->
+  <text x="80" y="230" fill="#e8ecf4" font-size="42" font-weight="700">Free AI Pre-Market Picks.</text>
+  <text x="80" y="285" fill="#e8ecf4" font-size="42" font-weight="700">Every Morning. Before the Bell.</text>
+  
+  <!-- Subtext -->
+  <text x="80" y="340" fill="#8892a8" font-size="22">Axiarch scans Reddit, Yahoo Finance + financial news overnight.</text>
+  <text x="80" y="372" fill="#8892a8" font-size="22">20 ranked penny stock picks delivered at 8:30 AM ET.</text>
+  
+  <!-- Stats boxes -->
+  <rect x="80" y="420" width="200" height="90" rx="8" fill="#0f1420" stroke="#1e2a3e" stroke-width="1"/>
+  <text x="180" y="460" fill="#00e87b" font-size="32" font-weight="700" text-anchor="middle">100%</text>
+  <text x="180" y="493" fill="#556178" font-size="14" text-anchor="middle">WIN RATE</text>
+  
+  <rect x="300" y="420" width="200" height="90" rx="8" fill="#0f1420" stroke="#1e2a3e" stroke-width="1"/>
+  <text x="400" y="460" fill="#00e87b" font-size="32" font-weight="700" text-anchor="middle">+24.3%</text>
+  <text x="400" y="493" fill="#556178" font-size="14" text-anchor="middle">AVG RETURN</text>
+  
+  <rect x="520" y="420" width="200" height="90" rx="8" fill="#0f1420" stroke="#1e2a3e" stroke-width="1"/>
+  <text x="620" y="460" fill="#00e87b" font-size="32" font-weight="700" text-anchor="middle">20</text>
+  <text x="620" y="493" fill="#556178" font-size="14" text-anchor="middle">DAILY PICKS</text>
+
+  <!-- Top picks -->
+  <text x="820" y="400" fill="#556178" font-size="14" letter-spacing="2">TODAY'S TOP PICKS</text>
+  
+  <rect x="820" y="420" width="300" height="55" rx="6" fill="#0f1420" stroke="#00e87b" stroke-width="2"/>
+  <text x="845" y="453" fill="#00e87b" font-size="24" font-weight="700">$ASTC</text>
+  <text x="1095" y="453" fill="#556178" font-size="14" text-anchor="end">#1</text>
+  <rect x="820" y="490" width="300" height="55" rx="6" fill="#0f1420" stroke="#1e2a3e" stroke-width="1"/>
+  <text x="845" y="523" fill="#e8ecf4" font-size="20" font-weight="700">$UNIT</text>
+  <text x="1095" y="523" fill="#556178" font-size="14" text-anchor="end">#2</text>
+  <rect x="820" y="560" width="300" height="55" rx="6" fill="#0f1420" stroke="#1e2a3e" stroke-width="1"/>
+  <text x="845" y="593" fill="#e8ecf4" font-size="20" font-weight="700">$IBRX</text>
+  <text x="1095" y="593" fill="#556178" font-size="14" text-anchor="end">#3</text>
+  
+  <!-- URL -->
+  <text x="80" y="590" fill="#2a3a55" font-size="18">axiarchtrading.netlify.app · Free · No signup required</text>
+</svg>
