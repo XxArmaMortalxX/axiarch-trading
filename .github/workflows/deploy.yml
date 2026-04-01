@@ -11,14 +11,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Deploy to Netlify
-        uses: nwtgck/actions-netlify@v3.0
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          publish-dir: '.'
-          production-branch: main
-          production-deploy: true
-          deploy-message: "Deploy from GitHub Actions - ${{ github.sha }}"
-          netlify-config-path: ./netlify.toml
+          node-version: '20'
+
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli
+
+      - name: Deploy to Netlify
+        run: netlify deploy --dir=. --prod --message="Deploy from GitHub Actions - ${{ github.sha }}"
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: 6356fc85-45f3-4c15-b2f3-6b4fdf9f4120
