@@ -48,6 +48,73 @@ footer{text-align:center;padding:2rem;color:var(--dim);font-size:.8rem;border-to
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .card,.stat-card{animation:fadeIn .4s ease forwards}
 </style>
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-R3CR8K540K"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-R3CR8K540K');
+    
+    // Track Telegram button clicks
+    document.addEventListener('DOMContentLoaded', function() {
+      // Track main Telegram CTA
+      const telegramBtn = document.querySelector('a[href*="t.me/axiarchtradebot"]');
+      if (telegramBtn) {
+        telegramBtn.addEventListener('click', function() {
+          gtag('event', 'click', {
+            'event_category': 'engagement',
+            'event_label': 'telegram_join',
+            'value': 1
+          });
+        });
+      }
+      
+      // Track email signup form
+      const emailForm = document.getElementById('email-form');
+      if (emailForm) {
+        emailForm.addEventListener('submit', function() {
+          gtag('event', 'sign_up', {
+            'method': 'email'
+          });
+        });
+      }
+      
+      // Track scroll depth
+      let scrolled25 = false, scrolled50 = false, scrolled75 = false, scrolled100 = false;
+      window.addEventListener('scroll', function() {
+        const scrollPercent = (window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100;
+        
+        if (scrollPercent >= 25 && !scrolled25) {
+          scrolled25 = true;
+          gtag('event', 'scroll', { 'percent': 25 });
+        }
+        if (scrollPercent >= 50 && !scrolled50) {
+          scrolled50 = true;
+          gtag('event', 'scroll', { 'percent': 50 });
+        }
+        if (scrollPercent >= 75 && !scrolled75) {
+          scrolled75 = true;
+          gtag('event', 'scroll', { 'percent': 75 });
+        }
+        if (scrollPercent >= 95 && !scrolled100) {
+          scrolled100 = true;
+          gtag('event', 'scroll', { 'percent': 100 });
+        }
+      });
+      
+      // Track time on page
+      let startTime = Date.now();
+      window.addEventListener('beforeunload', function() {
+        const timeOnPage = Math.round((Date.now() - startTime) / 1000);
+        gtag('event', 'timing_complete', {
+          'name': 'time_on_page',
+          'value': timeOnPage,
+          'event_category': 'engagement'
+        });
+      });
+    });
+  </script>
 </head>
 <body>
 <nav>
@@ -157,3 +224,4 @@ loadPerformance();
 </script>
 </body>
 </html>
+
