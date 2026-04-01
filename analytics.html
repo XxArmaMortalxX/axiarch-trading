@@ -1,0 +1,36 @@
+<!-- Google Analytics 4 - Add this to your site -->
+<!-- Replace GA_MEASUREMENT_ID with your actual Google Analytics ID -->
+
+<!-- Method 1: Google Analytics 4 (Recommended) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'GA_MEASUREMENT_ID');
+</script>
+
+<!-- Method 2: Simple Privacy-Focused Analytics (No cookies) -->
+<!-- Plausible Analytics - Add this single line -->
+<script defer data-domain="axiarchtrading.netlify.app" src="https://plausible.io/js/script.js"></script>
+
+<!-- Method 3: Netlify Analytics (Paid - $9/month) -->
+<!-- Enable in Netlify Dashboard > Analytics > Enable Analytics -->
+
+<!-- Method 4: Simple Visitor Counter (Free) -->
+<script>
+// Simple visitor counter using a free service
+(function() {
+  // Track page view
+  fetch('https://api.countapi.xyz/hit/axiarchtrading/visits')
+    .then(res => res.json())
+    .then(data => {
+      console.log('Total visits:', data.value);
+      // Optional: Display counter on page
+      const counter = document.getElementById('visitor-counter');
+      if (counter) {
+        counter.textContent = data.value + ' traders served';
+      }
+    });
+})();
+</script>

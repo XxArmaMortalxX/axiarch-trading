@@ -248,6 +248,25 @@ body.light-mode nav{background:rgba(240,242,245,0.92)}
 /* MOBILE NAV */
 @media(max-width:768px){#mobileMenuBtn{display:inline-flex!important}.nav-links.open{display:flex!important;flex-direction:column;position:absolute;top:60px;left:0;right:0;background:var(--bg-card);border-bottom:1px solid var(--border);padding:1rem;z-index:998}}
 </style>
+  <!-- Simple Analytics -->
+  <script>
+  // Track page views with free counter API
+  (function() {
+    fetch('https://api.countapi.xyz/hit/axiarchtrading/pageviews')
+      .then(res => res.json())
+      .then(data => {
+        console.log('Axiarch visitor #' + data.value);
+        localStorage.setItem('axiarch_views', data.value);
+      })
+      .catch(() => console.log('Analytics offline'));
+    
+    // Track unique visitors
+    if (!localStorage.getItem('axiarch_visitor')) {
+      localStorage.setItem('axiarch_visitor', Date.now());
+      fetch('https://api.countapi.xyz/hit/axiarchtrading/unique');
+    }
+  })();
+  </script>
 </head>
 <body>
 <!-- EXIT POPUP -->
