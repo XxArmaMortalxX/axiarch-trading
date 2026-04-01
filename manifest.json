@@ -1,0 +1,18 @@
+{
+  "name": "Axiarch Trading Intelligence",
+  "short_name": "Axiarch",
+  "description": "AI-powered penny stock picks every morning before the bell. Free.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#06080c",
+  "theme_color": "#06080c",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://axiarchtrading.netlify.app/og-image.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
