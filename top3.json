@@ -1,0 +1,66 @@
+{
+  "top3": [
+    {
+      "rank": 1,
+      "ticker": "CYCN",
+      "score": 50,
+      "sources": [
+        "Reddit",
+        "Yahoo Trending"
+      ],
+      "signal": "2 Reddit post(s) across pennystocks, RobinHoodPennyStocks",
+      "fearGreed": 8,
+      "generatedAt": "2026-04-01T23:06:36.065Z",
+      "medal": "🥇",
+      "label": "PRIME",
+      "color": "#6366f1",
+      "maxScore": 50
+    },
+    {
+      "rank": 2,
+      "ticker": "LEXX",
+      "score": 26,
+      "sources": [
+        "Reddit"
+      ],
+      "signal": "2 Reddit post(s) across pennystocks",
+      "fearGreed": 8,
+      "generatedAt": "2026-04-01T23:06:36.065Z",
+      "medal": "🥈",
+      "label": "STRONG",
+      "color": "#818cf8",
+      "maxScore": 50
+    },
+    {
+      "rank": 3,
+      "ticker": "POLA",
+      "score": 26,
+      "sources": [
+        "Reddit"
+      ],
+      "signal": "2 Reddit post(s) across pennystocks",
+      "fearGreed": 8,
+      "generatedAt": "2026-04-01T23:06:36.065Z",
+      "medal": "🥉",
+      "label": "WATCH",
+      "color": "#a5b4fc",
+      "maxScore": 50
+    }
+  ],
+  "stats": {
+    "totalPicks": 20,
+    "stocksScanned": 20,
+    "winRate": 67,
+    "avgReturn": 3.4,
+    "trackedPicks": 30,
+    "bestPick": {
+      "ticker": "ASTC",
+      "pct": "24.8",
+      "date": "2026-03-31"
+    },
+    "fearGreed": 8,
+    "fearGreedLabel": "Extreme Fear",
+    "lastUpdated": "2026-04-02T16:12:30.471Z"
+  },
+  "generatedAt": "2026-04-02T16:12:30.472Z"
+}

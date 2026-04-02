@@ -2,187 +2,239 @@
   "picks": [
     {
       "rank": 1,
-      "ticker": "NIO",
-      "score": 35,
+      "ticker": "CYCN",
+      "score": 50,
       "sources": [
-        "Yahoo Trending",
-        "Yahoo Active"
+        "Reddit",
+        "Yahoo Trending"
       ],
-      "signal": "Yahoo trending #5",
-      "generatedAt": "2026-04-01T12:30:14.657Z"
+      "signal": "2 Reddit post(s) across pennystocks, RobinHoodPennyStocks",
+      "fearGreed": 8,
+      "generatedAt": "2026-04-01T23:06:36.065Z"
     },
     {
       "rank": 2,
-      "ticker": "UNIT",
-      "score": 30,
+      "ticker": "LEXX",
+      "score": 26,
       "sources": [
-        "Yahoo Gainers"
+        "Reddit"
       ],
-      "signal": "+15.8% today",
-      "generatedAt": "2026-04-01T12:30:14.657Z"
+      "signal": "2 Reddit post(s) across pennystocks",
+      "fearGreed": 8,
+      "generatedAt": "2026-04-01T23:06:36.065Z"
     },
     {
       "rank": 3,
-      "ticker": "IBRX",
-      "score": 30,
+      "ticker": "POLA",
+      "score": 26,
       "sources": [
-        "Yahoo Gainers"
+        "Reddit"
       ],
-      "signal": "+15.2% today",
-      "generatedAt": "2026-04-01T12:30:14.657Z"
+      "signal": "2 Reddit post(s) across pennystocks",
+      "fearGreed": 8,
+      "generatedAt": "2026-04-01T23:06:36.065Z"
     },
     {
       "rank": 4,
-      "ticker": "SOUN",
-      "score": 29,
+      "ticker": "BFRG",
+      "score": 26,
       "sources": [
-        "Yahoo Gainers"
+        "Reddit"
       ],
-      "signal": "+13.9% today",
-      "generatedAt": "2026-04-01T12:30:14.657Z"
+      "signal": "2 Reddit post(s) across pennystocks, RobinHoodPennyStocks",
+      "fearGreed": 8,
+      "generatedAt": "2026-04-01T23:06:36.065Z"
     },
     {
       "rank": 5,
-      "ticker": "WRD",
-      "score": 29,
+      "ticker": "IQST",
+      "score": 26,
       "sources": [
-        "Yahoo Gainers"
+        "Reddit"
       ],
-      "signal": "+13.8% today",
-      "generatedAt": "2026-04-01T12:30:14.657Z"
+      "signal": "2 Reddit post(s) across pennystocks, RobinHoodPennyStocks",
+      "fearGreed": 8,
+      "generatedAt": "2026-04-01T23:06:36.065Z"
     },
     {
       "rank": 6,
-      "ticker": "EMAT",
-      "score": 28,
+      "ticker": "ASTC",
+      "score": 24,
       "sources": [
-        "Yahoo Gainers"
+        "Reddit"
       ],
-      "signal": "+12.6% today",
-      "generatedAt": "2026-04-01T12:30:14.657Z"
+      "signal": "4 Reddit post(s) across pennystocks, RobinHoodPennyStocks ⚠️ Yesterday +10%+",
+      "fearGreed": 8,
+      "generatedAt": "2026-04-01T23:06:36.065Z"
     },
     {
       "rank": 7,
-      "ticker": "NKE",
-      "score": 26,
-      "sources": [
-        "Yahoo Trending"
-      ],
-      "signal": "Yahoo trending #1",
-      "generatedAt": "2026-04-01T12:30:14.657Z"
-    },
-    {
-      "rank": 8,
-      "ticker": "TSLA",
-      "score": 25,
-      "sources": [
-        "Yahoo Trending"
-      ],
-      "signal": "Yahoo trending #2",
-      "generatedAt": "2026-04-01T12:30:14.657Z"
-    },
-    {
-      "rank": 9,
-      "ticker": "COIN",
+      "ticker": "XOM",
       "score": 24,
       "sources": [
         "Yahoo Trending"
       ],
       "signal": "Yahoo trending #3",
-      "generatedAt": "2026-04-01T12:30:14.657Z"
+      "fearGreed": 8,
+      "generatedAt": "2026-04-01T23:06:36.065Z"
     },
     {
-      "rank": 10,
-      "ticker": "BA",
+      "rank": 8,
+      "ticker": "BTDR",
+      "score": 24,
+      "sources": [
+        "Yahoo Gainers"
+      ],
+      "signal": "+8.0% today",
+      "fearGreed": 8,
+      "generatedAt": "2026-04-01T23:06:36.065Z"
+    },
+    {
+      "rank": 9,
+      "ticker": "LLY",
       "score": 23,
       "sources": [
         "Yahoo Trending"
       ],
       "signal": "Yahoo trending #4",
-      "generatedAt": "2026-04-01T12:30:14.657Z"
+      "fearGreed": 8,
+      "generatedAt": "2026-04-01T23:06:36.065Z"
+    },
+    {
+      "rank": 10,
+      "ticker": "MBLY",
+      "score": 23,
+      "sources": [
+        "Yahoo Gainers"
+      ],
+      "signal": "+7.6% today",
+      "fearGreed": 8,
+      "generatedAt": "2026-04-01T23:06:36.065Z"
     },
     {
       "rank": 11,
-      "ticker": "CYCN",
-      "score": 21,
+      "ticker": "PSX",
+      "score": 22,
       "sources": [
         "Yahoo Trending"
       ],
-      "signal": "Yahoo trending #6",
-      "generatedAt": "2026-04-01T12:30:14.657Z"
+      "signal": "Yahoo trending #5",
+      "fearGreed": 8,
+      "generatedAt": "2026-04-01T23:06:36.065Z"
     },
     {
       "rank": 12,
-      "ticker": "CAG",
-      "score": 20,
+      "ticker": "OPEN",
+      "score": 21,
       "sources": [
-        "Yahoo Trending"
+        "Reddit"
       ],
-      "signal": "Yahoo trending #7",
-      "generatedAt": "2026-04-01T12:30:14.657Z"
+      "signal": "1 Reddit post(s) across pennystocks",
+      "fearGreed": 8,
+      "generatedAt": "2026-04-01T23:06:36.065Z"
     },
     {
       "rank": 13,
-      "ticker": "RH",
-      "score": 20,
+      "ticker": "SRXH",
+      "score": 21,
       "sources": [
-        "Yahoo Trending"
+        "Reddit"
       ],
-      "signal": "Yahoo trending #8",
-      "generatedAt": "2026-04-01T12:30:14.657Z"
+      "signal": "1 Reddit post(s) across pennystocks",
+      "fearGreed": 8,
+      "generatedAt": "2026-04-01T23:06:36.065Z"
     },
     {
       "rank": 14,
-      "ticker": "RIO",
-      "score": 19,
+      "ticker": "DEFT",
+      "score": 21,
       "sources": [
-        "Yahoo Trending"
+        "Reddit"
       ],
-      "signal": "Yahoo trending #9",
-      "generatedAt": "2026-04-01T12:30:14.657Z"
+      "signal": "1 Reddit post(s) across pennystocks",
+      "fearGreed": 8,
+      "generatedAt": "2026-04-01T23:06:36.065Z"
     },
     {
       "rank": 15,
-      "ticker": "ETH-USD",
-      "score": 18,
+      "ticker": "ATLX",
+      "score": 21,
       "sources": [
-        "Yahoo Trending"
+        "Reddit"
       ],
-      "signal": "Yahoo trending #10",
-      "generatedAt": "2026-04-01T12:30:14.657Z"
+      "signal": "1 Reddit post(s) across pennystocks",
+      "fearGreed": 8,
+      "generatedAt": "2026-04-01T23:06:36.065Z"
     },
     {
       "rank": 16,
-      "ticker": "TLRY",
-      "score": 17,
+      "ticker": "ADIA",
+      "score": 21,
       "sources": [
-        "Yahoo Trending"
+        "Reddit"
       ],
-      "signal": "Yahoo trending #11",
-      "generatedAt": "2026-04-01T12:30:14.657Z"
+      "signal": "1 Reddit post(s) across pennystocks",
+      "fearGreed": 8,
+      "generatedAt": "2026-04-01T23:06:36.065Z"
     },
     {
       "rank": 17,
-      "ticker": "MRVL",
-      "score": 16,
+      "ticker": "BURU",
+      "score": 21,
       "sources": [
-        "Yahoo Trending"
+        "Reddit"
       ],
-      "signal": "Yahoo trending #12",
-      "generatedAt": "2026-04-01T12:30:14.657Z"
+      "signal": "1 Reddit post(s) across pennystocks",
+      "fearGreed": 8,
+      "generatedAt": "2026-04-01T23:06:36.065Z"
+    },
+    {
+      "rank": 18,
+      "ticker": "ZENA",
+      "score": 21,
+      "sources": [
+        "Reddit"
+      ],
+      "signal": "1 Reddit post(s) across pennystocks",
+      "fearGreed": 8,
+      "generatedAt": "2026-04-01T23:06:36.065Z"
+    },
+    {
+      "rank": 19,
+      "ticker": "NOMA",
+      "score": 21,
+      "sources": [
+        "Reddit"
+      ],
+      "signal": "1 Reddit post(s) across pennystocks",
+      "fearGreed": 8,
+      "generatedAt": "2026-04-01T23:06:36.065Z"
+    },
+    {
+      "rank": 20,
+      "ticker": "OLOX",
+      "score": 21,
+      "sources": [
+        "Reddit"
+      ],
+      "signal": "1 Reddit post(s) across pennystocks",
+      "fearGreed": 8,
+      "generatedAt": "2026-04-01T23:06:36.065Z"
     }
   ],
   "stats": {
-    "totalPicks": 17,
-    "stocksScanned": 17,
-    "winRate": 100,
-    "avgReturn": 24.3,
-    "trackedPicks": 10,
+    "totalPicks": 20,
+    "stocksScanned": 20,
+    "winRate": 67,
+    "avgReturn": 3.4,
+    "trackedPicks": 30,
     "bestPick": {
-      "ticker": "APLS",
-      "pct": "135.4",
+      "ticker": "ASTC",
+      "pct": "24.8",
       "date": "2026-03-31"
     },
-    "lastUpdated": "2026-04-01T13:05:00.402Z"
+    "fearGreed": 8,
+    "fearGreedLabel": "Extreme Fear",
+    "lastUpdated": "2026-04-02T16:12:30.471Z"
   }
 }

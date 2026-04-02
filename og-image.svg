@@ -22,7 +22,7 @@
   
   <!-- Logo -->
   <text x="80" y="100" fill="#00e87b" font-size="52" font-weight="900" letter-spacing="8">⚡ AXIARCH</text>
-  <text x="80" y="135" fill="#556178" font-size="18" letter-spacing="3">TRADING INTELLIGENCE · April 1, 2026</text>
+  <text x="80" y="135" fill="#556178" font-size="18" letter-spacing="3">TRADING INTELLIGENCE · April 2, 2026</text>
   
   <!-- Divider -->
   <line x1="80" y1="160" x2="1120" y2="160" stroke="#1e2a3e" stroke-width="1"/>
@@ -37,11 +37,11 @@
   
   <!-- Stats boxes -->
   <rect x="80" y="420" width="200" height="90" rx="8" fill="#0f1420" stroke="#1e2a3e" stroke-width="1"/>
-  <text x="180" y="460" fill="#00e87b" font-size="32" font-weight="700" text-anchor="middle">100%</text>
+  <text x="180" y="460" fill="#00e87b" font-size="32" font-weight="700" text-anchor="middle">67%</text>
   <text x="180" y="493" fill="#556178" font-size="14" text-anchor="middle">WIN RATE</text>
   
   <rect x="300" y="420" width="200" height="90" rx="8" fill="#0f1420" stroke="#1e2a3e" stroke-width="1"/>
-  <text x="400" y="460" fill="#00e87b" font-size="32" font-weight="700" text-anchor="middle">+24.3%</text>
+  <text x="400" y="460" fill="#00e87b" font-size="32" font-weight="700" text-anchor="middle">+3.4%</text>
   <text x="400" y="493" fill="#556178" font-size="14" text-anchor="middle">AVG RETURN</text>
   
   <rect x="520" y="420" width="200" height="90" rx="8" fill="#0f1420" stroke="#1e2a3e" stroke-width="1"/>
@@ -52,13 +52,13 @@
   <text x="820" y="400" fill="#556178" font-size="14" letter-spacing="2">TODAY'S TOP PICKS</text>
   
   <rect x="820" y="420" width="300" height="55" rx="6" fill="#0f1420" stroke="#00e87b" stroke-width="2"/>
-  <text x="845" y="453" fill="#00e87b" font-size="24" font-weight="700">$NIO</text>
+  <text x="845" y="453" fill="#00e87b" font-size="24" font-weight="700">$CYCN</text>
   <text x="1095" y="453" fill="#556178" font-size="14" text-anchor="end">#1</text>
   <rect x="820" y="490" width="300" height="55" rx="6" fill="#0f1420" stroke="#1e2a3e" stroke-width="1"/>
-  <text x="845" y="523" fill="#e8ecf4" font-size="20" font-weight="700">$UNIT</text>
+  <text x="845" y="523" fill="#e8ecf4" font-size="20" font-weight="700">$LEXX</text>
   <text x="1095" y="523" fill="#556178" font-size="14" text-anchor="end">#2</text>
   <rect x="820" y="560" width="300" height="55" rx="6" fill="#0f1420" stroke="#1e2a3e" stroke-width="1"/>
-  <text x="845" y="593" fill="#e8ecf4" font-size="20" font-weight="700">$IBRX</text>
+  <text x="845" y="593" fill="#e8ecf4" font-size="20" font-weight="700">$POLA</text>
   <text x="1095" y="593" fill="#556178" font-size="14" text-anchor="end">#3</text>
   
   <!-- URL -->
