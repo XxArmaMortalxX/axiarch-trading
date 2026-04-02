@@ -78,6 +78,13 @@ section{padding:6rem 2rem;max-width:1280px;margin:0 auto}
 .hero-stat-label{font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em}
 .hero-actions{display:flex;gap:1rem;margin-top:2.5rem;flex-wrap:wrap}
 
+/* FLOATING CTA */
+#floating-cta{position:fixed;bottom:20px;right:20px;background:var(--accent-green);color:#fff;padding:0.9rem 1.4rem;border-radius:50px;font-weight:700;font-size:0.9rem;text-decoration:none;box-shadow:0 8px 30px rgba(99,102,241,0.4),0 2px 8px rgba(0,0,0,0.2);z-index:9999;display:flex;align-items:center;gap:0.6rem;transition:all 0.3s;animation:pulse-cta 2s infinite}
+#floating-cta:hover{transform:scale(1.05);box-shadow:0 12px 40px rgba(99,102,241,0.5),0 4px 12px rgba(0,0,0,0.3)}
+@keyframes pulse-cta{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes pulse-nav{0%,100%{box-shadow:0 0 0 0 rgba(99,102,241,0.4)}50%{box-shadow:0 0 20px 5px rgba(99,102,241,0.2)}}
+.floating-badge{background:rgba(255,255,255,0.2);padding:0.15rem 0.5rem;border-radius:12px;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em}
+
 /* BUTTONS */
 .btn-primary{background:var(--accent-green);color:#fff;font-weight:700;font-size:0.9rem;padding:0.85rem 2rem;border-radius:var(--radius);text-decoration:none;border:none;cursor:pointer;transition:all 0.25s;font-family:var(--font-body)}
 .btn-primary:hover{box-shadow:0 0 30px var(--accent-green-glow),0 4px 20px rgba(0,0,0,0.3);transform:translateY(-2px)}
@@ -336,6 +343,12 @@ body.light-mode nav{background:rgba(240,242,245,0.92)}
   </script>
 </head>
 <body>
+
+<!-- Floating Telegram CTA -->
+<a href="https://t.me/axiarchtradebot" target="_blank" id="floating-cta">
+  <span class="floating-badge">FREE</span>
+  <span>📨 Join Telegram for Picks</span>
+</a>
 <!-- EXIT POPUP -->
 <div id="exitPopup"><div class="popup-box"><button class="popup-close" onclick="closePopup()">✕</button><div style="font-size:2rem;margin-bottom:0.6rem">📡</div><h3>Get Tomorrow's Picks Free</h3><p>AI scans Reddit &amp; Yahoo Finance overnight. 20 ranked pre-market picks in your inbox at 8:30 AM ET.</p><input type="email" id="popupEmail" class="popup-input" placeholder="your@email.com"><button class="btn-primary" style="width:100%" onclick="submitPopupEmail()">Send Me Tomorrow's Picks →</button><p style="font-size:0.72rem;color:var(--text-muted);margin-top:0.75rem">Free forever. No spam. Unsubscribe anytime.</p></div></div>
 <!-- TICKER MODAL -->
@@ -354,10 +367,21 @@ body.light-mode nav{background:rgba(240,242,245,0.92)}
     <a href="#calculator">RCT Calc</a>
     <a href="#framework">Framework</a>
   </div>
-  <a href="#screener" class="nav-cta">LAUNCH SCREENER</a>
+  <a href="https://t.me/axiarchtradebot" target="_blank" class="nav-cta" style="background:var(--accent-green);color:#fff;font-size:0.85rem;padding:0.6rem 1.4rem;animation:pulse-nav 2s infinite">
+    🔔 Get Free Picks
+  </a>
   <button id="themeToggle" onclick="toggleTheme()" title="Toggle theme" style="background:none;border:1px solid var(--border);color:var(--text-secondary);border-radius:6px;padding:0.38rem 0.6rem;cursor:pointer;font-size:1rem;margin-left:0.5rem">🌙</button>
   <button id="mobileMenuBtn" onclick="toggleMobileMenu()" style="display:none;background:none;border:1px solid var(--border);color:var(--text-secondary);border-radius:6px;padding:0.38rem 0.65rem;cursor:pointer;font-size:1.1rem;margin-left:0.5rem">☰</button>
 </nav>
+
+<!-- FREE TRIAL BANNER -->
+<div id="trial-banner" style="background:linear-gradient(135deg,var(--accent-green),var(--accent-cyan));color:#fff;text-align:center;padding:0.75rem 1rem;font-weight:600;position:relative;z-index:999">
+  <span style="background:rgba(255,255,255,0.2);padding:0.2rem 0.6rem;border-radius:4px;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;margin-right:0.75rem">🎉 FREE TRIAL</span>
+  <span style="font-size:0.95rem">Get daily picks FREE while in beta — Limited spots available</span>
+  <a href="https://t.me/axiarchtradebot" target="_blank" style="margin-left:1rem;background:#fff;color:var(--accent-green);padding:0.35rem 0.9rem;border-radius:6px;text-decoration:none;font-weight:700;font-size:0.85rem;display:inline-block">
+    Join Telegram Now →
+  </a>
+</div>
 
 <!-- HERO -->
 <section id="hero">
@@ -374,9 +398,14 @@ body.light-mode nav{background:rgba(240,242,245,0.92)}
       <div class="hero-stat"><div class="hero-stat-value" id="statSource">—</div><div class="hero-stat-label">Data Source</div></div>
     </div>
     <div class="hero-actions animate-in delay-4">
-      <a href="#screener" class="btn-primary">Launch Screener — Free</a>
-      <a href="#pipeline" class="btn-secondary">See How It Works</a>
+      <a href="https://t.me/axiarchtradebot" target="_blank" class="btn-primary" style="font-size:1.1rem;padding:1rem 2rem;box-shadow:0 8px 30px rgba(99,102,241,0.3)">
+        📨 Get Free Daily Picks on Telegram
+      </a>
+      <a href="#screener" class="btn-secondary">View Today's Picks</a>
     </div>
+    <p style="margin-top:1rem;font-size:0.85rem;color:var(--text-muted);text-align:center">
+      🆓 <strong>100% FREE during beta</strong> • No credit card • Unsubscribe anytime
+    </p>
   </div>
 </section>
 
@@ -417,8 +446,26 @@ body.light-mode nav{background:rgba(240,242,245,0.92)}
 
 <!-- SCREENER -->
 <section id="screener">
+  <!-- Telegram Signup Box -->
+  <div style="background:linear-gradient(135deg,rgba(99,102,241,0.1),rgba(129,140,248,0.05));border:2px solid var(--accent-green);border-radius:12px;padding:2rem;margin:0 auto 3rem;max-width:800px;text-align:center">
+    <span style="display:inline-block;background:var(--accent-green);color:#fff;padding:0.3rem 0.8rem;border-radius:20px;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:1rem">
+      🎆 LIMITED TIME FREE BETA
+    </span>
+    <h2 style="font-size:2rem;margin:0.5rem 0;color:var(--text-primary)">Get Tomorrow's Picks Tonight</h2>
+    <p style="color:var(--text-secondary);margin:1rem 0;font-size:1.05rem">
+      Join 500+ traders getting AI-analyzed picks delivered at 8:30 AM daily.<br>
+      <strong style="color:var(--accent-green)">100% FREE</strong> during beta • No spam • Unsubscribe anytime
+    </p>
+    <a href="https://t.me/axiarchtradebot" target="_blank" style="display:inline-block;background:var(--accent-green);color:#fff;padding:1rem 2.5rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:1.05rem;margin-top:1rem;transition:all 0.2s">
+      📨 Join Free on Telegram →
+    </a>
+    <p style="margin-top:1rem;font-size:0.8rem;color:var(--text-muted)">
+      🔒 We never share your data. Read-only channel. No pump & dump.
+    </p>
+  </div>
+  
   <div class="section-label">LIVE STOCK SCREENER</div>
-  <h2 class="section-title">Scan. Score. Strike.</h2>
+  <h2 class="section-title">Today's Algorithmic Picks</h2>
   <p class="section-subtitle">Real-time screening with Axiarch scoring. Enter your free Finnhub API key below to pull live market data.</p>
 
   <div class="api-bar">
