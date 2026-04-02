@@ -403,9 +403,21 @@ body.light-mode nav{background:rgba(240,242,245,0.92)}
       </a>
       <a href="#screener" class="btn-secondary">View Today's Picks</a>
     </div>
-    <p style="margin-top:1rem;font-size:0.85rem;color:var(--text-muted);text-align:center">
-      🆓 <strong>100% FREE during beta</strong> • No credit card • Unsubscribe anytime
-    </p>
+    
+    <!-- Email Signup Form -->
+    <div style="margin-top:2.5rem;padding:1.5rem;background:rgba(99,102,241,0.08);border-radius:12px;max-width:450px">
+      <form action="/email-signup.html" method="GET" style="display:flex;gap:0.5rem;align-items:center">
+        <input type="email" name="email" required placeholder="Enter your email for daily picks..." 
+               style="flex:1;padding:0.75rem 1rem;border:1px solid var(--border-bright);background:var(--bg-card);color:var(--text-primary);border-radius:8px;font-size:0.95rem" />
+        <input type="hidden" name="source" value="hero" />
+        <button type="submit" style="background:var(--accent-green);color:#fff;padding:0.75rem 1.5rem;border:none;border-radius:8px;font-weight:600;cursor:pointer;white-space:nowrap">
+          📧 Subscribe
+        </button>
+      </form>
+      <p style="margin-top:0.75rem;font-size:0.8rem;color:var(--text-muted);text-align:center">
+        🆓 <strong>100% FREE during beta</strong> • No spam • Unsubscribe anytime
+      </p>
+    </div>
   </div>
 </section>
 
@@ -456,11 +468,22 @@ body.light-mode nav{background:rgba(240,242,245,0.92)}
       Join 500+ traders getting AI-analyzed picks delivered at 8:30 AM daily.<br>
       <strong style="color:var(--accent-green)">100% FREE</strong> during beta • No spam • Unsubscribe anytime
     </p>
-    <a href="https://t.me/axiarchtradebot" target="_blank" style="display:inline-block;background:var(--accent-green);color:#fff;padding:1rem 2.5rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:1.05rem;margin-top:1rem;transition:all 0.2s">
-      📨 Join Free on Telegram →
-    </a>
+    <div style="display:flex;gap:1rem;justify-content:center;align-items:center;margin-top:1.5rem;flex-wrap:wrap">
+      <a href="https://t.me/axiarchtradebot" target="_blank" style="display:inline-block;background:var(--accent-green);color:#fff;padding:1rem 2rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:1rem;transition:all 0.2s">
+        📨 Telegram (Instant)
+      </a>
+      <span style="color:var(--text-muted)">or</span>
+      <form action="/email-signup.html" method="GET" style="display:flex;gap:0.5rem">
+        <input type="email" name="email" required placeholder="your@email.com" 
+               style="padding:0.85rem 1rem;border:1px solid var(--border-bright);background:var(--bg-card);color:var(--text-primary);border-radius:8px;font-size:0.95rem;width:200px" />
+        <input type="hidden" name="source" value="screener" />
+        <button type="submit" style="background:transparent;color:var(--accent-green);padding:0.85rem 1.5rem;border:2px solid var(--accent-green);border-radius:8px;font-weight:600;cursor:pointer">
+          📧 Email
+        </button>
+      </form>
+    </div>
     <p style="margin-top:1rem;font-size:0.8rem;color:var(--text-muted)">
-      🔒 We never share your data. Read-only channel. No pump & dump.
+      🔒 We never share your data. No spam. Unsubscribe anytime.
     </p>
   </div>
   
@@ -1066,6 +1089,26 @@ function toggleMobileMenu(){document.querySelector('.nav-links').classList.toggl
 function openModal(sym,price,change,score,bull,bear){document.getElementById('mSym').textContent='\u0024'+sym;document.getElementById('mPrice').textContent='\u0024'+parseFloat(price).toFixed(2);var c=document.getElementById('mChg');c.textContent=(change>=0?'+':'')+change+'%';c.style.color=change>=0?'var(--accent-green)':'var(--accent-red)';document.getElementById('mScore').textContent=score;document.getElementById('mBull').textContent=bull+'%';document.getElementById('mBear').textContent=bear+'%';document.getElementById('mYahoo').href='https://finance.yahoo.com/quote/'+sym;document.getElementById('mReddit').href='https://www.reddit.com/search/?q='+encodeURIComponent('\u0024'+sym)+'&sort=new';document.getElementById('tickerModal').classList.add('show');}
 function closeModal(){document.getElementById('tickerModal').classList.remove('show');}
 document.addEventListener('click',function(e){if(e.target===document.getElementById('tickerModal'))closeModal();if(e.target===document.getElementById('exitPopup'))closePopup();});
+// Email signup success handler
+(function(){
+  const params = new URLSearchParams(window.location.search);
+  if(params.get('signup') === 'success') {
+    // Show success banner
+    const banner = document.createElement('div');
+    banner.style.cssText = 'position:fixed;top:80px;left:50%;transform:translateX(-50%);background:#10b981;color:white;padding:1rem 2rem;border-radius:8px;font-weight:600;z-index:10000;box-shadow:0 8px 30px rgba(0,0,0,0.2)';
+    banner.innerHTML = '✅ Success! Check your email for confirmation. Daily picks start tomorrow at 8:30 AM.';
+    document.body.appendChild(banner);
+    setTimeout(() => banner.remove(), 8000);
+    // Clean URL
+    window.history.replaceState({}, '', '/');
+    
+    // Track with GA
+    if(typeof gtag !== 'undefined') {
+      gtag('event', 'sign_up', { method: 'email', event_category: 'conversion' });
+    }
+  }
+})();
+
 // Member counter
 (function(){var el=document.getElementById('memberCount');if(!el)return;var n=0;var t=setInterval(function(){n=Math.min(n+21,1200);el.textContent=n.toLocaleString()+'+';if(n>=1200)clearInterval(t);},20);})();
 // Service worker

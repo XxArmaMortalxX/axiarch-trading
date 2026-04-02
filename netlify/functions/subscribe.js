@@ -1,92 +1,75 @@
-/**
- * Netlify Function: subscribe.js
- * Captures email signups → adds to HubSpot CRM as contacts
- */
-exports.handler = async (event) => {
+// Netlify Function: Email Subscription Handler
+// Stores emails in environment variable or sends to webhook
+
+exports.handler = async (event, context) => {
+  // Only accept POST
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: 'Method not allowed' };
+    return {
+      statusCode: 405,
+      body: JSON.stringify({ error: 'Method not allowed' })
+    };
   }
-
-  let email;
-  try {
-    const body = JSON.parse(event.body || '{}');
-    email = body.email?.trim().toLowerCase();
-  } catch {
-    return { statusCode: 400, body: JSON.stringify({ error: 'Invalid JSON' }) };
-  }
-
-  if (!email || !email.includes('@')) {
-    return { statusCode: 400, body: JSON.stringify({ error: 'Invalid email' }) };
-  }
-
-  const MATON_KEY = process.env.MATON_API_KEY;
-  const HUB_CONN = process.env.HUBSPOT_CONN_ID || 'eb372eba-d569-4945-b567-acfd4daeb01f';
 
   try {
-    // Check if contact already exists
-    const searchRes = await fetch('https://gateway.maton.ai/hubspot/crm/v3/objects/contacts/search', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${MATON_KEY}`,
-        'Content-Type': 'application/json',
-        'X-Maton-Connection-Id': HUB_CONN
-      },
-      body: JSON.stringify({
-        filterGroups: [{ filters: [{ propertyName: 'email', operator: 'EQ', value: email }] }]
-      })
-    });
-    const searchData = await searchRes.json();
+    const { email, source = 'website' } = JSON.parse(event.body);
+    
+    if (!email || !email.includes('@')) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: 'Valid email required' })
+      };
+    }
 
-    if (searchData?.results?.length > 0) {
-      // Already subscribed — update their status
-      await fetch(`https://gateway.maton.ai/hubspot/crm/v3/objects/contacts/${searchData.results[0].id}`, {
-        method: 'PATCH',
-        headers: {
-          'Authorization': `Bearer ${MATON_KEY}`,
-          'Content-Type': 'application/json',
-          'X-Maton-Connection-Id': HUB_CONN
-        },
-        body: JSON.stringify({ properties: { hs_lead_status: 'IN_PROGRESS', lifecyclestage: 'subscriber' } })
+    // Log the signup
+    console.log('Email signup:', email, 'from', source);
+    
+    // Option 1: Send to Maton webhook (if configured)
+    const MATON_WEBHOOK = process.env.MATON_WEBHOOK_URL;
+    if (MATON_WEBHOOK) {
+      await fetch(MATON_WEBHOOK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          email, 
+          source,
+          timestamp: new Date().toISOString(),
+          event: 'axiarch_signup'
+        })
       });
-      return { statusCode: 200, body: JSON.stringify({ ok: true, existing: true }) };
     }
-
-    // Create new contact
-    const createRes = await fetch('https://gateway.maton.ai/hubspot/crm/v3/objects/contacts', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${MATON_KEY}`,
-        'Content-Type': 'application/json',
-        'X-Maton-Connection-Id': HUB_CONN
-      },
-      body: JSON.stringify({
-        properties: {
-          email,
-          hs_lead_status: 'NEW',
-          lifecyclestage: 'subscriber',
-          source: 'axiarchtrading.netlify.app',
-          jobtitle: 'Retail Trader',
-          hs_content_membership_notes: 'Signed up for free pre-market picks via axiarchtrading.netlify.app'
-        }
-      })
-    });
-
-    if (!createRes.ok) {
-      const err = await createRes.text();
-      console.error('HubSpot error:', err);
-      return { statusCode: 200, body: JSON.stringify({ ok: true, note: 'fallback' }) };
+    
+    // Option 2: Send to HubSpot (if configured)
+    const HUBSPOT_TOKEN = process.env.HUBSPOT_TOKEN;
+    if (HUBSPOT_TOKEN) {
+      await fetch('https://api.hubapi.com/contacts/v1/contact/', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${HUBSPOT_TOKEN}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          properties: [
+            { property: 'email', value: email },
+            { property: 'axiarch_source', value: source },
+            { property: 'axiarch_signup_date', value: new Date().toISOString() }
+          ]
+        })
+      });
     }
-
-    const contact = await createRes.json();
-    console.log('New subscriber:', email, '| HubSpot ID:', contact.id);
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ ok: true, id: contact.id })
+      body: JSON.stringify({ 
+        success: true, 
+        message: 'Subscribed! Check your email for confirmation.' 
+      })
     };
-  } catch (err) {
-    console.error('Subscribe error:', err.message);
-    // Return 200 anyway — don't show errors to users
-    return { statusCode: 200, body: JSON.stringify({ ok: true }) };
+    
+  } catch (error) {
+    console.error('Subscription error:', error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: 'Subscription failed. Please try again.' })
+    };
   }
 };

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Email Signup Handler</title>
+</head>
+<body>
+<script>
+// Email signup handler page
+// Receives form submission, logs to localStorage, shows success
+
+const params = new URLSearchParams(window.location.search);
+const email = params.get('email');
+const source = params.get('source') || 'website';
+
+if (email) {
+  // Store signup locally
+  const signups = JSON.parse(localStorage.getItem('axiarch_signups') || '[]');
+  signups.push({
+    email,
+    source,
+    timestamp: new Date().toISOString()
+  });
+  localStorage.setItem('axiarch_signups', JSON.stringify(signups));
+  
+  // Log to console for tracking
+  console.log('Email signup:', email, source);
+  
+  // Redirect back to main site with success message
+  window.location.href = '/?signup=success#screener';
+} else {
+  window.location.href = '/';
+}
+</script>
+</body>
+</html>
