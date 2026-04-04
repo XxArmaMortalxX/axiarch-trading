@@ -38,7 +38,7 @@ export default function Dashboard() {
 
   const sentimentOptions = {
     responsive: true, maintainAspectRatio: false, cutout: '68%',
-    plugins: { legend: { position: 'bottom', labels: { color: '#7a8ba8', font: { family: 'JetBrains Mono', size: 10 }, padding: 14, usePointStyle: true, pointStyle: 'circle' } } },
+    plugins: { legend: { position: 'bottom', labels: { color: '#7a8ba8', font: { family: 'IBM Plex Mono', size: 10 }, padding: 14, usePointStyle: true, pointStyle: 'circle' } } },
   };
 
   // RSI distribution
@@ -64,8 +64,8 @@ export default function Dashboard() {
   const rsiOptions = {
     responsive: true, maintainAspectRatio: false,
     scales: {
-      x: { grid: { color: 'rgba(26,38,64,0.4)' }, ticks: { color: '#4a5b74', font: { family: 'JetBrains Mono', size: 10 } } },
-      y: { grid: { color: 'rgba(26,38,64,0.4)' }, ticks: { color: '#4a5b74', font: { family: 'JetBrains Mono', size: 10 }, stepSize: 1 } },
+      x: { grid: { color: 'rgba(26,38,64,0.4)' }, ticks: { color: '#4a5b74', font: { family: 'IBM Plex Mono', size: 10 } } },
+      y: { grid: { color: 'rgba(26,38,64,0.4)' }, ticks: { color: '#4a5b74', font: { family: 'IBM Plex Mono', size: 10 }, stepSize: 1 } },
     },
     plugins: { legend: { display: false } },
   };
