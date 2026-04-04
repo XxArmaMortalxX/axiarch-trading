@@ -6,9 +6,8 @@ export default function Framework() {
   const s = FRAMEWORK_STEPS[activeStep];
 
   return (
-    <>
+    <div className="page-fullbg page-fullbg-framework">
     <section className="page-hero">
-      <div className="hero-bg-framework" />
       <div className="section-label">Pattern</div>
       <h2 className="section-title">The 7-Stage Pennystocking Lifecycle</h2>
       <p className="section-subtitle">Every stock goes through a psychological lifecycle. Understand where a stock is in the cycle to time entries and exits.</p>
@@ -65,6 +64,6 @@ export default function Framework() {
         )}
       </div>
     </section>
-    </>
+    </div>
   );
 }

@@ -75,9 +75,8 @@ export default function Dashboard() {
   };
 
   return (
-    <>
+    <div className="page-fullbg page-fullbg-dashboard">
     <section className="page-hero">
-      <div className="hero-bg-dashboard" />
       <div className="section-label">Analysis</div>
       <h2 className="section-title">Signals Dashboard</h2>
       <p className="section-subtitle">Top-ranked signals, market-wide signal distribution, and RSI breakdown — all derived from indicator confluence.</p>
@@ -179,6 +178,6 @@ export default function Dashboard() {
         </div>
       </div>
     </section>
-    </>
+    </div>
   );
 }
