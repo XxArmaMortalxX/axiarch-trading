@@ -75,10 +75,15 @@ export default function Dashboard() {
   };
 
   return (
-    <section>
+    <>
+    <section className="page-hero">
+      <div className="hero-bg-dashboard" />
       <div className="section-label">Analysis</div>
       <h2 className="section-title">Signals Dashboard</h2>
       <p className="section-subtitle">Top-ranked signals, market-wide signal distribution, and RSI breakdown — all derived from indicator confluence.</p>
+    </section>
+
+    <section>
 
       {!apiKey && (
         <div className="api-bar" style={{ marginTop: '1.5rem' }}>
@@ -174,5 +179,6 @@ export default function Dashboard() {
         </div>
       </div>
     </section>
+    </>
   );
 }

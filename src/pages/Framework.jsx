@@ -6,11 +6,15 @@ export default function Framework() {
   const s = FRAMEWORK_STEPS[activeStep];
 
   return (
-    <section>
+    <>
+    <section className="page-hero">
+      <div className="hero-bg-framework" />
       <div className="section-label">Pattern</div>
       <h2 className="section-title">The 7-Stage Pennystocking Lifecycle</h2>
-      <p className="section-subtitle">Every stock goes through a psychological lifecycle. Understand where a stock is in the cycle to time entries and exits with precision.</p>
+      <p className="section-subtitle">Every stock goes through a psychological lifecycle. Understand where a stock is in the cycle to time entries and exits.</p>
+    </section>
 
+    <section>
       <div className="framework-steps">
         {FRAMEWORK_STEPS.map((step, i) => (
           <div
@@ -61,5 +65,6 @@ export default function Framework() {
         )}
       </div>
     </section>
+    </>
   );
 }

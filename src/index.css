@@ -177,23 +177,51 @@ section + section { border-top: 1px solid rgba(22, 51, 34, 0.4); }
 }
 
 /* HERO */
-/* Hero background image — replace /hero-bg.jpg with your bull vs bear image */
-.hero-bg {
+/* Page hero backgrounds with gradient overlay */
+.page-hero {
+    position: relative;
+    overflow: hidden;
+    padding-top: 7rem;
+    padding-bottom: 4rem;
+    min-height: 44vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.page-hero > *:not([class*="hero-bg"]) {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-bg,
+.hero-bg-screener,
+.hero-bg-dashboard,
+.hero-bg-calculator,
+.hero-bg-framework {
     position: absolute;
     inset: 0;
-    background:
-        url('/hero.jpg') center center / cover no-repeat,
-        radial-gradient(ellipse at 30% 50%, rgba(0,230,118,0.08) 0%, transparent 50%),
-        radial-gradient(ellipse at 70% 60%, rgba(255,59,59,0.05) 0%, transparent 50%),
-        var(--bg-void);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     z-index: 0;
 }
 
-.hero-bg::after {
+.hero-bg { background-image: url('/hero.jpg'); }
+.hero-bg-screener { background-image: url('/bg-screener.jpg'); }
+.hero-bg-dashboard { background-image: url('/bg-dashboard.jpg'); }
+.hero-bg-calculator { background-image: url('/bg-calculator.jpg'); }
+.hero-bg-framework { background-image: url('/bg-framework.jpg'); }
+
+.hero-bg::after,
+.hero-bg-screener::after,
+.hero-bg-dashboard::after,
+.hero-bg-calculator::after,
+.hero-bg-framework::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(5,10,8,0.25) 0%, rgba(5,10,8,0.55) 40%, rgba(5,10,8,0.88) 70%, var(--bg-void) 100%);
+    background: linear-gradient(180deg, rgba(5,10,8,0.3) 0%, rgba(5,10,8,0.6) 40%, rgba(5,10,8,0.9) 70%, var(--bg-void) 100%);
 }
 
 .hero-glow {

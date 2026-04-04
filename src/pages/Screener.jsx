@@ -38,10 +38,14 @@ export default function Screener() {
 
   return (
     <>
-      <section>
+      <section className="page-hero">
+        <div className="hero-bg-screener" />
         <div className="section-label">Scanner</div>
         <h2 className="section-title">Real-Time Stock Scanner</h2>
         <p className="section-subtitle">Every stock scored by technical indicators. Connect your Finnhub API key for live data, or browse the demo below.</p>
+      </section>
+
+      <section>
 
         <div className="api-bar">
           <label>Finnhub API Key:</label>

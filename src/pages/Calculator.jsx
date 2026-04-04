@@ -18,11 +18,15 @@ export default function Calculator() {
   const maxProfit = (t3 - entry) * inputs.shares;
 
   return (
-    <section>
+    <>
+    <section className="page-hero">
+      <div className="hero-bg-calculator" />
       <div className="section-label">Tools</div>
       <h2 className="section-title">Position Sizing & Risk Management</h2>
-      <p className="section-subtitle">Enter candle data to calculate entry, stop-loss, and profit targets with precise risk-reward ratios. The RCT (Red Candle Theory) calculator helps you plan every trade.</p>
+      <p className="section-subtitle">Enter candle data to calculate entry, stop-loss, and profit targets with precise risk-reward ratios.</p>
+    </section>
 
+    <section>
       <div className="calc-container">
         <div className="calc-form">
           <h3 style={{ marginBottom: '1.5rem', fontSize: '1rem' }}>Candle Input</h3>
@@ -87,5 +91,6 @@ export default function Calculator() {
         </div>
       </div>
     </section>
+    </>
   );
 }
