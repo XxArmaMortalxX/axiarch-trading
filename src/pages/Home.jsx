@@ -114,9 +114,73 @@ export default function Home() {
         </div>
       </section>
 
-      {/* PRICING PREVIEW */}
+      {/* SIGNUP */}
       <section style={{ textAlign: 'center' }}>
-        <div className="section-label">Plans</div>
+        <div className="section-label" style={{ justifyContent: 'center' }}>Get Started</div>
+        <h2 className="section-title">Get Daily Picks Before the Bell</h2>
+        <p className="section-subtitle" style={{ margin: '0 auto 2rem' }}>
+          Join thousands of traders receiving algorithmically scored picks every morning. Free during beta.
+        </p>
+
+        <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '2rem' }}>
+          <a
+            href="https://t.me/axiarchtradebot"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary"
+            style={{ fontSize: '1rem', padding: '0.85rem 2.2rem' }}
+          >
+            Join Telegram Channel
+          </a>
+        </div>
+
+        <div style={{ maxWidth: '440px', margin: '0 auto', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: '1.5rem' }}>
+          <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>Or get picks delivered to your inbox:</p>
+          <form
+            action="/.netlify/functions/subscribe"
+            method="POST"
+            onSubmit={(e) => {
+              e.preventDefault();
+              const email = e.target.email.value.trim();
+              if (!email) return;
+              fetch('/.netlify/functions/subscribe', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email }),
+              }).then(() => {
+                e.target.reset();
+                e.target.querySelector('button').textContent = 'Subscribed!';
+              }).catch(() => {});
+            }}
+            style={{ display: 'flex', gap: '0.5rem' }}
+          >
+            <input
+              type="email"
+              name="email"
+              required
+              placeholder="your@email.com"
+              style={{
+                flex: 1,
+                padding: '0.7rem 1rem',
+                background: 'var(--bg-primary)',
+                border: '1px solid var(--border)',
+                borderRadius: 'var(--radius)',
+                color: 'var(--text-primary)',
+                fontFamily: 'var(--font-body)',
+                fontSize: '0.88rem',
+                outline: 'none',
+              }}
+            />
+            <button type="submit" className="btn-primary" style={{ whiteSpace: 'nowrap' }}>Subscribe</button>
+          </form>
+          <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '0.75rem' }}>
+            Free forever. No spam. Unsubscribe anytime.
+          </p>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section style={{ textAlign: 'center' }}>
         <h2 className="section-title">Ready to Trade Smarter?</h2>
         <p className="section-subtitle" style={{ margin: '0 auto 2rem' }}>
           Start free with demo data, or connect your Finnhub key for real-time analysis across 65+ tickers.

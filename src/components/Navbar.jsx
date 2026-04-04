@@ -29,7 +29,8 @@ export default function Navbar() {
           </Link>
         ))}
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+        <a href="https://t.me/axiarchtradebot" target="_blank" rel="noopener noreferrer" className="nav-cta" style={{ background: 'var(--accent-green)', color: '#000', border: 'none' }}>Join Telegram</a>
         <Link to="/pricing" className="nav-cta">Pricing</Link>
         <button
           id="mobileMenuBtn"
