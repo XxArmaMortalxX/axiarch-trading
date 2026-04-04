@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { FinnhubProvider } from './context/FinnhubContext';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import Screener from './pages/Screener';
@@ -11,6 +12,7 @@ import Pricing from './pages/Pricing';
 export default function App() {
   return (
     <BrowserRouter>
+    <FinnhubProvider>
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
@@ -23,6 +25,7 @@ export default function App() {
           <Route path="/callback" element={<div style={{ padding: '6rem 2rem', textAlign: 'center', color: 'var(--text-muted)' }}>OAuth callback handler. Redirecting...</div>} />
         </Route>
       </Routes>
+    </FinnhubProvider>
     </BrowserRouter>
   );
 }

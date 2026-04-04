@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useFinnhub } from '../hooks/useFinnhub';
+import { useFinnhubContext } from '../context/FinnhubContext';
 import ScoreBar from '../components/ScoreBar';
 import BiasTag from '../components/BiasTag';
 import SignalBadge from '../components/SignalBadge';
@@ -7,16 +7,10 @@ import TickerModal from '../components/TickerModal';
 import { fmtPrice } from '../lib/indicators';
 
 export default function Screener() {
-  const { data, dataSource, isScanning, scanStatus, scanMessage, apiKey, saveKey, runFullScan } = useFinnhub();
+  const { data, dataSource, isScanning, scanStatus, scanMessage, apiKey, saveKey, runFullScan } = useFinnhubContext();
   const [filter, setFilter] = useState('all');
   const [keyInput, setKeyInput] = useState(apiKey);
   const [modalTicker, setModalTicker] = useState(null);
-
-  useEffect(() => {
-    if (apiKey) {
-      runFullScan(apiKey);
-    }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleConnect = useCallback(() => {
     const key = keyInput.trim();

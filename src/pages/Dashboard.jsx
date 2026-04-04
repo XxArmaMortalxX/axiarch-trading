@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement } from 'chart.js';
 import { Doughnut, Bar } from 'react-chartjs-2';
-import { useFinnhub } from '../hooks/useFinnhub';
+import { useFinnhubContext } from '../context/FinnhubContext';
 import { useAxiarchScore } from '../hooks/useAxiarchScore';
 import SignalBadge from '../components/SignalBadge';
 import { fmtPrice } from '../lib/indicators';
@@ -9,13 +9,9 @@ import { fmtPrice } from '../lib/indicators';
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement);
 
 export default function Dashboard() {
-  const { data, dataSource, isScanning, scanStatus, scanMessage, apiKey, saveKey, runFullScan } = useFinnhub();
+  const { data, dataSource, isScanning, scanStatus, scanMessage, apiKey, saveKey, runFullScan } = useFinnhubContext();
   const stats = useAxiarchScore(data);
   const [keyInput, setKeyInput] = useState(apiKey);
-
-  useEffect(() => {
-    if (apiKey) runFullScan(apiKey);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleConnect = () => {
     const key = keyInput.trim();
