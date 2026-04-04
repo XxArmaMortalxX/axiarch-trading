@@ -37,9 +37,8 @@ export default function Screener() {
   const statusColor = scanStatus === 'live' ? 'var(--accent-green)' : scanStatus === 'error' ? 'var(--accent-red)' : scanStatus === 'scanning' ? 'var(--accent-cyan)' : 'var(--accent-amber)';
 
   return (
-    <>
+    <div className="page-fullbg page-fullbg-screener">
       <section className="page-hero">
-        <div className="hero-bg-screener" />
         <div className="section-label">Scanner</div>
         <h2 className="section-title">Real-Time Stock Scanner</h2>
         <p className="section-subtitle">Every stock scored by technical indicators. Connect your Finnhub API key for live data, or browse the demo below.</p>
@@ -132,6 +131,6 @@ export default function Screener() {
       </section>
 
       {modalTicker && <TickerModal ticker={modalTicker} onClose={() => setModalTicker(null)} />}
-    </>
+    </div>
   );
 }

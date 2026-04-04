@@ -194,6 +194,32 @@ section + section { border-top: 1px solid rgba(22, 51, 34, 0.4); }
     z-index: 2;
 }
 
+/* Full-page background that stretches behind all sections */
+.page-fullbg {
+    position: relative;
+}
+
+.page-fullbg::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -1;
+    opacity: 0.18;
+}
+
+.page-fullbg::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 0%, rgba(5,10,8,0.5) 30%, rgba(5,10,8,0.85) 100%);
+    z-index: -1;
+}
+
+.page-fullbg-screener::before { background-image: url('/bg-screener.jpg'); }
+
 .hero-bg,
 .hero-bg-screener,
 .hero-bg-dashboard,
