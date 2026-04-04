@@ -27,19 +27,20 @@ export default function Home() {
   return (
     <>
       {/* HERO */}
-      <section id="hero" style={{ paddingTop: '9rem', paddingBottom: '5rem', minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', borderBottom: 'none' }}>
+      <section id="hero" style={{ paddingTop: '9rem', paddingBottom: '5rem', minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', borderBottom: 'none', overflow: 'hidden' }}>
+        <div className="hero-bg" />
         <div className="hero-glow" />
         <div className="hero-grid" />
 
-        <div className="section-label">Algorithmic Trading Intelligence</div>
-        <h1 className="section-title" style={{ fontSize: 'clamp(2.2rem, 5vw, 3.8rem)', maxWidth: '780px' }}>
-          Stop Guessing. <span style={{ color: 'var(--accent-blue)' }}>Start Trading with Data.</span>
+        <div className="section-label" style={{ position: 'relative', zIndex: 2 }}>Algorithmic Trading Intelligence</div>
+        <h1 className="section-title" style={{ fontSize: 'clamp(2.2rem, 5vw, 3.8rem)', maxWidth: '780px', position: 'relative', zIndex: 2 }}>
+          Stop Guessing. <span style={{ color: 'var(--accent-green)' }}>Start Trading with Data.</span>
         </h1>
-        <p className="section-subtitle" style={{ maxWidth: '640px', marginTop: '1rem' }}>
+        <p className="section-subtitle" style={{ maxWidth: '640px', marginTop: '1rem', position: 'relative', zIndex: 2 }}>
           Axiarch scans 65+ stocks in real-time, calculates 6 technical indicators on each, and generates BUY/SELL signals with precise entry, stop-loss, and profit targets.
         </p>
 
-        <div className="hero-stats">
+        <div className="hero-stats" style={{ position: 'relative', zIndex: 2 }}>
           {SOCIAL_PROOF.map(s => (
             <div className="hero-stat" key={s.label}>
               <div className="hero-stat-value">{s.value}</div>
@@ -48,7 +49,7 @@ export default function Home() {
           ))}
         </div>
 
-        <div className="hero-actions">
+        <div className="hero-actions" style={{ position: 'relative', zIndex: 2 }}>
           <Link to="/screener" className="btn-primary">Launch Screener</Link>
           <Link to="/methodology" className="btn-secondary">See How It Works</Link>
         </div>
@@ -105,7 +106,7 @@ export default function Home() {
         <div className="features-grid">
           {FEATURES.map((f, i) => (
             <div className="feature-card" key={i}>
-              <div className="feature-icon" style={{ background: 'var(--accent-blue-dim)' }}>{f.icon}</div>
+              <div className="feature-icon" style={{ background: 'var(--accent-green-dim)' }}>{f.icon}</div>
               <h3>{f.title}</h3>
               <p>{f.desc}</p>
             </div>
