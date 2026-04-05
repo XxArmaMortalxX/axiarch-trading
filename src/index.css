@@ -215,14 +215,14 @@ section + section { border-top: 1px solid rgba(22, 51, 34, 0.4); }
     background-position: center;
     background-repeat: no-repeat;
     z-index: -1;
-    opacity: 0.18;
+    opacity: 0.35;
 }
 
 .page-fullbg::after {
     content: '';
     position: fixed;
     inset: 0;
-    background: linear-gradient(180deg, transparent 0%, rgba(5,10,8,0.5) 30%, rgba(5,10,8,0.85) 100%);
+    background: linear-gradient(180deg, transparent 0%, rgba(5,10,8,0.3) 30%, rgba(5,10,8,0.7) 100%);
     z-index: -1;
 }
 
@@ -257,7 +257,7 @@ section + section { border-top: 1px solid rgba(22, 51, 34, 0.4); }
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(5,10,8,0.3) 0%, rgba(5,10,8,0.6) 40%, rgba(5,10,8,0.9) 70%, var(--bg-void) 100%);
+    background: linear-gradient(180deg, rgba(5,10,8,0.15) 0%, rgba(5,10,8,0.45) 40%, rgba(5,10,8,0.85) 70%, var(--bg-void) 100%);
 }
 
 .hero-glow {
