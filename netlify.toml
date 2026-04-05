@@ -18,3 +18,7 @@
 
 [functions]
   node_bundler = "esbuild"
+
+# Daily picks to Telegram — 8:00 AM ET (13:00 UTC) Mon-Fri
+[functions."telegram-daily"]
+  schedule = "0 13 * * 1-5"
