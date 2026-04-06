@@ -9,13 +9,13 @@ export function FinnhubProvider({ children }) {
   const watchlist = useWatchlist();
   const hasScanned = useRef(false);
 
-  // Auto-scan once on app load if API key exists
+  // Auto-scan on app load — no API key needed (server-side proxy)
   useEffect(() => {
-    if (finnhub.apiKey && !hasScanned.current) {
+    if (!hasScanned.current) {
       hasScanned.current = true;
-      finnhub.runFullScan(finnhub.apiKey, watchlist.fullWatchlist);
+      finnhub.runFullScan(watchlist.fullWatchlist);
     }
-  }, [finnhub.apiKey]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const value = { ...finnhub, ...watchlist };
 

@@ -9,20 +9,7 @@ export const WATCHLIST = [
   'SQ','PYPL','ROKU','ABNB','UBER','DASH','NET','CRWD',
 ];
 
-export const FALLBACK_DATA = [
-  {sym:'FFIE',price:0.42,change:67.2,score:91,rsi:28.3,rvol:4.2,macd:{histogram:0.015},signal:'STRONG BUY',entry:0.42,stop:0.32,target:0.72,rr:'3.0:1',bias:'LONG',hasCandles:false},
-  {sym:'MVTX',price:2.45,change:42.3,score:87,rsi:34.1,rvol:3.5,macd:{histogram:0.08},signal:'STRONG BUY',entry:2.45,stop:2.10,target:3.50,rr:'3.0:1',bias:'LONG',hasCandles:false},
-  {sym:'MULN',price:0.31,change:28.5,score:82,rsi:38.7,rvol:2.8,macd:{histogram:0.005},signal:'BUY',entry:0.31,stop:0.24,target:0.45,rr:'2.0:1',bias:'LONG',hasCandles:false},
-  {sym:'NKLA',price:0.85,change:-24.1,score:74,rsi:72.4,rvol:3.1,macd:{histogram:-0.03},signal:'STRONG SELL',entry:0.85,stop:1.02,target:0.51,rr:'3.0:1',bias:'SHORT',hasCandles:false},
-  {sym:'ATER',price:1.87,change:15.2,score:72,rsi:42.5,rvol:1.9,macd:{histogram:0.04},signal:'BUY',entry:1.87,stop:1.62,target:2.37,rr:'2.0:1',bias:'LONG',hasCandles:false},
-  {sym:'IONQ',price:28.40,change:8.3,score:68,rsi:55.2,rvol:1.6,macd:{histogram:0.42},signal:'BUY',entry:28.40,stop:26.10,target:33.00,rr:'2.0:1',bias:'LONG',hasCandles:false},
-  {sym:'AMC',price:4.12,change:-5.8,score:58,rsi:48.1,rvol:1.2,macd:{histogram:-0.08},signal:'HOLD',entry:null,stop:null,target:null,rr:null,bias:'NEUTRAL',hasCandles:false},
-  {sym:'GME',price:22.50,change:3.2,score:55,rsi:52.7,rvol:0.9,macd:{histogram:0.12},signal:'HOLD',entry:null,stop:null,target:null,rr:null,bias:'NEUTRAL',hasCandles:false},
-  {sym:'SOFI',price:8.42,change:1.5,score:52,rsi:56.3,rvol:0.8,macd:{histogram:0.03},signal:'HOLD',entry:null,stop:null,target:null,rr:null,bias:'LONG',hasCandles:false},
-  {sym:'PLTR',price:24.30,change:-2.1,score:45,rsi:61.8,rvol:0.7,macd:{histogram:-0.15},signal:'SELL',entry:24.30,stop:25.80,target:21.30,rr:'2.0:1',bias:'SHORT',hasCandles:false},
-  {sym:'TSLA',price:178.50,change:-1.2,score:42,rsi:58.4,rvol:0.6,macd:{histogram:-0.85},signal:'HOLD',entry:null,stop:null,target:null,rr:null,bias:'NEUTRAL',hasCandles:false},
-  {sym:'NVDA',price:875.20,change:0.8,score:38,rsi:64.2,rvol:0.5,macd:{histogram:1.2},signal:'HOLD',entry:null,stop:null,target:null,rr:null,bias:'NEUTRAL',hasCandles:false},
-];
+// No fallback data — all data comes from the server-side Finnhub proxy
 
 export const FRAMEWORK_STEPS = [
   {num:1, name:'Pre-Pump', tag:'The Quiet Accumulation', desc:'The stock is unknown. Insiders accumulate at rock-bottom prices. Volume is low, price is flat. Smart money is positioning while retail has no idea. The float is being quietly absorbed.', psych:'Insider Greed', vol:'Very Low', action:'Watch & Wait', risk:'Low', indicators:['Low RSI (20-35)', 'Flat EMA lines', 'RVOL < 0.5x', 'Tight Bollinger Bands'], details:'This is the accumulation phase. The stock trades in a tight range with minimal volume. Insiders and early-stage investors are building positions. The key tell is unusually tight Bollinger Bands combined with slowly rising OBV (On-Balance Volume). Most screeners will not flag these stocks because nothing is happening on the surface.'},

@@ -1,18 +1,18 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 
+const PROXY = '/.netlify/functions/finnhub-proxy';
 const profileCache = {};
 
-export function useStockProfile(symbol, apiKey) {
+export function useStockProfile(symbol) {
   const [profile, setProfile] = useState(profileCache[symbol] || null);
   const [loading, setLoading] = useState(!profileCache[symbol]);
 
   useEffect(() => {
     if (!symbol) return;
     if (profileCache[symbol]) { setProfile(profileCache[symbol]); setLoading(false); return; }
-    if (!apiKey) { setLoading(false); return; }
 
     setLoading(true);
-    fetch(`https://finnhub.io/api/v1/stock/profile2?symbol=${symbol}&token=${apiKey}`)
+    fetch(`${PROXY}?endpoint=profile&symbol=${symbol}`)
       .then(r => r.json())
       .then(data => {
         if (data && data.name) {
@@ -22,7 +22,7 @@ export function useStockProfile(symbol, apiKey) {
       })
       .catch(() => {})
       .finally(() => setLoading(false));
-  }, [symbol, apiKey]);
+  }, [symbol]);
 
   return { profile, loading };
 }

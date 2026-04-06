@@ -1,17 +1,17 @@
 import { useState, useCallback, useRef } from 'react';
-import { WATCHLIST, FALLBACK_DATA } from '../lib/constants';
+import { WATCHLIST } from '../lib/constants';
 import { calcRSI, calcMACD, calcRelativeVolume, axiarchScore, generateSignal, determineBias } from '../lib/indicators';
 
-async function finnhubQuote(symbol, key) {
-  const url = `https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${key}`;
-  const resp = await fetch(url);
+const PROXY = '/.netlify/functions/finnhub-proxy';
+
+async function proxyQuote(symbol) {
+  const resp = await fetch(`${PROXY}?endpoint=quote&symbol=${symbol}`);
   if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
   return await resp.json();
 }
 
-async function finnhubCandles(symbol, resolution, from, to, key) {
-  const url = `https://finnhub.io/api/v1/stock/candle?symbol=${symbol}&resolution=${resolution}&from=${from}&to=${to}&token=${key}`;
-  const resp = await fetch(url);
+async function proxyCandles(symbol, from, to) {
+  const resp = await fetch(`${PROXY}?endpoint=candles&symbol=${symbol}&from=${from}&to=${to}`);
   if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
   const data = await resp.json();
   if (data.s !== 'ok') return null;
@@ -49,35 +49,21 @@ function processQuotes(quotes, candleCache) {
 }
 
 export function useFinnhub() {
-  const [data, setData] = useState(FALLBACK_DATA);
-  const [dataSource, setDataSource] = useState('demo');
+  const [data, setData] = useState([]);
+  const [dataSource, setDataSource] = useState('loading');
   const [isScanning, setIsScanning] = useState(false);
-  const [scanStatus, setScanStatus] = useState('demo');
-  const [scanMessage, setScanMessage] = useState('DEMO DATA — Enter Finnhub API key for live data');
-  const [apiKey, setApiKey] = useState(() => localStorage.getItem('finnhub_key') || '');
+  const [scanStatus, setScanStatus] = useState('loading');
+  const [scanMessage, setScanMessage] = useState('Loading market data...');
   const candleCacheRef = useRef({});
 
-  const saveKey = useCallback((key) => {
-    setApiKey(key);
-    if (key) localStorage.setItem('finnhub_key', key);
-  }, []);
-
-  const runFullScan = useCallback(async (key, customTickerList) => {
-    const effectiveKey = key || apiKey;
-    if (!effectiveKey) {
-      setData(FALLBACK_DATA);
-      setDataSource('demo');
-      setScanStatus('demo');
-      setScanMessage('DEMO DATA — Enter Finnhub API key for live data');
-      return;
-    }
+  const runFullScan = useCallback(async (customTickerList) => {
     const tickersToScan = customTickerList || WATCHLIST;
 
     setIsScanning(true);
     setScanStatus('scanning');
 
     try {
-      // Phase 1: Fetch quotes
+      // Phase 1: Fetch quotes via proxy
       const results = [];
       const batchSize = 10;
       const delayMs = 1200;
@@ -85,7 +71,7 @@ export function useFinnhub() {
         const batch = tickersToScan.slice(i, i + batchSize);
         const promises = batch.map(async (sym) => {
           try {
-            const quote = await finnhubQuote(sym, effectiveKey);
+            const quote = await proxyQuote(sym);
             if (quote && quote.c > 0) return { symbol: sym, ...quote };
             return null;
           } catch { return null; }
@@ -99,7 +85,7 @@ export function useFinnhub() {
 
       if (results.length === 0) throw new Error('No valid quotes returned');
 
-      // Phase 2: Fetch candle data
+      // Phase 2: Fetch candle data via proxy
       const syms = results.map(q => q.symbol);
       const now = Math.floor(Date.now() / 1000);
       const from = now - 45 * 86400;
@@ -109,7 +95,7 @@ export function useFinnhub() {
         const batch = syms.slice(i, i + candleBatchSize);
         const promises = batch.map(async (sym) => {
           try {
-            const candles = await finnhubCandles(sym, 'D', from, now, effectiveKey);
+            const candles = await proxyCandles(sym, from, now);
             if (candles) candleCacheRef.current[sym] = candles;
           } catch { /* skip */ }
         });
@@ -127,14 +113,13 @@ export function useFinnhub() {
       setScanMessage(`LIVE · ${processed.length} stocks · ${withTA} with TA · ${new Date().toLocaleTimeString()}`);
     } catch (err) {
       console.error('Scan failed:', err);
-      setData(prev => prev.length > 0 ? prev : FALLBACK_DATA);
-      setDataSource('demo');
+      setDataSource('error');
       setScanStatus('error');
-      setScanMessage(`Scan failed: ${err.message}. Check API key.`);
+      setScanMessage(`Scan failed: ${err.message}`);
     }
 
     setIsScanning(false);
-  }, [apiKey]);
+  }, []);
 
   return {
     data,
@@ -142,8 +127,6 @@ export function useFinnhub() {
     isScanning,
     scanStatus,
     scanMessage,
-    apiKey,
-    saveKey,
     runFullScan,
     candleCache: candleCacheRef.current,
   };

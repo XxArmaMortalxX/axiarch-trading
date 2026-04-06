@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement } from 'chart.js';
 import { Doughnut, Bar } from 'react-chartjs-2';
 import { useFinnhubContext } from '../context/FinnhubContext';
@@ -9,14 +9,8 @@ import { fmtPrice } from '../lib/indicators';
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement);
 
 export default function Dashboard() {
-  const { data, dataSource, isScanning, scanStatus, scanMessage, apiKey, saveKey, runFullScan } = useFinnhubContext();
+  const { data, dataSource, isScanning, scanStatus, scanMessage, runFullScan } = useFinnhubContext();
   const stats = useAxiarchScore(data);
-  const [keyInput, setKeyInput] = useState(apiKey);
-
-  const handleConnect = () => {
-    const key = keyInput.trim();
-    if (key) { saveKey(key); runFullScan(key); }
-  };
 
   // Top signals
   const topSignals = [...data].filter(t => t.signal !== 'HOLD').sort((a, b) => b.score - a.score).slice(0, 7);
@@ -79,15 +73,6 @@ export default function Dashboard() {
     </section>
 
     <section>
-
-      {!apiKey && (
-        <div className="api-bar" style={{ marginTop: '1.5rem' }}>
-          <label>Finnhub API Key:</label>
-          <input type="text" value={keyInput} onChange={e => setKeyInput(e.target.value)} placeholder="sk_live_xxxxxxxxxxxxxxxx" onKeyDown={e => e.key === 'Enter' && handleConnect()} />
-          <button onClick={handleConnect} disabled={isScanning} className="btn-primary" style={{ width: 'auto' }}>Connect</button>
-          <a href="https://finnhub.io/register" className="help-link" target="_blank" rel="noopener noreferrer">Get free key &rarr;</a>
-        </div>
-      )}
 
       {/* Stats bar */}
       <div style={{ display: 'flex', gap: '2rem', marginTop: '2rem', flexWrap: 'wrap' }}>

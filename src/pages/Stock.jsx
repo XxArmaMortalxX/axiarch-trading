@@ -45,11 +45,13 @@ function ScoreBreakdownBar({ label, pct, weight }) {
   );
 }
 
+const PROXY = '/.netlify/functions/finnhub-proxy';
+
 export default function Stock() {
   const { symbol } = useParams();
   const sym = symbol.toUpperCase();
-  const { data, apiKey, candleCache } = useFinnhubContext();
-  const { profile } = useStockProfile(sym, apiKey);
+  const { data, candleCache } = useFinnhubContext();
+  const { profile } = useStockProfile(sym);
   const [localCandles, setLocalCandles] = useState(null);
   const [localQuote, setLocalQuote] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -58,17 +60,15 @@ export default function Stock() {
   const cachedTicker = data.find(t => t.sym === sym);
   const candles = candleCache[sym] || localCandles;
 
-  // Fetch quote + candles if not in cache
+  // Fetch quote + candles via proxy if not in cache
   useEffect(() => {
     let cancelled = false;
 
     async function fetchData() {
-      if (!apiKey) { setLoading(false); return; }
-
       try {
         // Fetch quote if not in scanned data
         if (!cachedTicker) {
-          const qRes = await fetch(`https://finnhub.io/api/v1/quote?symbol=${sym}&token=${apiKey}`);
+          const qRes = await fetch(`${PROXY}?endpoint=quote&symbol=${sym}`);
           const q = await qRes.json();
           if (!cancelled && q && q.c > 0) {
             setLocalQuote({
@@ -82,7 +82,7 @@ export default function Stock() {
         if (!candleCache[sym] && !localCandles) {
           const now = Math.floor(Date.now() / 1000);
           const from = now - 45 * 86400;
-          const cRes = await fetch(`https://finnhub.io/api/v1/stock/candle?symbol=${sym}&resolution=D&from=${from}&to=${now}&token=${apiKey}`);
+          const cRes = await fetch(`${PROXY}?endpoint=candles&symbol=${sym}&from=${from}&to=${now}`);
           const d = await cRes.json();
           if (!cancelled && d.s === 'ok') {
             setLocalCandles({ c: d.c, h: d.h, l: d.l, o: d.o, v: d.v, t: d.t });
@@ -98,9 +98,9 @@ export default function Stock() {
     setLoading(true);
     fetchData();
     return () => { cancelled = true; };
-  }, [sym, apiKey]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [sym]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Merge data: prefer cached scan data, fall back to local fetch, then fallback demo
+  // Merge data: prefer cached scan data, fall back to local fetch
   const ticker = cachedTicker || localQuote || data.find(t => t.sym === sym);
 
   // Set page title + OG tags for social sharing
@@ -191,12 +191,12 @@ export default function Stock() {
         </div>
       )}
 
-      {/* No API key and no cached data */}
-      {!loading && !ticker && !apiKey && (
+      {/* No data available */}
+      {!loading && !ticker && !candles && (
         <div style={{ textAlign: 'center', padding: '3rem 2rem' }}>
           <h2 style={{ fontFamily: 'var(--font-mono)', fontSize: '1.8rem', fontWeight: 800, color: 'var(--accent-green)', marginBottom: '0.5rem' }}>${sym}</h2>
-          <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>Connect your Finnhub API key to view live data for this stock.</p>
-          <Link to="/screener" className="btn-primary">Go to Screener to Connect</Link>
+          <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>Unable to load data for this ticker. It may not be available.</p>
+          <Link to="/screener" className="btn-primary">Back to Screener</Link>
         </div>
       )}
 
@@ -238,7 +238,7 @@ export default function Stock() {
         </div>
       ) : (
         <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: '3rem', textAlign: 'center', color: 'var(--text-muted)', marginBottom: '1.5rem', fontSize: '0.85rem' }}>
-          {apiKey ? 'Loading chart data...' : 'Connect Finnhub API key on the Screener to view price charts'}
+          Loading chart data...
         </div>
       )}
 
