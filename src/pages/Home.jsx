@@ -41,7 +41,7 @@ export default function Home() {
         <div className="hero-grid" />
 
         <div className="section-label" style={{ position: 'relative', zIndex: 2 }}>Algorithmic Trading Intelligence</div>
-        <h1 className="section-title" style={{ fontSize: 'clamp(2.2rem, 5vw, 3.8rem)', maxWidth: '780px', position: 'relative', zIndex: 2 }}>
+        <h1 className="section-title hero-headline">
           Stop Guessing. <span style={{ color: 'var(--accent-green)' }}>Start Trading with Data.</span>
         </h1>
         <p className="section-subtitle" style={{ maxWidth: '640px', marginTop: '1rem', position: 'relative', zIndex: 2 }}>
@@ -101,7 +101,7 @@ export default function Home() {
           ))}
         </div>
 
-        <div style={{ textAlign: 'center', marginTop: '2.5rem' }}>
+        <div className="section-centered" style={{ marginTop: 'var(--space-10)' }}>
           <Link to="/methodology" className="btn-secondary">Deep Dive into the Algorithm &rarr;</Link>
         </div>
       </section>
@@ -123,35 +123,34 @@ export default function Home() {
       </section>
 
       {/* SOCIAL PROOF */}
-      <section style={{ textAlign: 'center' }}>
+      <section className="section-centered">
         <div className="section-label" style={{ justifyContent: 'center' }}>Trusted by Traders</div>
         <h2 className="section-title">Real Results. Real Traders.</h2>
-        <div style={{ display: 'flex', gap: '2rem', margin: '0 auto', justifyContent: 'center', flexWrap: 'wrap', marginTop: '1rem' }}>
-          <div className="hero-stat" style={{ borderColor: 'var(--accent-green)', textAlign: 'center' }}>
+
+        <div className="social-proof-row">
+          <div className="hero-stat" style={{ borderColor: 'var(--accent-green)' }}>
             <div className="hero-stat-value">1,200+</div>
             <div className="hero-stat-label">Active Members</div>
           </div>
-          <div className="hero-stat" style={{ borderColor: 'var(--accent-green)', textAlign: 'center' }}>
+          <div className="hero-stat" style={{ borderColor: 'var(--accent-green)' }}>
             <div className="hero-stat-value">67%</div>
             <div className="hero-stat-label">Win Rate</div>
           </div>
-          <div className="hero-stat" style={{ borderColor: 'var(--accent-green)', textAlign: 'center' }}>
+          <div className="hero-stat" style={{ borderColor: 'var(--accent-green)' }}>
             <div className="hero-stat-value">+24.8%</div>
             <div className="hero-stat-label">Best Single Pick</div>
           </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', marginTop: '2.5rem', maxWidth: '960px', marginLeft: 'auto', marginRight: 'auto' }}>
+        <div className="testimonials-grid">
           {TESTIMONIALS.map((t, i) => (
-            <div key={i} style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: '1.5rem', textAlign: 'left' }}>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', lineHeight: 1.65, fontStyle: 'italic', marginBottom: '1rem' }}>"{t.quote}"</p>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--accent-green-dim)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', fontWeight: 700, color: 'var(--accent-green)' }}>
-                  {t.name.charAt(0)}
-                </div>
+            <div className="testimonial-card" key={i}>
+              <p className="testimonial-quote">"{t.quote}"</p>
+              <div className="testimonial-author">
+                <div className="testimonial-avatar">{t.name.charAt(0)}</div>
                 <div>
-                  <div style={{ fontSize: '0.82rem', fontWeight: 600 }}>{t.name}</div>
-                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{t.detail}</div>
+                  <div className="testimonial-name">{t.name}</div>
+                  <div className="testimonial-detail">{t.detail}</div>
                 </div>
               </div>
             </div>
@@ -160,32 +159,31 @@ export default function Home() {
       </section>
 
       {/* SIGNUP */}
-      <section style={{ textAlign: 'center' }}>
+      <section className="section-centered">
         <div className="section-label" style={{ justifyContent: 'center' }}>Get Started</div>
         <h2 className="section-title">Get Daily Picks Before the Bell</h2>
         <p className="section-subtitle" style={{ margin: '0 auto 2rem' }}>
           Join thousands of traders receiving algorithmically scored picks every morning. Free during beta.
         </p>
 
-        <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '2rem' }}>
+        <div className="cta-row" style={{ marginBottom: 'var(--space-8)' }}>
           <a
             href="https://t.me/axiarchtradebot"
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-primary"
-            style={{ fontSize: '1rem', padding: '0.85rem 2.2rem' }}
+            className="btn-primary btn-lg"
           >
             Join Telegram Channel
           </a>
         </div>
 
-        <div style={{ maxWidth: '440px', margin: '0 auto', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: '1.5rem' }}>
-          <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>Or get picks delivered to your inbox:</p>
+        <div className="signup-card">
+          <p className="signup-card-subtitle">Or get picks delivered to your inbox:</p>
           {emailStatus === 'success' ? (
-            <div style={{ padding: '1.5rem', textAlign: 'center' }}>
-              <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>&#10003;</div>
-              <div style={{ fontWeight: 700, fontSize: '1rem', marginBottom: '0.3rem', color: 'var(--accent-green)' }}>You're in!</div>
-              <div style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>Daily picks will hit your inbox at 8:30 AM ET.</div>
+            <div className="signup-success">
+              <div className="signup-success-icon">&#10003;</div>
+              <div className="signup-success-title">You're in!</div>
+              <div className="signup-success-desc">Daily picks will hit your inbox at 8:30 AM ET.</div>
             </div>
           ) : (
           <form
@@ -202,47 +200,28 @@ export default function Home() {
                 setEmailStatus('success');
               }).catch(() => setEmailStatus('error'));
             }}
-            style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}
+            className="signup-form"
           >
-            <input
-              type="email"
-              name="email"
-              required
-              placeholder="your@email.com"
-              style={{
-                flex: '1 1 200px',
-                minWidth: 0,
-                padding: '0.7rem 1rem',
-                background: 'var(--bg-primary)',
-                border: '1px solid var(--border)',
-                borderRadius: 'var(--radius)',
-                color: 'var(--text-primary)',
-                fontFamily: 'var(--font-body)',
-                fontSize: '0.88rem',
-                outline: 'none',
-              }}
-            />
-            <button type="submit" className="btn-primary" style={{ whiteSpace: 'nowrap' }} disabled={emailStatus === 'sending'}>
+            <input type="email" name="email" required placeholder="your@email.com" className="signup-input" />
+            <button type="submit" className="btn-primary" disabled={emailStatus === 'sending'}>
               {emailStatus === 'sending' ? 'Sending...' : 'Subscribe'}
             </button>
           </form>
           )}
-          {emailStatus === 'error' && <p style={{ fontSize: '0.75rem', color: 'var(--accent-red)', marginTop: '0.5rem' }}>Something went wrong. Try again.</p>}
+          {emailStatus === 'error' && <p className="signup-error">Something went wrong. Try again.</p>}
           {emailStatus !== 'success' && (
-            <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '0.75rem' }}>
-              Free forever. No spam. Unsubscribe anytime.
-            </p>
+            <p className="signup-fine-print">Free forever. No spam. Unsubscribe anytime.</p>
           )}
         </div>
       </section>
 
       {/* CTA */}
-      <section style={{ textAlign: 'center' }}>
+      <section className="section-centered">
         <h2 className="section-title">Ready to Trade Smarter?</h2>
         <p className="section-subtitle" style={{ margin: '0 auto 2rem' }}>
           Start free with demo data, or connect your Finnhub key for real-time analysis across 65+ tickers.
         </p>
-        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+        <div className="cta-row">
           <Link to="/screener" className="btn-primary">Try the Screener Free</Link>
           <Link to="/pricing" className="btn-secondary">View Pricing Plans</Link>
         </div>

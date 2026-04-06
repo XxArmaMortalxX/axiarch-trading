@@ -71,7 +71,7 @@ export default function Methodology() {
             <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, var(--accent-blue), transparent)' }} />
             <div className="pipeline-number">Stage {stage.num}</div>
             <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', fontWeight: 700, marginBottom: '0.3rem' }}>{stage.title}</h3>
-            <p style={{ color: 'var(--accent-gold)', fontFamily: 'var(--font-mono)', fontSize: '0.72rem', marginBottom: '1rem', letterSpacing: '0.03em' }}>{stage.subtitle}</p>
+            <p style={{ color: 'var(--accent-amber)', fontFamily: 'var(--font-mono)', fontSize: '0.72rem', marginBottom: '1rem', letterSpacing: '0.03em' }}>{stage.subtitle}</p>
             <p style={{ color: 'var(--text-secondary)', lineHeight: 1.65, fontSize: '0.9rem', marginBottom: '1.5rem' }}>{stage.content}</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
               {stage.details.map((detail, j) => (

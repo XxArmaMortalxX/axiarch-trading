@@ -143,29 +143,23 @@ export default function Watchlist() {
               onKeyDown={e => e.key === 'Enter' && handleAdd()}
               className="watchlist-add-input"
             />
-            <button onClick={handleAdd} className="btn-primary" style={{ padding: '0.55rem 1.2rem' }}>
+            <button onClick={handleAdd} className="btn-primary btn-sm">
               Add to Watchlist
             </button>
           </div>
 
           <div className="watchlist-toolbar">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <div className="nav-actions">
               {customTickers.length > 0 && (
                 <>
                   <button
                     onClick={() => runFullScan(customTickers)}
                     disabled={isScanning}
-                    className="btn-secondary"
-                    style={{ padding: '0.4rem 0.9rem', fontSize: 'var(--text-sm)' }}
+                    className="btn-secondary btn-sm"
                   >
                     {isScanning ? 'Scanning...' : `Scan ${customTickers.length} Ticker${customTickers.length === 1 ? '' : 's'}`}
                   </button>
-                  <button
-                    onClick={clearCustom}
-                    style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: 'var(--text-xs)', cursor: 'pointer', textDecoration: 'underline' }}
-                  >
-                    Clear all
-                  </button>
+                  <button onClick={clearCustom} className="btn-text-link">Clear all</button>
                 </>
               )}
             </div>
@@ -187,7 +181,7 @@ export default function Watchlist() {
           </div>
 
           {isScanning && (
-            <div style={{ fontSize: 'var(--text-xs)', color: 'var(--accent-cyan)', marginTop: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+            <div className="scan-status">
               <span className="spinner" /> {scanMessage}
             </div>
           )}

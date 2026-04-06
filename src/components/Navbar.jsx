@@ -35,29 +35,19 @@ export default function Navbar() {
           </Link>
         ))}
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+      <div className="nav-actions">
         {isLoggedIn ? (
-          <div style={{ position: 'relative' }}>
-            <div className="user-avatar" onClick={logout} title={`${user.email} — click to logout`}>
-              {user.initial}
-            </div>
+          <div className="user-avatar" onClick={logout} title={`${user.email} — click to logout`}>
+            {user.initial}
           </div>
         ) : (
-          <button onClick={() => setShowAuth(true)} className="nav-cta" style={{ background: 'none', cursor: 'pointer' }}>Sign In</button>
+          <button onClick={() => setShowAuth(true)} className="nav-cta">Sign In</button>
         )}
         <Link to="/pricing" className="nav-cta">Pricing</Link>
-        <button
-          onClick={toggle}
-          title={isDark ? 'Light mode' : 'Dark mode'}
-          style={{ background: 'none', border: '1px solid var(--border)', color: 'var(--text-secondary)', borderRadius: '6px', padding: '0.3rem 0.5rem', cursor: 'pointer', fontSize: '0.9rem', lineHeight: 1 }}
-        >
+        <button onClick={toggle} title={isDark ? 'Light mode' : 'Dark mode'} className="nav-icon-btn">
           {isDark ? '\u2600\uFE0F' : '\uD83C\uDF19'}
         </button>
-        <button
-          id="mobileMenuBtn"
-          onClick={() => setMobileOpen(o => !o)}
-          style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', fontSize: '1.2rem', cursor: 'pointer' }}
-        >
+        <button id="mobileMenuBtn" onClick={() => setMobileOpen(o => !o)} className="nav-icon-btn nav-icon-btn--borderless">
           {mobileOpen ? '\u2715' : '\u2630'}
         </button>
       </div>
