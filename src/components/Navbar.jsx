@@ -11,9 +11,7 @@ export default function Navbar() {
     { to: '/', label: 'Home' },
     { to: '/screener', label: 'Screener' },
     { to: '/dashboard', label: 'Dashboard' },
-    { to: '/calculator', label: 'RCT Calc' },
-    { to: '/framework', label: 'Framework' },
-    { to: '/methodology', label: 'How It Works' },
+    { to: '/calculator', label: 'Calculator' },
     { to: '/blog', label: 'Learn' },
   ];
 

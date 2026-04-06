@@ -243,7 +243,7 @@ export default function Stock() {
       )}
 
       {/* Key Stats */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '0.75rem', marginBottom: '1.5rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: '0.6rem', marginBottom: '1.5rem' }}>
         <StatCard label="Open" value={fmtPrice(ticker?.open)} />
         <StatCard label="High" value={fmtPrice(ticker?.high)} />
         <StatCard label="Low" value={fmtPrice(ticker?.low)} />
@@ -259,7 +259,7 @@ export default function Stock() {
         <span style={{ width: '24px', height: '1px', background: 'var(--accent-green)', display: 'inline-block' }} />
         Technical Analysis
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0.75rem', marginBottom: '1.5rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '0.6rem', marginBottom: '1.5rem' }}>
         <IndicatorCard
           label="RSI (14)"
           value={rsi ? rsi.toFixed(1) : '—'}
@@ -338,7 +338,7 @@ export default function Stock() {
       {ticker?.entry && (
         <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: '1.2rem', marginBottom: '1.5rem' }}>
           <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem' }}>Trade Plan</div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem', textAlign: 'center' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))', gap: '0.8rem', textAlign: 'center' }}>
             <div>
               <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', marginBottom: '0.3rem' }}>Signal</div>
               <SignalBadge signal={ticker.signal} />

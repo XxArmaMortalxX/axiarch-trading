@@ -35,7 +35,7 @@ export default function Home() {
   return (
     <>
       {/* HERO */}
-      <section id="hero" style={{ paddingTop: '9rem', paddingBottom: '5rem', minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', borderBottom: 'none', overflow: 'hidden' }}>
+      <section id="hero" style={{ paddingTop: '7rem', paddingBottom: '4rem', minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', borderBottom: 'none', overflow: 'hidden' }}>
         <div className="hero-bg" />
         <div className="hero-glow" />
         <div className="hero-grid" />
@@ -202,7 +202,7 @@ export default function Home() {
                 setEmailStatus('success');
               }).catch(() => setEmailStatus('error'));
             }}
-            style={{ display: 'flex', gap: '0.5rem' }}
+            style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}
           >
             <input
               type="email"
@@ -210,7 +210,8 @@ export default function Home() {
               required
               placeholder="your@email.com"
               style={{
-                flex: 1,
+                flex: '1 1 200px',
+                minWidth: 0,
                 padding: '0.7rem 1rem',
                 background: 'var(--bg-primary)',
                 border: '1px solid var(--border)',
