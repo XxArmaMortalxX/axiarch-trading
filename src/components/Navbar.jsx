@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../hooks/useTheme';
 import { useAuth } from '../context/AuthContext';
-import { useFinnhubContext } from '../context/FinnhubContext';
 import AuthModal from './AuthModal';
 
 export default function Navbar() {
@@ -11,14 +10,11 @@ export default function Navbar() {
   const location = useLocation();
   const { isDark, toggle } = useTheme();
   const { user, isLoggedIn, logout } = useAuth();
-  const { customTickers } = useFinnhubContext();
-
-  const watchlistCount = customTickers?.length || 0;
 
   const links = [
     { to: '/', label: 'Home' },
     { to: '/screener', label: 'Screener' },
-    { to: '/watchlist', label: watchlistCount > 0 ? `Watchlist (${watchlistCount})` : 'Watchlist' },
+    { to: '/watchlist', label: 'Watchlist' },
     { to: '/dashboard', label: 'Dashboard' },
     { to: '/blog', label: 'Learn' },
   ];
