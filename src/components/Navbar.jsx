@@ -35,7 +35,7 @@ export default function Navbar() {
         <button
           id="mobileMenuBtn"
           onClick={() => setMobileOpen(o => !o)}
-          style={{ display: 'none', background: 'none', border: 'none', color: 'var(--text-secondary)', fontSize: '1.2rem', cursor: 'pointer' }}
+          style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', fontSize: '1.2rem', cursor: 'pointer' }}
         >
           {mobileOpen ? '\u2715' : '\u2630'}
         </button>

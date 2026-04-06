@@ -1,0 +1,22 @@
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+
+const META = {
+  '/': { title: 'Axiarch — Algorithmic Day Trading Intelligence', description: 'Real-time technical analysis engine scanning 65+ stocks with RSI, EMA, MACD, Bollinger Bands, ATR, and VWAP. BUY/SELL signals with entry, stop-loss, and profit targets.' },
+  '/screener': { title: 'Live Stock Screener — Axiarch', description: 'Scan 65+ stocks in real-time with 6 technical indicators. Multi-factor scoring, signal generation, and ATR-based trade plans.' },
+  '/dashboard': { title: 'Signals Dashboard — Axiarch', description: 'Top-ranked trade signals, market-wide signal distribution, RSI breakdown, and active alerts from indicator confluence.' },
+  '/calculator': { title: 'Risk Calculator — Axiarch', description: 'Position sizing and risk management calculator. Entry, stop-loss, and multi-target profit levels with precise risk-reward ratios.' },
+  '/framework': { title: 'Price Cycle Framework — Axiarch', description: 'The 7-stage pennystocking lifecycle. Understand where a stock is in its psychological cycle to time entries and exits.' },
+  '/methodology': { title: 'How It Works — Axiarch', description: 'Deep dive into the 4-stage algorithm pipeline: data collection, indicator calculation, multi-factor scoring, and signal generation.' },
+  '/pricing': { title: 'Pricing — Axiarch', description: 'Free demo scanning, Pro real-time analysis, and Institutional plans. All plans include the complete technical analysis indicator suite.' },
+};
+
+export default function usePageMeta() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    const meta = META[pathname] || META['/'];
+    document.title = meta.title;
+    const desc = document.querySelector('meta[name="description"]');
+    if (desc) desc.setAttribute('content', meta.description);
+  }, [pathname]);
+}

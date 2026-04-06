@@ -49,9 +49,11 @@ export default function Pricing() {
             </ul>
 
             {plan.name === 'Institutional' ? (
-              <a href="mailto:hello@axiarch.dev" className="btn-secondary" style={{ display: 'block', textAlign: 'center', width: '100%' }}>{plan.cta}</a>
+              <a href="https://t.me/axiarchtradebot" target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ display: 'block', textAlign: 'center', width: '100%' }}>{plan.cta}</a>
+            ) : plan.name === 'Free' ? (
+              <Link to="/screener" className="btn-secondary" style={{ display: 'block', textAlign: 'center', width: '100%' }}>{plan.cta}</Link>
             ) : (
-              <Link to="/screener" className={plan.highlighted ? 'btn-primary' : 'btn-secondary'} style={{ display: 'block', textAlign: 'center', width: '100%' }}>{plan.cta}</Link>
+              <a href="https://t.me/axiarchtradebot" target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ display: 'block', textAlign: 'center', width: '100%' }}>{plan.cta}</a>
             )}
           </div>
         ))}

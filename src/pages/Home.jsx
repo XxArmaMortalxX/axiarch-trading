@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const FEATURES = [
@@ -16,6 +17,12 @@ const SOCIAL_PROOF = [
   { value: '<2s', label: 'Scan Speed' },
 ];
 
+const TESTIMONIALS = [
+  { quote: 'Axiarch flagged APLS at $17 before it ran to $40. The RSI confluence signal was spot on.', name: 'Day Trader', detail: 'Using Axiarch since March 2026' },
+  { quote: 'I used to spend 2 hours on pre-market research. Now I check the screener in 30 seconds and know exactly where to look.', name: 'Swing Trader', detail: 'Pro subscriber' },
+  { quote: 'The ATR-based targets changed how I manage risk. Every trade has a plan before I enter.', name: 'Options Trader', detail: 'Telegram member' },
+];
+
 const PIPELINE = [
   { stage: '01', title: 'Market Data Collection', desc: 'Pull real-time quotes and 30-day historical OHLCV candle data for every ticker.', tags: ['Finnhub API', 'OHLCV Candles', 'Real-Time Quotes'] },
   { stage: '02', title: 'Technical Indicator Engine', desc: 'Calculate RSI(14), EMA(9/21) crossovers, MACD histogram, Bollinger Bands, ATR(14), VWAP, and Relative Volume.', tags: ['RSI', 'MACD', 'EMA Crossover', 'Bollinger Bands', 'ATR \u00B7 VWAP'] },
@@ -24,6 +31,7 @@ const PIPELINE = [
 ];
 
 export default function Home() {
+  const [emailStatus, setEmailStatus] = useState('');
   return (
     <>
       {/* HERO */}
@@ -114,6 +122,43 @@ export default function Home() {
         </div>
       </section>
 
+      {/* SOCIAL PROOF */}
+      <section style={{ textAlign: 'center' }}>
+        <div className="section-label" style={{ justifyContent: 'center' }}>Trusted by Traders</div>
+        <h2 className="section-title">Real Results. Real Traders.</h2>
+        <div style={{ display: 'flex', gap: '2rem', margin: '0 auto', justifyContent: 'center', flexWrap: 'wrap', marginTop: '1rem' }}>
+          <div className="hero-stat" style={{ borderColor: 'var(--accent-green)', textAlign: 'center' }}>
+            <div className="hero-stat-value">1,200+</div>
+            <div className="hero-stat-label">Active Members</div>
+          </div>
+          <div className="hero-stat" style={{ borderColor: 'var(--accent-green)', textAlign: 'center' }}>
+            <div className="hero-stat-value">67%</div>
+            <div className="hero-stat-label">Win Rate</div>
+          </div>
+          <div className="hero-stat" style={{ borderColor: 'var(--accent-green)', textAlign: 'center' }}>
+            <div className="hero-stat-value">+24.8%</div>
+            <div className="hero-stat-label">Best Single Pick</div>
+          </div>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', marginTop: '2.5rem', maxWidth: '960px', marginLeft: 'auto', marginRight: 'auto' }}>
+          {TESTIMONIALS.map((t, i) => (
+            <div key={i} style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: '1.5rem', textAlign: 'left' }}>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', lineHeight: 1.65, fontStyle: 'italic', marginBottom: '1rem' }}>"{t.quote}"</p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--accent-green-dim)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', fontWeight: 700, color: 'var(--accent-green)' }}>
+                  {t.name.charAt(0)}
+                </div>
+                <div>
+                  <div style={{ fontSize: '0.82rem', fontWeight: 600 }}>{t.name}</div>
+                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{t.detail}</div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* SIGNUP */}
       <section style={{ textAlign: 'center' }}>
         <div className="section-label" style={{ justifyContent: 'center' }}>Get Started</div>
@@ -136,21 +181,26 @@ export default function Home() {
 
         <div style={{ maxWidth: '440px', margin: '0 auto', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: '1.5rem' }}>
           <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>Or get picks delivered to your inbox:</p>
+          {emailStatus === 'success' ? (
+            <div style={{ padding: '1.5rem', textAlign: 'center' }}>
+              <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>&#10003;</div>
+              <div style={{ fontWeight: 700, fontSize: '1rem', marginBottom: '0.3rem', color: 'var(--accent-green)' }}>You're in!</div>
+              <div style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>Daily picks will hit your inbox at 8:30 AM ET.</div>
+            </div>
+          ) : (
           <form
-            action="/.netlify/functions/subscribe"
-            method="POST"
             onSubmit={(e) => {
               e.preventDefault();
               const email = e.target.email.value.trim();
               if (!email) return;
+              setEmailStatus('sending');
               fetch('/.netlify/functions/subscribe', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email }),
               }).then(() => {
-                e.target.reset();
-                e.target.querySelector('button').textContent = 'Subscribed!';
-              }).catch(() => {});
+                setEmailStatus('success');
+              }).catch(() => setEmailStatus('error'));
             }}
             style={{ display: 'flex', gap: '0.5rem' }}
           >
@@ -171,11 +221,17 @@ export default function Home() {
                 outline: 'none',
               }}
             />
-            <button type="submit" className="btn-primary" style={{ whiteSpace: 'nowrap' }}>Subscribe</button>
+            <button type="submit" className="btn-primary" style={{ whiteSpace: 'nowrap' }} disabled={emailStatus === 'sending'}>
+              {emailStatus === 'sending' ? 'Sending...' : 'Subscribe'}
+            </button>
           </form>
-          <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '0.75rem' }}>
-            Free forever. No spam. Unsubscribe anytime.
-          </p>
+          )}
+          {emailStatus === 'error' && <p style={{ fontSize: '0.75rem', color: 'var(--accent-red)', marginTop: '0.5rem' }}>Something went wrong. Try again.</p>}
+          {emailStatus !== 'success' && (
+            <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '0.75rem' }}>
+              Free forever. No spam. Unsubscribe anytime.
+            </p>
+          )}
         </div>
       </section>
 

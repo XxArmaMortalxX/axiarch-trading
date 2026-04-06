@@ -18,9 +18,8 @@ export default function Calculator() {
   const maxProfit = (t3 - entry) * inputs.shares;
 
   return (
-    <>
+    <div className="page-fullbg page-fullbg-calculator">
     <section className="page-hero">
-      <div className="hero-bg-calculator" />
       <div className="section-label">Tools</div>
       <h2 className="section-title">Position Sizing & Risk Management</h2>
       <p className="section-subtitle">Enter candle data to calculate entry, stop-loss, and profit targets with precise risk-reward ratios.</p>
@@ -91,6 +90,6 @@ export default function Calculator() {
         </div>
       </div>
     </section>
-    </>
+    </div>
   );
 }

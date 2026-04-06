@@ -40,13 +40,24 @@ export default function Screener() {
 
       <section>
 
+        {/* Demo banner when no API key */}
+        {!apiKey && (
+          <div style={{ background: 'var(--accent-green-dim)', border: '1px solid rgba(0,230,118,0.15)', borderRadius: 'var(--radius-lg)', padding: '1.25rem 1.5rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+            <div>
+              <div style={{ fontWeight: 700, fontSize: '0.9rem', marginBottom: '0.25rem' }}>You're viewing demo data</div>
+              <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Connect a free Finnhub API key to scan 65+ stocks with live market data and real-time indicators.</div>
+            </div>
+            <a href="https://finnhub.io/register" className="btn-primary" target="_blank" rel="noopener noreferrer" style={{ whiteSpace: 'nowrap', fontSize: '0.8rem', padding: '0.5rem 1.2rem' }}>Get Free API Key</a>
+          </div>
+        )}
+
         <div className="api-bar">
           <label>Finnhub API Key:</label>
           <input
             type="text"
             value={keyInput}
             onChange={e => setKeyInput(e.target.value)}
-            placeholder="sk_live_xxxxxxxxxxxxxxxx"
+            placeholder="Paste your free Finnhub key here..."
             onKeyDown={e => e.key === 'Enter' && handleConnect()}
           />
           <button onClick={handleConnect} disabled={isScanning} className="btn-primary" style={{ width: 'auto' }}>
@@ -54,15 +65,24 @@ export default function Screener() {
           </button>
           <a href="https://finnhub.io/register" className="help-link" target="_blank" rel="noopener noreferrer">Get free key &rarr;</a>
           <span className={`api-status ${apiKey ? 'connected' : 'disconnected'}`}>
-            {apiKey ? 'CONNECTED' : 'NO KEY'}
+            {apiKey ? 'CONNECTED' : 'DEMO'}
           </span>
         </div>
 
-        <div style={{ fontSize: '0.72rem', color: statusColor, marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <div style={{ fontSize: '0.72rem', color: statusColor, marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           {scanStatus === 'scanning' && <span className="spinner" />}
           {scanStatus === 'live' && <span className="live-dot" />}
           {scanMessage}
         </div>
+        {isScanning && (() => {
+          const match = scanMessage.match(/(\d+)%/);
+          const pct = match ? parseInt(match[1]) : 0;
+          return (
+            <div className="scan-progress" style={{ marginBottom: '1rem' }}>
+              <div className="scan-progress-fill" style={{ width: `${pct}%` }} />
+            </div>
+          );
+        })()}
 
         <div className="screener-container">
           <div className="screener-toolbar">
