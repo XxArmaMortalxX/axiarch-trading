@@ -50,7 +50,8 @@ const PROXY = '/.netlify/functions/finnhub-proxy';
 export default function Stock() {
   const { symbol } = useParams();
   const sym = symbol.toUpperCase();
-  const { data, candleCache } = useFinnhubContext();
+  const { data, candleCache, customTickers, addTicker, removeTicker } = useFinnhubContext();
+  const isWatchlisted = customTickers.includes(sym);
   const { profile } = useStockProfile(sym);
   const [localCandles, setLocalCandles] = useState(null);
   const [localQuote, setLocalQuote] = useState(null);
@@ -178,10 +179,19 @@ export default function Stock() {
 
   return (
     <section style={{ maxWidth: '960px' }}>
-      {/* Back */}
-      <Link to="/screener" style={{ color: 'var(--accent-green)', textDecoration: 'none', fontSize: '0.82rem', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '0.3rem', marginBottom: '1.5rem' }}>
-        &larr; Back to Screener
-      </Link>
+      {/* Back + Watchlist toggle */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
+        <Link to="/screener" style={{ color: 'var(--accent-green)', textDecoration: 'none', fontSize: '0.82rem', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
+          &larr; Back to Screener
+        </Link>
+        <button
+          onClick={() => isWatchlisted ? removeTicker(sym) : addTicker(sym)}
+          className={isWatchlisted ? 'btn-secondary' : 'btn-primary'}
+          style={{ padding: '0.4rem 1rem', fontSize: 'var(--text-sm)' }}
+        >
+          {isWatchlisted ? 'Remove from Watchlist' : '+ Add to Watchlist'}
+        </button>
+      </div>
 
       {/* Loading state */}
       {loading && !ticker && (

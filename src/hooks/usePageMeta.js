@@ -9,6 +9,7 @@ const META = {
   '/framework': { title: 'Price Cycle Framework — Axiarch', description: 'The 7-stage pennystocking lifecycle. Understand where a stock is in its psychological cycle to time entries and exits.' },
   '/methodology': { title: 'How It Works — Axiarch', description: 'Deep dive into the 4-stage algorithm pipeline: data collection, indicator calculation, multi-factor scoring, and signal generation.' },
   '/pricing': { title: 'Pricing — Axiarch', description: 'Free demo scanning, Pro real-time analysis, and Institutional plans. All plans include the complete technical analysis indicator suite.' },
+  '/watchlist': { title: 'My Watchlist — Axiarch', description: 'Track your favorite stocks with real-time data, technical indicators, and trade signals. Add any ticker to your personal watchlist.' },
   '/blog': { title: 'Trading Education — Axiarch', description: 'Learn how to read RSI, EMA crossovers, MACD signals, and more. Understand the indicators behind every Axiarch signal.' },
   '/performance': { title: 'Verified Performance — Axiarch', description: 'Transparent performance tracking. Every pick tracked from flag time to close with real entry and exit prices.' },
 };

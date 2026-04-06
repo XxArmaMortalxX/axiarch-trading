@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useFinnhubContext } from '../context/FinnhubContext';
 import ScoreBar from '../components/ScoreBar';
 import BiasTag from '../components/BiasTag';
@@ -7,9 +7,8 @@ import SignalBadge from '../components/SignalBadge';
 import { fmtPrice } from '../lib/indicators';
 
 export default function Screener() {
-  const { data, dataSource, isScanning, scanStatus, scanMessage, runFullScan, customTickers, fullWatchlist, addTicker, removeTicker, clearCustom } = useFinnhubContext();
+  const { data, dataSource, isScanning, scanStatus, scanMessage, runFullScan, fullWatchlist, customTickers } = useFinnhubContext();
   const [filter, setFilter] = useState('all');
-  const [tickerInput, setTickerInput] = useState('');
   const navigate = useNavigate();
   const [autoRefresh, setAutoRefresh] = useState(false);
   const intervalRef = useRef(null);
@@ -44,56 +43,19 @@ export default function Screener() {
 
       <section>
 
-        {/* Custom Watchlist */}
-        <div className="watchlist-bar">
-          <h4>Custom Watchlist</h4>
-          <div className="watchlist-input-row">
-            <input
-              type="text"
-              value={tickerInput}
-              onChange={e => setTickerInput(e.target.value.toUpperCase())}
-              placeholder="Add ticker (e.g. AAPL)"
-              onKeyDown={e => {
-                if (e.key === 'Enter' && tickerInput.trim()) {
-                  addTicker(tickerInput.trim());
-                  setTickerInput('');
-                }
-              }}
-            />
-            <button
-              className="btn-primary"
-              style={{ padding: '0.45rem 1rem', fontSize: 'var(--text-sm)' }}
-              onClick={() => { if (tickerInput.trim()) { addTicker(tickerInput.trim()); setTickerInput(''); } }}
-            >
-              Add
-            </button>
-            <button
-              className="btn-secondary"
-              style={{ padding: '0.45rem 1rem', fontSize: 'var(--text-sm)' }}
-              onClick={() => runFullScan(fullWatchlist)}
-              disabled={isScanning}
-            >
-              {isScanning ? 'Scanning...' : 'Rescan All'}
-            </button>
-          </div>
-          {customTickers.length > 0 && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-              <div className="watchlist-chips">
-                {customTickers.map(t => (
-                  <span className="ticker-chip" key={t}>
-                    {t}
-                    <button onClick={() => removeTicker(t)}>&times;</button>
-                  </span>
-                ))}
-              </div>
-              <button
-                onClick={clearCustom}
-                style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: 'var(--text-xs)', cursor: 'pointer', textDecoration: 'underline' }}
-              >
-                Clear all
-              </button>
-            </div>
-          )}
+        {/* Watchlist link + scan status */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+          <Link to="/watchlist" style={{ fontSize: 'var(--text-sm)', color: 'var(--accent-green)', textDecoration: 'none', fontWeight: 600 }}>
+            My Watchlist {customTickers.length > 0 && `(${customTickers.length})`} &rarr;
+          </Link>
+          <button
+            className="btn-secondary"
+            style={{ padding: '0.35rem 0.8rem', fontSize: 'var(--text-xs)' }}
+            onClick={() => runFullScan(fullWatchlist)}
+            disabled={isScanning}
+          >
+            {isScanning ? 'Scanning...' : 'Rescan All'}
+          </button>
         </div>
 
         <div style={{ fontSize: '0.72rem', color: statusColor, marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
