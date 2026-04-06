@@ -144,5 +144,6 @@ export function useFinnhub() {
     apiKey,
     saveKey,
     runFullScan,
+    candleCache: candleCacheRef.current,
   };
 }

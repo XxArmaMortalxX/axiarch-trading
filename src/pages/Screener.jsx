@@ -1,16 +1,16 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useFinnhubContext } from '../context/FinnhubContext';
 import ScoreBar from '../components/ScoreBar';
 import BiasTag from '../components/BiasTag';
 import SignalBadge from '../components/SignalBadge';
-import TickerModal from '../components/TickerModal';
 import { fmtPrice } from '../lib/indicators';
 
 export default function Screener() {
   const { data, dataSource, isScanning, scanStatus, scanMessage, apiKey, saveKey, runFullScan } = useFinnhubContext();
   const [filter, setFilter] = useState('all');
   const [keyInput, setKeyInput] = useState(apiKey);
-  const [modalTicker, setModalTicker] = useState(null);
+  const navigate = useNavigate();
   const [autoRefresh, setAutoRefresh] = useState(false);
   const intervalRef = useRef(null);
 
@@ -133,7 +133,7 @@ export default function Screener() {
                   const macdIcon = macdHist > 0 ? '\u25B2' : macdHist < 0 ? '\u25BC' : '\u2014';
 
                   return (
-                    <tr key={t.sym} onClick={() => setModalTicker(t)} style={{ cursor: 'pointer' }}>
+                    <tr key={t.sym} onClick={() => navigate(`/stock/${t.sym}`)} style={{ cursor: 'pointer' }}>
                       <td style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>{i + 1}</td>
                       <td className="ticker-cell">{t.sym}</td>
                       <td style={{ fontFamily: 'var(--font-mono)' }}>{fmtPrice(t.price)}</td>
@@ -164,7 +164,6 @@ export default function Screener() {
         </div>
       </section>
 
-      {modalTicker && <TickerModal ticker={modalTicker} onClose={() => setModalTicker(null)} />}
     </div>
   );
 }
