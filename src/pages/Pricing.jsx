@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import { PRICING_PLANS } from '../lib/constants';
 
 export default function Pricing() {
   const [searchParams] = useSearchParams();
+  const { user } = useAuth();
   const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [checkoutError, setCheckoutError] = useState('');
   const [subStatus, setSubStatus] = useState(null);
   const [showSuccess, setShowSuccess] = useState(false);
 
@@ -30,21 +33,22 @@ export default function Pricing() {
 
   const handleCheckout = async () => {
     setCheckoutLoading(true);
+    setCheckoutError('');
     try {
       const res = await fetch('/.netlify/functions/create-checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({}),
+        body: JSON.stringify({ email: user?.email || '' }),
       });
       const data = await res.json();
       if (data.url) {
         window.location.href = data.url;
       } else {
-        alert(data.error || 'Failed to create checkout session');
+        setCheckoutError(data.error || 'Failed to create checkout session. Please try again.');
         setCheckoutLoading(false);
       }
-    } catch (err) {
-      alert('Failed to connect to payment system. Please try again.');
+    } catch {
+      setCheckoutError('Failed to connect to payment system. Please try again.');
       setCheckoutLoading(false);
     }
   };
@@ -149,6 +153,12 @@ export default function Pricing() {
           </div>
         ))}
       </div>
+
+      {checkoutError && (
+        <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>
+          <p className="signup-error" style={{ fontSize: '0.84rem' }}>{checkoutError}</p>
+        </div>
+      )}
 
       <div style={{ textAlign: 'center', marginTop: '2rem', color: 'var(--text-muted)', fontSize: '0.78rem' }}>
         <p>7-day free trial on Pro. Cancel anytime. No contracts.</p>
