@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://axiarch.netlify.app/sitemap.xml

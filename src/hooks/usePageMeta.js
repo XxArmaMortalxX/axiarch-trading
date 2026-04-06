@@ -18,7 +18,23 @@ export default function usePageMeta() {
   useEffect(() => {
     const meta = META[pathname] || META['/'];
     document.title = meta.title;
+
+    // Update meta description
     const desc = document.querySelector('meta[name="description"]');
     if (desc) desc.setAttribute('content', meta.description);
+
+    // Update OG tags
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', meta.title);
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.setAttribute('content', meta.description);
+    const ogUrl = document.querySelector('meta[property="og:url"]');
+    if (ogUrl) ogUrl.setAttribute('content', 'https://axiarch.netlify.app' + pathname);
+
+    // Update Twitter tags
+    const twTitle = document.querySelector('meta[name="twitter:title"]');
+    if (twTitle) twTitle.setAttribute('content', meta.title);
+    const twDesc = document.querySelector('meta[name="twitter:description"]');
+    if (twDesc) twDesc.setAttribute('content', meta.description);
   }, [pathname]);
 }

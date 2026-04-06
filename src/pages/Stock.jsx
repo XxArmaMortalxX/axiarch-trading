@@ -104,12 +104,21 @@ export default function Stock() {
   // Merge data: prefer cached scan data, fall back to local fetch, then fallback demo
   const ticker = cachedTicker || localQuote || data.find(t => t.sym === sym);
 
-  // Set page title
+  // Set page title + OG tags for social sharing
   useEffect(() => {
     const name = profile?.name || sym;
-    document.title = `${sym} — ${name} | Axiarch`;
-    const desc = document.querySelector('meta[name="description"]');
-    if (desc) desc.setAttribute('content', `Technical analysis for ${sym}${profile?.name ? ` (${profile.name})` : ''}. RSI, EMA, MACD, Bollinger Bands, ATR signals and Axiarch composite score.`);
+    const title = `$${sym} — ${name} | Axiarch`;
+    const description = `Technical analysis for $${sym}${profile?.name ? ` (${profile.name})` : ''}. RSI, EMA, MACD, Bollinger Bands, ATR signals and Axiarch composite score.`;
+    const url = `https://axiarch.netlify.app/stock/${sym}`;
+
+    document.title = title;
+    const setMeta = (selector, attr, value) => { const el = document.querySelector(selector); if (el) el.setAttribute(attr, value); };
+    setMeta('meta[name="description"]', 'content', description);
+    setMeta('meta[property="og:title"]', 'content', title);
+    setMeta('meta[property="og:description"]', 'content', description);
+    setMeta('meta[property="og:url"]', 'content', url);
+    setMeta('meta[name="twitter:title"]', 'content', title);
+    setMeta('meta[name="twitter:description"]', 'content', description);
   }, [sym, profile]);
 
   // Calculate indicators from candles
@@ -372,8 +381,37 @@ export default function Stock() {
         </div>
       )}
 
-      {/* External Links */}
-      <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap' }}>
+      {/* Share + External Links */}
+      <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
+        <button
+          onClick={() => {
+            const url = `https://axiarch.netlify.app/stock/${sym}`;
+            const text = `$${sym}${ticker?.signal && ticker.signal !== 'HOLD' ? ` — ${ticker.signal}` : ''} | Score: ${score}/99${rsi ? ` | RSI: ${rsi.toFixed(0)}` : ''} | Axiarch`;
+            if (navigator.share) {
+              navigator.share({ title: `$${sym} — Axiarch`, text, url }).catch(() => {});
+            } else {
+              navigator.clipboard.writeText(`${text}\n${url}`).then(() => {
+                const btn = document.activeElement;
+                const orig = btn.textContent;
+                btn.textContent = 'Copied!';
+                setTimeout(() => { btn.textContent = orig; }, 2000);
+              });
+            }
+          }}
+          className="btn-primary"
+          style={{ fontSize: '0.78rem', padding: '0.5rem 1rem' }}
+        >
+          Share ${sym}
+        </button>
+        <a
+          href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`$${sym}${ticker?.signal && ticker.signal !== 'HOLD' ? ` — ${ticker.signal}` : ''} | Axiarch Score: ${score}/99`)}&url=${encodeURIComponent(`https://axiarch.netlify.app/stock/${sym}`)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn-secondary"
+          style={{ fontSize: '0.78rem', padding: '0.5rem 1rem' }}
+        >
+          Post on X
+        </a>
         <a href={`https://finance.yahoo.com/quote/${sym}`} target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ fontSize: '0.78rem', padding: '0.5rem 1rem' }}>Yahoo Finance</a>
         <a href={`https://www.tradingview.com/symbols/${sym}/`} target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ fontSize: '0.78rem', padding: '0.5rem 1rem' }}>TradingView</a>
         <a href={`https://www.reddit.com/search/?q=${encodeURIComponent('$' + sym)}&sort=new`} target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ fontSize: '0.78rem', padding: '0.5rem 1rem' }}>Reddit</a>
