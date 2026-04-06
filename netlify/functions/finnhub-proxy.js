@@ -14,6 +14,33 @@ function setCache(key, data) {
   cache[key] = { data, ts: Date.now() };
 }
 
+// Yahoo Finance candle fetcher (free, no API key needed)
+async function fetchYahooCandles(symbol, fromTs, toTs) {
+  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?period1=${fromTs}&period2=${toTs}&interval=1d`;
+  const resp = await fetch(url, {
+    headers: { 'User-Agent': 'Mozilla/5.0' },
+  });
+  if (!resp.ok) return null;
+  const json = await resp.json();
+  const result = json?.chart?.result?.[0];
+  if (!result) return null;
+
+  const timestamps = result.timestamp;
+  const quotes = result.indicators?.quote?.[0];
+  if (!timestamps || !quotes) return null;
+
+  // Convert to Finnhub candle format
+  return {
+    s: 'ok',
+    c: quotes.close.filter(v => v !== null),
+    h: quotes.high.filter(v => v !== null),
+    l: quotes.low.filter(v => v !== null),
+    o: quotes.open.filter(v => v !== null),
+    v: quotes.volume.filter(v => v !== null),
+    t: timestamps.filter((_, i) => quotes.close[i] !== null),
+  };
+}
+
 exports.handler = async (event) => {
   const headers = {
     'Content-Type': 'application/json',
@@ -50,14 +77,39 @@ exports.handler = async (event) => {
         url = `${BASE}/quote?symbol=${symbol}&token=${FINNHUB_KEY}`;
         break;
 
-      case 'candles':
+      case 'candles': {
         const fromTs = from || Math.floor(Date.now() / 1000) - 45 * 86400;
         const toTs = to || Math.floor(Date.now() / 1000);
-        const res = resolution || 'D';
-        cacheKey = `candles:${symbol}:${res}:${fromTs}`;
+        cacheKey = `candles:${symbol}:${fromTs}`;
         ttl = 30 * 60 * 1000; // 30 minutes
-        url = `${BASE}/stock/candle?symbol=${symbol}&resolution=${res}&from=${fromTs}&to=${toTs}&token=${FINNHUB_KEY}`;
-        break;
+
+        // Check cache first
+        const cached = getCached(cacheKey, ttl);
+        if (cached) {
+          return { statusCode: 200, headers, body: JSON.stringify(cached) };
+        }
+
+        // Try Finnhub first
+        const fhUrl = `${BASE}/stock/candle?symbol=${symbol}&resolution=D&from=${fromTs}&to=${toTs}&token=${FINNHUB_KEY}`;
+        const fhResp = await fetch(fhUrl);
+
+        if (fhResp.ok) {
+          const fhData = await fhResp.json();
+          if (fhData.s === 'ok') {
+            setCache(cacheKey, fhData);
+            return { statusCode: 200, headers, body: JSON.stringify(fhData) };
+          }
+        }
+
+        // Fallback to Yahoo Finance (free, no key needed)
+        const yahooData = await fetchYahooCandles(symbol, fromTs, toTs);
+        if (yahooData && yahooData.c.length > 0) {
+          setCache(cacheKey, yahooData);
+          return { statusCode: 200, headers, body: JSON.stringify(yahooData) };
+        }
+
+        return { statusCode: 200, headers, body: JSON.stringify({ s: 'no_data' }) };
+      }
 
       case 'profile':
         cacheKey = `profile:${symbol}`;
@@ -86,7 +138,7 @@ exports.handler = async (event) => {
 
     return { statusCode: 200, headers, body: JSON.stringify(data) };
   } catch (err) {
-    console.error('Finnhub proxy error:', err);
+    console.error('Proxy error:', err);
     return { statusCode: 500, headers, body: JSON.stringify({ error: err.message }) };
   }
 };
