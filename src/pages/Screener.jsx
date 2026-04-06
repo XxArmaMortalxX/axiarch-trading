@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useFinnhubContext } from '../context/FinnhubContext';
 import ScoreBar from '../components/ScoreBar';
 import BiasTag from '../components/BiasTag';
@@ -11,6 +11,18 @@ export default function Screener() {
   const [filter, setFilter] = useState('all');
   const [keyInput, setKeyInput] = useState(apiKey);
   const [modalTicker, setModalTicker] = useState(null);
+  const [autoRefresh, setAutoRefresh] = useState(false);
+  const intervalRef = useRef(null);
+
+  // Auto-refresh every 60 seconds when enabled
+  useEffect(() => {
+    if (autoRefresh && apiKey && !isScanning) {
+      intervalRef.current = setInterval(() => {
+        runFullScan(apiKey);
+      }, 60000);
+    }
+    return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
+  }, [autoRefresh, apiKey, isScanning, runFullScan]);
 
   const handleConnect = useCallback(() => {
     const key = keyInput.trim();
@@ -69,10 +81,18 @@ export default function Screener() {
           </span>
         </div>
 
-        <div style={{ fontSize: '0.72rem', color: statusColor, marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          {scanStatus === 'scanning' && <span className="spinner" />}
-          {scanStatus === 'live' && <span className="live-dot" />}
-          {scanMessage}
+        <div style={{ fontSize: '0.72rem', color: statusColor, marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1 }}>
+            {scanStatus === 'scanning' && <span className="spinner" />}
+            {scanStatus === 'live' && <span className="live-dot" />}
+            {scanMessage}
+          </div>
+          {apiKey && (
+            <label style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.7rem', color: 'var(--text-muted)', cursor: 'pointer', userSelect: 'none' }}>
+              <input type="checkbox" checked={autoRefresh} onChange={e => setAutoRefresh(e.target.checked)} style={{ accentColor: 'var(--accent-green)' }} />
+              Auto-refresh (60s)
+            </label>
+          )}
         </div>
         {isScanning && (() => {
           const match = scanMessage.match(/(\d+)%/);

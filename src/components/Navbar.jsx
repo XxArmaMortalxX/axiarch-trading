@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useTheme } from '../hooks/useTheme';
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
+  const { isDark, toggle } = useTheme();
 
   const links = [
     { to: '/', label: 'Home' },
@@ -12,6 +14,7 @@ export default function Navbar() {
     { to: '/calculator', label: 'RCT Calc' },
     { to: '/framework', label: 'Framework' },
     { to: '/methodology', label: 'How It Works' },
+    { to: '/blog', label: 'Learn' },
   ];
 
   return (
@@ -29,9 +32,16 @@ export default function Navbar() {
           </Link>
         ))}
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
         <a href="https://t.me/axiarchtradebot" target="_blank" rel="noopener noreferrer" className="nav-cta" style={{ background: 'var(--accent-green)', color: '#000', border: 'none' }}>Join Telegram</a>
         <Link to="/pricing" className="nav-cta">Pricing</Link>
+        <button
+          onClick={toggle}
+          title={isDark ? 'Light mode' : 'Dark mode'}
+          style={{ background: 'none', border: '1px solid var(--border)', color: 'var(--text-secondary)', borderRadius: '6px', padding: '0.3rem 0.5rem', cursor: 'pointer', fontSize: '0.9rem', lineHeight: 1 }}
+        >
+          {isDark ? '\u2600\uFE0F' : '\uD83C\uDF19'}
+        </button>
         <button
           id="mobileMenuBtn"
           onClick={() => setMobileOpen(o => !o)}

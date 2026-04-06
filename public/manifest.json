@@ -1,0 +1,17 @@
+{
+  "name": "Axiarch Trading Intelligence",
+  "short_name": "Axiarch",
+  "description": "Real-time technical analysis engine with RSI, EMA, MACD, Bollinger Bands, ATR, VWAP indicators",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050a08",
+  "theme_color": "#00e676",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    }
+  ]
+}

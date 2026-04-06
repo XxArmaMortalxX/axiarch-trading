@@ -8,6 +8,8 @@ import Framework from './pages/Framework';
 import Methodology from './pages/Methodology';
 import Dashboard from './pages/Dashboard';
 import Pricing from './pages/Pricing';
+import Blog from './pages/Blog';
+import Performance from './pages/Performance';
 
 export default function App() {
   return (
@@ -22,6 +24,8 @@ export default function App() {
           <Route path="/methodology" element={<Methodology />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/pricing" element={<Pricing />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/performance" element={<Performance />} />
           <Route path="/callback" element={<div style={{ padding: '6rem 2rem', textAlign: 'center', color: 'var(--text-muted)' }}>OAuth callback handler. Redirecting...</div>} />
         </Route>
       </Routes>

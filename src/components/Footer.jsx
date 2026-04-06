@@ -41,6 +41,7 @@ export default function Footer() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             <Link to="/screener" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.78rem' }}>Screener</Link>
             <Link to="/dashboard" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.78rem' }}>Dashboard</Link>
+            <Link to="/performance" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.78rem' }}>Performance</Link>
             <Link to="/calculator" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.78rem' }}>Calculator</Link>
             <Link to="/framework" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.78rem' }}>Framework</Link>
             <Link to="/methodology" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.78rem' }}>Methodology</Link>
