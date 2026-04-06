@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
 import { FinnhubProvider } from './context/FinnhubContext';
 import Layout from './components/Layout';
 import Home from './pages/Home';
@@ -15,6 +16,7 @@ import Stock from './pages/Stock';
 export default function App() {
   return (
     <BrowserRouter>
+    <AuthProvider>
     <FinnhubProvider>
       <Routes>
         <Route element={<Layout />}>
@@ -32,6 +34,7 @@ export default function App() {
         </Route>
       </Routes>
     </FinnhubProvider>
+    </AuthProvider>
     </BrowserRouter>
   );
 }

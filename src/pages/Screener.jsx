@@ -7,9 +7,10 @@ import SignalBadge from '../components/SignalBadge';
 import { fmtPrice } from '../lib/indicators';
 
 export default function Screener() {
-  const { data, dataSource, isScanning, scanStatus, scanMessage, apiKey, saveKey, runFullScan } = useFinnhubContext();
+  const { data, dataSource, isScanning, scanStatus, scanMessage, apiKey, saveKey, runFullScan, customTickers, fullWatchlist, addTicker, removeTicker, clearCustom } = useFinnhubContext();
   const [filter, setFilter] = useState('all');
   const [keyInput, setKeyInput] = useState(apiKey);
+  const [tickerInput, setTickerInput] = useState('');
   const navigate = useNavigate();
   const [autoRefresh, setAutoRefresh] = useState(false);
   const intervalRef = useRef(null);
@@ -18,7 +19,7 @@ export default function Screener() {
   useEffect(() => {
     if (autoRefresh && apiKey && !isScanning) {
       intervalRef.current = setInterval(() => {
-        runFullScan(apiKey);
+        runFullScan(apiKey, fullWatchlist);
       }, 60000);
     }
     return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
@@ -51,6 +52,60 @@ export default function Screener() {
       </section>
 
       <section>
+
+        {/* Custom Watchlist */}
+        <div className="watchlist-bar">
+          <h4>Custom Watchlist</h4>
+          <div className="watchlist-input-row">
+            <input
+              type="text"
+              value={tickerInput}
+              onChange={e => setTickerInput(e.target.value.toUpperCase())}
+              placeholder="Add ticker (e.g. AAPL)"
+              onKeyDown={e => {
+                if (e.key === 'Enter' && tickerInput.trim()) {
+                  addTicker(tickerInput.trim());
+                  setTickerInput('');
+                }
+              }}
+            />
+            <button
+              className="btn-primary"
+              style={{ padding: '0.45rem 1rem', fontSize: 'var(--text-sm)' }}
+              onClick={() => { if (tickerInput.trim()) { addTicker(tickerInput.trim()); setTickerInput(''); } }}
+            >
+              Add
+            </button>
+            {apiKey && (
+              <button
+                className="btn-secondary"
+                style={{ padding: '0.45rem 1rem', fontSize: 'var(--text-sm)' }}
+                onClick={() => runFullScan(apiKey, fullWatchlist)}
+                disabled={isScanning}
+              >
+                {isScanning ? 'Scanning...' : 'Rescan All'}
+              </button>
+            )}
+          </div>
+          {customTickers.length > 0 && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+              <div className="watchlist-chips">
+                {customTickers.map(t => (
+                  <span className="ticker-chip" key={t}>
+                    {t}
+                    <button onClick={() => removeTicker(t)}>&times;</button>
+                  </span>
+                ))}
+              </div>
+              <button
+                onClick={clearCustom}
+                style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: 'var(--text-xs)', cursor: 'pointer', textDecoration: 'underline' }}
+              >
+                Clear all
+              </button>
+            </div>
+          )}
+        </div>
 
         {/* Demo banner when no API key */}
         {!apiKey && (

@@ -1,11 +1,15 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../hooks/useTheme';
+import { useAuth } from '../context/AuthContext';
+import AuthModal from './AuthModal';
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [showAuth, setShowAuth] = useState(false);
   const location = useLocation();
   const { isDark, toggle } = useTheme();
+  const { user, isLoggedIn, logout } = useAuth();
 
   const links = [
     { to: '/', label: 'Home' },
@@ -16,6 +20,7 @@ export default function Navbar() {
   ];
 
   return (
+    <>
     <nav>
       <Link to="/" className="nav-logo">Axiarch</Link>
       <div className={`nav-links${mobileOpen ? ' open' : ''}`}>
@@ -31,7 +36,15 @@ export default function Navbar() {
         ))}
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-        <a href="https://t.me/axiarchtradebot" target="_blank" rel="noopener noreferrer" className="nav-cta" style={{ background: 'var(--accent-green)', color: '#000', border: 'none' }}>Join Telegram</a>
+        {isLoggedIn ? (
+          <div style={{ position: 'relative' }}>
+            <div className="user-avatar" onClick={logout} title={`${user.email} — click to logout`}>
+              {user.initial}
+            </div>
+          </div>
+        ) : (
+          <button onClick={() => setShowAuth(true)} className="nav-cta" style={{ background: 'none', cursor: 'pointer' }}>Sign In</button>
+        )}
         <Link to="/pricing" className="nav-cta">Pricing</Link>
         <button
           onClick={toggle}
@@ -49,5 +62,7 @@ export default function Navbar() {
         </button>
       </div>
     </nav>
+    {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
+    </>
   );
 }

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import DailyRecap from '../components/DailyRecap';
 
 const ARTICLES = [
   {
@@ -181,6 +182,8 @@ export default function Blog() {
       <div className="section-label">Learn</div>
       <h2 className="section-title">Trading Education</h2>
       <p className="section-subtitle">Understand the indicators and strategies behind every Axiarch signal.</p>
+
+      <DailyRecap />
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.25rem', marginTop: '2rem' }}>
         {ARTICLES.map(article => (

@@ -62,7 +62,7 @@ export function useFinnhub() {
     if (key) localStorage.setItem('finnhub_key', key);
   }, []);
 
-  const runFullScan = useCallback(async (key) => {
+  const runFullScan = useCallback(async (key, customTickerList) => {
     const effectiveKey = key || apiKey;
     if (!effectiveKey) {
       setData(FALLBACK_DATA);
@@ -71,6 +71,7 @@ export function useFinnhub() {
       setScanMessage('DEMO DATA — Enter Finnhub API key for live data');
       return;
     }
+    const tickersToScan = customTickerList || WATCHLIST;
 
     setIsScanning(true);
     setScanStatus('scanning');
@@ -80,8 +81,8 @@ export function useFinnhub() {
       const results = [];
       const batchSize = 10;
       const delayMs = 1200;
-      for (let i = 0; i < WATCHLIST.length; i += batchSize) {
-        const batch = WATCHLIST.slice(i, i + batchSize);
+      for (let i = 0; i < tickersToScan.length; i += batchSize) {
+        const batch = tickersToScan.slice(i, i + batchSize);
         const promises = batch.map(async (sym) => {
           try {
             const quote = await finnhubQuote(sym, effectiveKey);
@@ -91,9 +92,9 @@ export function useFinnhub() {
         });
         const batchResults = await Promise.all(promises);
         results.push(...batchResults.filter(Boolean));
-        const pct = Math.round(((i + batchSize) / WATCHLIST.length) * 100);
-        setScanMessage(`Phase 1/2: Quotes... ${Math.min(i + batchSize, WATCHLIST.length)}/${WATCHLIST.length} (${Math.min(pct, 100)}%)`);
-        if (i + batchSize < WATCHLIST.length) await new Promise(r => setTimeout(r, delayMs));
+        const pct = Math.round(((i + batchSize) / tickersToScan.length) * 100);
+        setScanMessage(`Phase 1/2: Quotes... ${Math.min(i + batchSize, tickersToScan.length)}/${tickersToScan.length} (${Math.min(pct, 100)}%)`);
+        if (i + batchSize < tickersToScan.length) await new Promise(r => setTimeout(r, delayMs));
       }
 
       if (results.length === 0) throw new Error('No valid quotes returned');
