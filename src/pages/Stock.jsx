@@ -50,23 +50,59 @@ export default function Stock() {
   const { symbol } = useParams();
   const sym = symbol.toUpperCase();
   const { data, apiKey, candleCache } = useFinnhubContext();
-  const { profile, loading: profileLoading } = useStockProfile(sym, apiKey);
+  const { profile } = useStockProfile(sym, apiKey);
   const [localCandles, setLocalCandles] = useState(null);
+  const [localQuote, setLocalQuote] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // Find ticker in cached data
-  const ticker = data.find(t => t.sym === sym);
+  // Find ticker in cached scan data
+  const cachedTicker = data.find(t => t.sym === sym);
   const candles = candleCache[sym] || localCandles;
 
-  // Fetch candles if not cached
+  // Fetch quote + candles if not in cache
   useEffect(() => {
-    if (candleCache[sym] || !apiKey) return;
-    const now = Math.floor(Date.now() / 1000);
-    const from = now - 45 * 86400;
-    fetch(`https://finnhub.io/api/v1/stock/candle?symbol=${sym}&resolution=D&from=${from}&to=${now}&token=${apiKey}`)
-      .then(r => r.json())
-      .then(d => { if (d.s === 'ok') setLocalCandles({ c: d.c, h: d.h, l: d.l, o: d.o, v: d.v, t: d.t }); })
-      .catch(() => {});
-  }, [sym, apiKey, candleCache]);
+    let cancelled = false;
+
+    async function fetchData() {
+      if (!apiKey) { setLoading(false); return; }
+
+      try {
+        // Fetch quote if not in scanned data
+        if (!cachedTicker) {
+          const qRes = await fetch(`https://finnhub.io/api/v1/quote?symbol=${sym}&token=${apiKey}`);
+          const q = await qRes.json();
+          if (!cancelled && q && q.c > 0) {
+            setLocalQuote({
+              sym, price: q.c, change: +(q.dp || 0).toFixed(2),
+              open: q.o, high: q.h, low: q.l, prevClose: q.pc,
+            });
+          }
+        }
+
+        // Fetch candles if not cached
+        if (!candleCache[sym] && !localCandles) {
+          const now = Math.floor(Date.now() / 1000);
+          const from = now - 45 * 86400;
+          const cRes = await fetch(`https://finnhub.io/api/v1/stock/candle?symbol=${sym}&resolution=D&from=${from}&to=${now}&token=${apiKey}`);
+          const d = await cRes.json();
+          if (!cancelled && d.s === 'ok') {
+            setLocalCandles({ c: d.c, h: d.h, l: d.l, o: d.o, v: d.v, t: d.t });
+          }
+        }
+      } catch (e) {
+        console.warn('Failed to fetch stock data:', e);
+      }
+
+      if (!cancelled) setLoading(false);
+    }
+
+    setLoading(true);
+    fetchData();
+    return () => { cancelled = true; };
+  }, [sym, apiKey]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Merge data: prefer cached scan data, fall back to local fetch, then fallback demo
+  const ticker = cachedTicker || localQuote || data.find(t => t.sym === sym);
 
   // Set page title
   useEffect(() => {
@@ -89,7 +125,7 @@ export default function Stock() {
     indicators.rvol = calcRelativeVolume(candles.v);
   }
 
-  const price = ticker?.price || 0;
+  const price = ticker?.price || (candles?.c ? candles.c[candles.c.length - 1] : 0);
   const change = ticker?.change || 0;
   const rsi = ticker?.rsi || indicators.rsi;
   const rvol = ticker?.rvol || indicators.rvol;
@@ -136,6 +172,26 @@ export default function Stock() {
       <Link to="/screener" style={{ color: 'var(--accent-green)', textDecoration: 'none', fontSize: '0.82rem', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '0.3rem', marginBottom: '1.5rem' }}>
         &larr; Back to Screener
       </Link>
+
+      {/* Loading state */}
+      {loading && !ticker && (
+        <div style={{ textAlign: 'center', padding: '4rem 2rem', color: 'var(--text-muted)' }}>
+          <div className="spinner" style={{ marginBottom: '1rem' }} />
+          <div>Loading {sym} data...</div>
+        </div>
+      )}
+
+      {/* No API key and no cached data */}
+      {!loading && !ticker && !apiKey && (
+        <div style={{ textAlign: 'center', padding: '3rem 2rem' }}>
+          <h2 style={{ fontFamily: 'var(--font-mono)', fontSize: '1.8rem', fontWeight: 800, color: 'var(--accent-green)', marginBottom: '0.5rem' }}>${sym}</h2>
+          <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>Connect your Finnhub API key to view live data for this stock.</p>
+          <Link to="/screener" className="btn-primary">Go to Screener to Connect</Link>
+        </div>
+      )}
+
+      {/* Main content — only show if we have some data */}
+      {(ticker || candles) && <>
 
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.5rem' }}>
@@ -322,6 +378,8 @@ export default function Stock() {
         <a href={`https://www.tradingview.com/symbols/${sym}/`} target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ fontSize: '0.78rem', padding: '0.5rem 1rem' }}>TradingView</a>
         <a href={`https://www.reddit.com/search/?q=${encodeURIComponent('$' + sym)}&sort=new`} target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ fontSize: '0.78rem', padding: '0.5rem 1rem' }}>Reddit</a>
       </div>
+
+      </>}
     </section>
   );
 }
