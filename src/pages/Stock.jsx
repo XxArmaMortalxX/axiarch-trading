@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Chart as ChartJS, LineElement, PointElement, LinearScale, CategoryScale, Filler, Tooltip as ChartTooltip } from 'chart.js';
+import { Chart as ChartJS, LineElement, PointElement, LinearScale, CategoryScale, Filler, Tooltip as ChartTooltip, Legend } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { useFinnhubContext } from '../context/FinnhubContext';
 import { useStockProfile } from '../hooks/useStockProfile';
 import { calcRSI, calcEMA, calcMACD, calcBollingerBands, calcATR, calcVWAP, calcRelativeVolume, fmtPrice } from '../lib/indicators';
 import SignalBadge from '../components/SignalBadge';
-import BiasTag from '../components/BiasTag';
 
-ChartJS.register(LineElement, PointElement, LinearScale, CategoryScale, Filler, ChartTooltip);
+ChartJS.register(LineElement, PointElement, LinearScale, CategoryScale, Filler, ChartTooltip, Legend);
 
 function StatCard({ label, value, color }) {
   return (
@@ -139,10 +138,12 @@ export default function Stock() {
   const rsi = ticker?.rsi || indicators.rsi;
   const rvol = ticker?.rvol || indicators.rvol;
 
-  // Chart data
-  const chartData = candles?.c ? {
+  // Chart data — only render when we have valid candle data with timestamps
+  const hasValidCandles = candles?.c?.length > 0 && candles?.t?.length > 0;
+  const chartData = hasValidCandles ? {
     labels: candles.t.map(ts => new Date(ts * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })),
     datasets: [{
+      label: sym,
       data: candles.c,
       borderColor: '#00e676',
       backgroundColor: 'rgba(0, 230, 118, 0.06)',
