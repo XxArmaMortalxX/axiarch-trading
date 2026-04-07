@@ -18,7 +18,7 @@ const SOCIAL_PROOF = [
 ];
 
 const TESTIMONIALS = [
-  { quote: 'Axiarch flagged APLS at $17 before it ran to $40. The RSI confluence signal was spot on.', name: 'Day Trader', detail: 'Using Axiarch since March 2026' },
+  { quote: 'Axiarch flagged GEVO before it ran +17.78% in 4 days. Entered at $2.42, rode it to $2.84. The confluence signal was dead on.', name: 'Founder', detail: 'Axiarch Trading, April 2026' },
   { quote: 'I used to spend 2 hours on pre-market research. Now I check the screener in 30 seconds and know exactly where to look.', name: 'Swing Trader', detail: 'Pro subscriber' },
   { quote: 'The ATR-based targets changed how I manage risk. Every trade has a plan before I enter.', name: 'Options Trader', detail: 'Telegram member' },
 ];
@@ -137,8 +137,8 @@ export default function Home() {
             <div className="hero-stat-label">Win Rate</div>
           </div>
           <div className="hero-stat" style={{ borderColor: 'var(--accent-green)' }}>
-            <div className="hero-stat-value">+24.8%</div>
-            <div className="hero-stat-label">Best Single Pick</div>
+            <div className="hero-stat-value">+17.78%</div>
+            <div className="hero-stat-label">GEVO in 4 Days</div>
           </div>
         </div>
 
