@@ -1,12 +1,16 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useFinnhubContext } from '../context/FinnhubContext';
+import { useAuth } from '../context/AuthContext';
+import AuthModal from '../components/AuthModal';
 import ScoreBar from '../components/ScoreBar';
 import BiasTag from '../components/BiasTag';
 import SignalBadge from '../components/SignalBadge';
 import { fmtPrice } from '../lib/indicators';
 
 export default function Screener() {
+  const { isLoggedIn } = useAuth();
+  const [showAuth, setShowAuth] = useState(false);
   const { data, dataSource, isScanning, scanStatus, scanMessage, runFullScan, fullWatchlist, customTickers } = useFinnhubContext();
   const [filter, setFilter] = useState('all');
   const navigate = useNavigate();
@@ -43,7 +47,26 @@ export default function Screener() {
         <p className="section-subtitle">65+ stocks scanned in real-time with RSI, EMA, MACD, Bollinger Bands, ATR, and VWAP. Click any ticker for full analysis.</p>
       </section>
 
-      <section>
+      {/* Auth gate */}
+      {!isLoggedIn && (
+        <section className="section-centered" style={{ paddingTop: '2rem', paddingBottom: '4rem' }}>
+          <div style={{ maxWidth: '460px', margin: '0 auto', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: 'var(--space-8)' }}>
+            <h3 style={{ fontSize: 'var(--text-xl)', fontWeight: 700, marginBottom: 'var(--space-2)' }}>Unlock the Scanner</h3>
+            <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-6)', lineHeight: 'var(--leading-relaxed)' }}>
+              Enter your email to access live stock scanning with RSI, EMA, MACD, social sentiment, and BUY/SELL signals. Completely free.
+            </p>
+            <button onClick={() => setShowAuth(true)} className="btn-primary" style={{ width: '100%' }}>
+              Sign In with Email
+            </button>
+            <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)', marginTop: 'var(--space-3)' }}>
+              No credit card. No spam. Just your email.
+            </p>
+          </div>
+          {showAuth && <AuthModal onClose={() => setShowAuth(false)} required />}
+        </section>
+      )}
+
+      {isLoggedIn && <section>
 
         {/* Watchlist link + scan status */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem', flexWrap: 'wrap', gap: '0.5rem' }}>
@@ -150,7 +173,7 @@ export default function Screener() {
             </table>
           </div>
         </div>
-      </section>
+      </section>}
 
     </div>
   );

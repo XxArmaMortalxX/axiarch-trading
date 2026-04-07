@@ -14,6 +14,13 @@ export function AuthProvider({ children }) {
     const userData = { email, initial: email.charAt(0).toUpperCase(), loginAt: Date.now() };
     localStorage.setItem('axiarch_user', JSON.stringify(userData));
     setUser(userData);
+
+    // Store email for marketing (non-blocking)
+    fetch('/.netlify/functions/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, source: 'login' }),
+    }).catch(() => {});
   }, []);
 
   const logout = useCallback(() => {

@@ -1,6 +1,8 @@
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useFinnhubContext } from '../context/FinnhubContext';
+import { useAuth } from '../context/AuthContext';
+import AuthModal from '../components/AuthModal';
 import SignalBadge from '../components/SignalBadge';
 import { fmtPrice } from '../lib/indicators';
 
@@ -70,6 +72,8 @@ function WatchlistCard({ ticker, stockData, onRemove }) {
 }
 
 export default function Watchlist() {
+  const { isLoggedIn } = useAuth();
+  const [showAuth, setShowAuth] = useState(false);
   const { data, isScanning, scanMessage, runFullScan, customTickers, addTicker, removeTicker, clearCustom } = useFinnhubContext();
   const [tickerInput, setTickerInput] = useState('');
   const [sortBy, setSortBy] = useState('score');
@@ -131,7 +135,22 @@ export default function Watchlist() {
         <p className="section-subtitle">Track your favorite tickers with real-time data, signals, and technical indicators.</p>
       </section>
 
-      <section>
+      {!isLoggedIn && (
+        <section className="section-centered" style={{ paddingTop: '2rem', paddingBottom: '4rem' }}>
+          <div style={{ maxWidth: '460px', margin: '0 auto', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: 'var(--space-8)' }}>
+            <h3 style={{ fontSize: 'var(--text-xl)', fontWeight: 700, marginBottom: 'var(--space-2)' }}>Sign in to use Watchlist</h3>
+            <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-6)', lineHeight: 'var(--leading-relaxed)' }}>
+              Track your favorite stocks with real-time data and signals. Free — just enter your email.
+            </p>
+            <button onClick={() => setShowAuth(true)} className="btn-primary" style={{ width: '100%' }}>
+              Sign In with Email
+            </button>
+          </div>
+          {showAuth && <AuthModal onClose={() => setShowAuth(false)} required />}
+        </section>
+      )}
+
+      {isLoggedIn && <section>
         {/* Add ticker + actions bar */}
         <div className="watchlist-actions">
           <div className="watchlist-add-row">
@@ -214,7 +233,7 @@ export default function Watchlist() {
             ))}
           </div>
         )}
-      </section>
+      </section>}
     </div>
   );
 }
