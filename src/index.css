@@ -133,7 +133,7 @@ nav {
 }
 
 .nav-logo-img {
-    height: 42px;
+    height: 80px;
     width: auto;
 }
 
@@ -1448,7 +1448,7 @@ footer {
     .sentiment-grid { grid-template-columns: 1fr; }
     .calc-container { grid-template-columns: 1fr; }
     nav { padding: 0 0.8rem; height: 50px; }
-    .nav-logo-img { height: 32px; }
+    .nav-logo-img { height: 50px; }
     .nav-links { display: none; }
     #mobileMenuBtn { display: inline-flex !important; }
     .nav-cta { font-size: 0.68rem; padding: 0.3rem 0.6rem; }
