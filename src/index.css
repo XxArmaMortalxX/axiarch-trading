@@ -126,13 +126,28 @@ nav {
 }
 
 .nav-logo {
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: 1.15rem;
-    letter-spacing: 0.12em;
-    color: var(--accent-amber);
-    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
     text-decoration: none;
+}
+
+.nav-logo-img {
+    height: 28px;
+    width: auto;
+}
+
+.nav-beta-tag {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    font-weight: 700;
+    color: var(--accent-green);
+    border: 1px solid var(--accent-green);
+    border-radius: var(--radius-xs);
+    padding: 0.1rem 0.35rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 1;
 }
 
 .nav-links {
@@ -1433,7 +1448,7 @@ footer {
     .sentiment-grid { grid-template-columns: 1fr; }
     .calc-container { grid-template-columns: 1fr; }
     nav { padding: 0 0.8rem; height: 50px; }
-    .nav-logo { font-size: 1rem; }
+    .nav-logo-img { height: 22px; }
     .nav-links { display: none; }
     #mobileMenuBtn { display: inline-flex !important; }
     .nav-cta { font-size: 0.68rem; padding: 0.3rem 0.6rem; }

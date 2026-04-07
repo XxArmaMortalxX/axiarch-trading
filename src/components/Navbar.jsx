@@ -24,7 +24,10 @@ export default function Navbar() {
   return (
     <>
     <nav>
-      <Link to="/" className="nav-logo">Axiarch</Link>
+      <Link to="/" className="nav-logo">
+        <img src="/logo.png" alt="Axiarch" className="nav-logo-img" />
+        <span className="nav-beta-tag">Beta</span>
+      </Link>
       <div className={`nav-links${mobileOpen ? ' open' : ''}`}>
         {links.map(l => (
           <Link
