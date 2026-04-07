@@ -1,457 +1,469 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://axiarch.netlify.app/</loc>
+    <loc>https://axiarchtrading.live/</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/screener</loc>
+    <loc>https://axiarchtrading.live/screener</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/dashboard</loc>
+    <loc>https://axiarchtrading.live/dashboard</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/calculator</loc>
+    <loc>https://axiarchtrading.live/calculator</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/framework</loc>
+    <loc>https://axiarchtrading.live/framework</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/methodology</loc>
+    <loc>https://axiarchtrading.live/methodology</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/pricing</loc>
+    <loc>https://axiarchtrading.live/pricing</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/blog</loc>
+    <loc>https://axiarchtrading.live/blog</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/performance</loc>
+    <loc>https://axiarchtrading.live/performance</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/FFIE</loc>
+    <loc>https://axiarchtrading.live/watchlist</loc>
+    <lastmod>2026-04-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://axiarchtrading.live/go</loc>
+    <lastmod>2026-04-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://axiarchtrading.live/stock/FFIE</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/MULN</loc>
+    <loc>https://axiarchtrading.live/stock/MULN</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/NKLA</loc>
+    <loc>https://axiarchtrading.live/stock/NKLA</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/ATER</loc>
+    <loc>https://axiarchtrading.live/stock/ATER</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/CLOV</loc>
+    <loc>https://axiarchtrading.live/stock/CLOV</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/WKHS</loc>
+    <loc>https://axiarchtrading.live/stock/WKHS</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/LCID</loc>
+    <loc>https://axiarchtrading.live/stock/LCID</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/NIO</loc>
+    <loc>https://axiarchtrading.live/stock/NIO</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/RIVN</loc>
+    <loc>https://axiarchtrading.live/stock/RIVN</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/SOFI</loc>
+    <loc>https://axiarchtrading.live/stock/SOFI</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/PLTR</loc>
+    <loc>https://axiarchtrading.live/stock/PLTR</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/AMC</loc>
+    <loc>https://axiarchtrading.live/stock/AMC</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/GME</loc>
+    <loc>https://axiarchtrading.live/stock/GME</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/MARA</loc>
+    <loc>https://axiarchtrading.live/stock/MARA</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/RIOT</loc>
+    <loc>https://axiarchtrading.live/stock/RIOT</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/SNDL</loc>
+    <loc>https://axiarchtrading.live/stock/SNDL</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/TLRY</loc>
+    <loc>https://axiarchtrading.live/stock/TLRY</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/PLUG</loc>
+    <loc>https://axiarchtrading.live/stock/PLUG</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/FCEL</loc>
+    <loc>https://axiarchtrading.live/stock/FCEL</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/QS</loc>
+    <loc>https://axiarchtrading.live/stock/QS</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/GOEV</loc>
+    <loc>https://axiarchtrading.live/stock/GOEV</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/DNA</loc>
+    <loc>https://axiarchtrading.live/stock/DNA</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/IONQ</loc>
+    <loc>https://axiarchtrading.live/stock/IONQ</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/RGTI</loc>
+    <loc>https://axiarchtrading.live/stock/RGTI</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/QUBT</loc>
+    <loc>https://axiarchtrading.live/stock/QUBT</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/SMCI</loc>
+    <loc>https://axiarchtrading.live/stock/SMCI</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/KULR</loc>
+    <loc>https://axiarchtrading.live/stock/KULR</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/GSAT</loc>
+    <loc>https://axiarchtrading.live/stock/GSAT</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/OPEN</loc>
+    <loc>https://axiarchtrading.live/stock/OPEN</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/RDFN</loc>
+    <loc>https://axiarchtrading.live/stock/RDFN</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/WISH</loc>
+    <loc>https://axiarchtrading.live/stock/WISH</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/BYND</loc>
+    <loc>https://axiarchtrading.live/stock/BYND</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/SPCE</loc>
+    <loc>https://axiarchtrading.live/stock/SPCE</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/LAZR</loc>
+    <loc>https://axiarchtrading.live/stock/LAZR</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/VUZI</loc>
+    <loc>https://axiarchtrading.live/stock/VUZI</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/AFRM</loc>
+    <loc>https://axiarchtrading.live/stock/AFRM</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/UPST</loc>
+    <loc>https://axiarchtrading.live/stock/UPST</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/HOOD</loc>
+    <loc>https://axiarchtrading.live/stock/HOOD</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/DKNG</loc>
+    <loc>https://axiarchtrading.live/stock/DKNG</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/PENN</loc>
+    <loc>https://axiarchtrading.live/stock/PENN</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/RKLB</loc>
+    <loc>https://axiarchtrading.live/stock/RKLB</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/LUNR</loc>
+    <loc>https://axiarchtrading.live/stock/LUNR</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/APLD</loc>
+    <loc>https://axiarchtrading.live/stock/APLD</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/CLSK</loc>
+    <loc>https://axiarchtrading.live/stock/CLSK</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/CORZ</loc>
+    <loc>https://axiarchtrading.live/stock/CORZ</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/SOUN</loc>
+    <loc>https://axiarchtrading.live/stock/SOUN</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/BKKT</loc>
+    <loc>https://axiarchtrading.live/stock/BKKT</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/ASTS</loc>
+    <loc>https://axiarchtrading.live/stock/ASTS</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/TSLA</loc>
+    <loc>https://axiarchtrading.live/stock/TSLA</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/NVDA</loc>
+    <loc>https://axiarchtrading.live/stock/NVDA</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/AAPL</loc>
+    <loc>https://axiarchtrading.live/stock/AAPL</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/MSFT</loc>
+    <loc>https://axiarchtrading.live/stock/MSFT</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/META</loc>
+    <loc>https://axiarchtrading.live/stock/META</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/GOOGL</loc>
+    <loc>https://axiarchtrading.live/stock/GOOGL</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/AMD</loc>
+    <loc>https://axiarchtrading.live/stock/AMD</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/INTC</loc>
+    <loc>https://axiarchtrading.live/stock/INTC</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/MU</loc>
+    <loc>https://axiarchtrading.live/stock/MU</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/SNAP</loc>
+    <loc>https://axiarchtrading.live/stock/SNAP</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/COIN</loc>
+    <loc>https://axiarchtrading.live/stock/COIN</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/SQ</loc>
+    <loc>https://axiarchtrading.live/stock/SQ</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/PYPL</loc>
+    <loc>https://axiarchtrading.live/stock/PYPL</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/ROKU</loc>
+    <loc>https://axiarchtrading.live/stock/ROKU</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/ABNB</loc>
+    <loc>https://axiarchtrading.live/stock/ABNB</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/UBER</loc>
+    <loc>https://axiarchtrading.live/stock/UBER</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/DASH</loc>
+    <loc>https://axiarchtrading.live/stock/DASH</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/NET</loc>
+    <loc>https://axiarchtrading.live/stock/NET</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://axiarch.netlify.app/stock/CRWD</loc>
+    <loc>https://axiarchtrading.live/stock/CRWD</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>

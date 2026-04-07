@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
+const SITE_URL = 'https://axiarchtrading.live';
+
 const META = {
-  '/': { title: 'Axiarch — Algorithmic Day Trading Intelligence', description: 'Real-time technical analysis engine scanning 65+ stocks with RSI, EMA, MACD, Bollinger Bands, ATR, and VWAP. BUY/SELL signals with entry, stop-loss, and profit targets.' },
+  '/': { title: 'Axiarch — Algorithmic Day Trading Intelligence', description: 'Real-time technical analysis of 65+ stocks. RSI, EMA, MACD, Bollinger Bands, ATR, VWAP indicators with BUY/SELL signals and trade targets.' },
   '/screener': { title: 'Live Stock Screener — Axiarch', description: 'Scan 65+ stocks in real-time with 6 technical indicators. Multi-factor scoring, signal generation, and ATR-based trade plans.' },
   '/dashboard': { title: 'Signals Dashboard — Axiarch', description: 'Top-ranked trade signals, market-wide signal distribution, RSI breakdown, and active alerts from indicator confluence.' },
   '/calculator': { title: 'Risk Calculator — Axiarch', description: 'Position sizing and risk management calculator. Entry, stop-loss, and multi-target profit levels with precise risk-reward ratios.' },
@@ -15,10 +17,26 @@ const META = {
   '/performance': { title: 'Verified Performance — Axiarch', description: 'Transparent performance tracking. Every pick tracked from flag time to close with real entry and exit prices.' },
 };
 
+function getStockMeta(symbol) {
+  const sym = symbol.toUpperCase();
+  return {
+    title: `${sym} Technical Analysis — Axiarch Trading Signals`,
+    description: `Real-time technical analysis for ${sym}. RSI, EMA, MACD, Bollinger Bands, ATR signals with entry, stop-loss, and profit targets.`,
+  };
+}
+
 export default function usePageMeta() {
   const { pathname } = useLocation();
   useEffect(() => {
-    const meta = META[pathname] || META['/'];
+    // Handle dynamic /stock/:symbol routes
+    let meta;
+    const stockMatch = pathname.match(/^\/stock\/([A-Za-z]+)$/);
+    if (stockMatch) {
+      meta = getStockMeta(stockMatch[1]);
+    } else {
+      meta = META[pathname] || META['/'];
+    }
+
     document.title = meta.title;
 
     // Update meta description
@@ -31,12 +49,21 @@ export default function usePageMeta() {
     const ogDesc = document.querySelector('meta[property="og:description"]');
     if (ogDesc) ogDesc.setAttribute('content', meta.description);
     const ogUrl = document.querySelector('meta[property="og:url"]');
-    if (ogUrl) ogUrl.setAttribute('content', 'https://axiarch.netlify.app' + pathname);
+    if (ogUrl) ogUrl.setAttribute('content', SITE_URL + pathname);
 
     // Update Twitter tags
     const twTitle = document.querySelector('meta[name="twitter:title"]');
     if (twTitle) twTitle.setAttribute('content', meta.title);
     const twDesc = document.querySelector('meta[name="twitter:description"]');
     if (twDesc) twDesc.setAttribute('content', meta.description);
+
+    // Update canonical URL
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.rel = 'canonical';
+      document.head.appendChild(canonical);
+    }
+    canonical.href = SITE_URL + pathname;
   }, [pathname]);
 }
