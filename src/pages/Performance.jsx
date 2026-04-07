@@ -25,6 +25,7 @@ export default function Performance() {
   const totalReturn = picks.reduce((s, p) => s + p.pctChange, 0).toFixed(1);
 
   return (
+    <div className="page-fullbg page-fullbg-performance">
     <section>
       <div className="section-label">Transparency</div>
       <h2 className="section-title">Verified Performance</h2>
@@ -84,5 +85,6 @@ export default function Performance() {
         Past performance does not guarantee future results. All picks are tracked from the moment they are flagged by the algorithm. Entry price is the price at flag time. Close price is the market close that day.
       </p>
     </section>
+    </div>
   );
 }
