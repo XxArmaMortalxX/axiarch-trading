@@ -10,6 +10,94 @@
       "pctChange": 17.78,
       "tracked": true,
       "trackedAt": "2026-04-06T15:47:00.000Z"
+    },
+    {
+      "ticker": "APLS",
+      "flaggedDate": "2026-03-31",
+      "score": 82,
+      "sources": ["Reddit", "Yahoo Gainers"],
+      "entryPrice": 17.09,
+      "closePrice": 40.23,
+      "pctChange": 135.40,
+      "tracked": true,
+      "trackedAt": "2026-03-31T20:00:00.000Z"
+    },
+    {
+      "ticker": "UNIT",
+      "flaggedDate": "2026-03-31",
+      "score": 68,
+      "sources": ["Yahoo Gainers"],
+      "entryPrice": 8.10,
+      "closePrice": 9.38,
+      "pctChange": 15.80,
+      "tracked": true,
+      "trackedAt": "2026-03-31T20:00:00.000Z"
+    },
+    {
+      "ticker": "IBRX",
+      "flaggedDate": "2026-03-31",
+      "score": 65,
+      "sources": ["Yahoo Gainers"],
+      "entryPrice": 6.66,
+      "closePrice": 7.67,
+      "pctChange": 15.17,
+      "tracked": true,
+      "trackedAt": "2026-03-31T20:00:00.000Z"
+    },
+    {
+      "ticker": "SNAP",
+      "flaggedDate": "2026-03-31",
+      "score": 63,
+      "sources": ["Yahoo Trending", "Reddit"],
+      "entryPrice": 4.02,
+      "closePrice": 4.60,
+      "pctChange": 14.43,
+      "tracked": true,
+      "trackedAt": "2026-03-31T20:00:00.000Z"
+    },
+    {
+      "ticker": "SOUN",
+      "flaggedDate": "2026-03-31",
+      "score": 61,
+      "sources": ["Yahoo Gainers"],
+      "entryPrice": 6.03,
+      "closePrice": 6.87,
+      "pctChange": 13.93,
+      "tracked": true,
+      "trackedAt": "2026-03-31T20:00:00.000Z"
+    },
+    {
+      "ticker": "WRD",
+      "flaggedDate": "2026-03-31",
+      "score": 59,
+      "sources": ["Yahoo Gainers"],
+      "entryPrice": 7.11,
+      "closePrice": 8.09,
+      "pctChange": 13.78,
+      "tracked": true,
+      "trackedAt": "2026-03-31T20:00:00.000Z"
+    },
+    {
+      "ticker": "EMAT",
+      "flaggedDate": "2026-03-31",
+      "score": 57,
+      "sources": ["Yahoo Gainers"],
+      "entryPrice": 6.74,
+      "closePrice": 7.59,
+      "pctChange": 12.61,
+      "tracked": true,
+      "trackedAt": "2026-03-31T20:00:00.000Z"
+    },
+    {
+      "ticker": "ASTC",
+      "flaggedDate": "2026-03-31",
+      "score": 55,
+      "sources": ["Reddit"],
+      "entryPrice": 4.65,
+      "closePrice": 5.23,
+      "pctChange": 12.47,
+      "tracked": true,
+      "trackedAt": "2026-03-31T20:00:00.000Z"
     }
   ],
   "weeklyReports": []
