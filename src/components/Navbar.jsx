@@ -17,6 +17,7 @@ export default function Navbar() {
     { to: '/watchlist', label: 'Watchlist' },
     { to: '/dashboard', label: 'Dashboard' },
     { to: '/blog', label: 'Learn' },
+    { to: '/performance', label: 'Performance' },
     { to: '/community', label: 'Community' },
   ];
 
