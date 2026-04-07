@@ -292,6 +292,7 @@ section:first-child { padding-top: 5rem; }
 .page-fullbg-calculator::before { background-image: url('/bg-calculator.jpg'); }
 .page-fullbg-framework::before { background-image: url('/bg-framework.jpg'); }
 .page-fullbg-watchlist::before { background-image: url('/bg-watchlist.jpg'); }
+.page-fullbg-community::before { background-image: url('/bg-community.jpg'); }
 
 .hero-bg,
 .hero-bg-screener,

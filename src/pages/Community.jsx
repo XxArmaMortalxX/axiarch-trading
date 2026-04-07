@@ -79,7 +79,7 @@ export default function Community() {
   const filtered = filter === 'all' ? posts : posts.filter(p => p.type === filter);
 
   return (
-    <>
+    <div className="page-fullbg page-fullbg-community">
       <section className="page-hero">
         <div className="section-label">Community</div>
         <h2 className="section-title">Feedback & Ideas</h2>
@@ -218,6 +218,6 @@ export default function Community() {
           </div>
         )}
       </section>
-    </>
+    </div>
   );
 }
