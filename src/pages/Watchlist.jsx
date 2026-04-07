@@ -124,7 +124,7 @@ export default function Watchlist() {
   }, [customTickers, data, sortBy, sortDir]);
 
   return (
-    <>
+    <div className="page-fullbg page-fullbg-watchlist">
       <section className="page-hero">
         <div className="section-label">Portfolio</div>
         <h2 className="section-title">My Watchlist</h2>
@@ -215,6 +215,6 @@ export default function Watchlist() {
           </div>
         )}
       </section>
-    </>
+    </div>
   );
 }
