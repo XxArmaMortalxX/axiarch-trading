@@ -1,75 +1,61 @@
 // Netlify Function: Email Subscription Handler
-// Stores emails in environment variable or sends to webhook
+// Stores emails in Netlify Blobs + optional webhook forwarding
+
+const { getStore } = require('@netlify/blobs');
 
 exports.handler = async (event, context) => {
-  // Only accept POST
   if (event.httpMethod !== 'POST') {
-    return {
-      statusCode: 405,
-      body: JSON.stringify({ error: 'Method not allowed' })
-    };
+    return { statusCode: 405, body: JSON.stringify({ error: 'Method not allowed' }) };
   }
 
   try {
     const { email, source = 'website' } = JSON.parse(event.body);
-    
+
     if (!email || !email.includes('@')) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: 'Valid email required' })
-      };
+      return { statusCode: 400, body: JSON.stringify({ error: 'Valid email required' }) };
     }
 
-    // Log the signup
-    console.log('Email signup:', email, 'from', source);
-    
-    // Option 1: Send to Maton webhook (if configured)
+    const entry = {
+      email,
+      source,
+      timestamp: new Date().toISOString(),
+    };
+
+    // Store in Netlify Blobs (persistent)
+    const store = getStore('emails');
+    let emailList;
+    try {
+      emailList = await store.get('subscribers', { type: 'json' });
+    } catch {
+      emailList = { emails: [] };
+    }
+    if (!emailList || !emailList.emails) emailList = { emails: [] };
+
+    // Avoid duplicates
+    if (!emailList.emails.some(e => e.email === email)) {
+      emailList.emails.push(entry);
+      await store.setJSON('subscribers', emailList);
+      console.log(`New subscriber: ${email} (source: ${source}) — total: ${emailList.emails.length}`);
+    } else {
+      console.log(`Duplicate subscriber skipped: ${email}`);
+    }
+
+    // Optional: forward to webhook if configured
     const MATON_WEBHOOK = process.env.MATON_WEBHOOK_URL;
     if (MATON_WEBHOOK) {
       await fetch(MATON_WEBHOOK, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          email, 
-          source,
-          timestamp: new Date().toISOString(),
-          event: 'axiarch_signup'
-        })
-      });
-    }
-    
-    // Option 2: Send to HubSpot (if configured)
-    const HUBSPOT_TOKEN = process.env.HUBSPOT_TOKEN;
-    if (HUBSPOT_TOKEN) {
-      await fetch('https://api.hubapi.com/contacts/v1/contact/', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${HUBSPOT_TOKEN}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          properties: [
-            { property: 'email', value: email },
-            { property: 'axiarch_source', value: source },
-            { property: 'axiarch_signup_date', value: new Date().toISOString() }
-          ]
-        })
-      });
+        body: JSON.stringify({ ...entry, event: 'axiarch_signup' }),
+      }).catch(() => {});
     }
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ 
-        success: true, 
-        message: 'Subscribed! Check your email for confirmation.' 
-      })
+      body: JSON.stringify({ success: true, message: 'Subscribed!' }),
     };
-    
   } catch (error) {
     console.error('Subscription error:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: 'Subscription failed. Please try again.' })
-    };
+    return { statusCode: 500, body: JSON.stringify({ error: 'Subscription failed. Please try again.' }) };
   }
 };

@@ -1,4 +1,5 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const { getStore } = require('@netlify/blobs');
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
@@ -34,6 +35,22 @@ exports.handler = async (event) => {
     }
 
     const session = await stripe.checkout.sessions.create(sessionParams);
+
+    // Store email if provided
+    if (email) {
+      try {
+        const store = getStore('emails');
+        let emailList;
+        try { emailList = await store.get('subscribers', { type: 'json' }); } catch { emailList = { emails: [] }; }
+        if (!emailList || !emailList.emails) emailList = { emails: [] };
+        if (!emailList.emails.some(e => e.email === email)) {
+          emailList.emails.push({ email, source: 'stripe-checkout', timestamp: new Date().toISOString() });
+          await store.setJSON('subscribers', emailList);
+        }
+      } catch (err) {
+        console.error('Email storage failed (non-blocking):', err.message);
+      }
+    }
 
     return {
       statusCode: 200,
