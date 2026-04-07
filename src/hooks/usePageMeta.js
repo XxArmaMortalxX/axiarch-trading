@@ -15,6 +15,7 @@ const META = {
   '/go': { title: 'Start Your Free Trial — Axiarch Pro', description: 'Get real-time BUY/SELL signals with exact entry, stop-loss, and profit targets for 65+ stocks. Try Axiarch Pro free for 7 days.' },
   '/blog': { title: 'Trading Education — Axiarch', description: 'Learn how to read RSI, EMA crossovers, MACD signals, and more. Understand the indicators behind every Axiarch signal.' },
   '/performance': { title: 'Verified Performance — Axiarch', description: 'Transparent performance tracking. Every pick tracked from flag time to close with real entry and exit prices.' },
+  '/community': { title: 'Community Feedback — Axiarch', description: 'Share feature requests, report bugs, and see what other traders are saying. Help shape the future of Axiarch.' },
 };
 
 function getStockMeta(symbol) {
