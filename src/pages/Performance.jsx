@@ -4,10 +4,16 @@ export default function Performance() {
   const [perfData, setPerfData] = useState(null);
 
   useEffect(() => {
-    fetch('/performance.json')
+    // Try API first (includes automated daily picks), fall back to static JSON
+    fetch('/.netlify/functions/get-performance')
       .then(r => r.json())
       .then(setPerfData)
-      .catch(() => {});
+      .catch(() => {
+        fetch('/performance.json')
+          .then(r => r.json())
+          .then(setPerfData)
+          .catch(() => {});
+      });
   }, []);
 
   const picks = perfData?.picks || [];

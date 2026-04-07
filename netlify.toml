@@ -23,3 +23,13 @@
 # Daily picks to Telegram — 8:00 AM ET (13:00 UTC) Mon-Fri
 [functions."telegram-daily"]
   schedule = "0 13 * * 1-5"
+
+# Morning scan — 9:30 AM ET (13:30 UTC) Mon-Fri
+# Scans 65+ stocks, scores them, saves top 5 picks with entry prices
+[functions."morning-scan"]
+  schedule = "30 13 * * 1-5"
+
+# Afternoon check — 4:00 PM ET (20:00 UTC) Mon-Fri
+# Gets close prices for morning picks, calculates returns, saves to history
+[functions."afternoon-check"]
+  schedule = "0 20 * * 1-5"
