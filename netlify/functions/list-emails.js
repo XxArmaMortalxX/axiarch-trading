@@ -1,4 +1,4 @@
-const { getStore } = require('@netlify/blobs');
+const { getBlobStore } = require('./lib/blobs');
 
 exports.handler = async (event) => {
   const headers = {
@@ -12,7 +12,7 @@ exports.handler = async (event) => {
     return { statusCode: 401, headers, body: JSON.stringify({ error: 'Unauthorized' }) };
   }
 
-  const store = getStore('emails');
+  const store = getBlobStore('emails');
   let emailList;
   try {
     emailList = await store.get('subscribers', { type: 'json' });

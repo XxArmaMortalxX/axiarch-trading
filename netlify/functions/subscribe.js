@@ -1,7 +1,7 @@
 // Netlify Function: Email Subscription Handler
 // Stores emails in Netlify Blobs + optional webhook forwarding
 
-const { getStore } = require('@netlify/blobs');
+const { getBlobStore } = require('./lib/blobs');
 
 exports.handler = async (event, context) => {
   if (event.httpMethod !== 'POST') {
@@ -22,7 +22,7 @@ exports.handler = async (event, context) => {
     };
 
     // Store in Netlify Blobs (persistent)
-    const store = getStore('emails');
+    const store = getBlobStore('emails');
     let emailList;
     try {
       emailList = await store.get('subscribers', { type: 'json' });

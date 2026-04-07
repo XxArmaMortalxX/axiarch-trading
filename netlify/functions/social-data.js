@@ -1,4 +1,4 @@
-const { getStore } = require('@netlify/blobs');
+const { getBlobStore } = require('./lib/blobs');
 
 const CACHE_TTL_MS = 15 * 60 * 1000; // 15 minutes
 
@@ -125,7 +125,7 @@ exports.handler = async (event) => {
   }
 
   // Check Blobs cache first
-  const store = getStore('social');
+  const store = getBlobStore('social');
   let cached;
   try {
     cached = await store.get('latest', { type: 'json' });

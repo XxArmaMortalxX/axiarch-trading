@@ -1,4 +1,4 @@
-const { getStore } = require('@netlify/blobs');
+const { getBlobStore } = require('./lib/blobs');
 
 const FINNHUB_KEY = process.env.FINNHUB_API_KEY;
 const FINNHUB_BASE = 'https://finnhub.io/api/v1';
@@ -19,7 +19,7 @@ exports.handler = async (event) => {
     return { statusCode: 500, body: 'FINNHUB_API_KEY not configured' };
   }
 
-  const store = getStore('performance');
+  const store = getBlobStore('performance');
   const today = new Date().toISOString().split('T')[0];
 
   // Read morning picks

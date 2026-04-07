@@ -1,4 +1,4 @@
-const { getStore } = require('@netlify/blobs');
+const { getBlobStore } = require('./lib/blobs');
 
 exports.handler = async (event) => {
   const headers = {
@@ -12,7 +12,7 @@ exports.handler = async (event) => {
   }
 
   try {
-    const store = getStore('performance');
+    const store = getBlobStore('performance');
 
     // Get accumulated history from Blobs
     let history;

@@ -1,5 +1,5 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-const { getStore } = require('@netlify/blobs');
+const { getBlobStore } = require('./lib/blobs');
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
@@ -39,7 +39,7 @@ exports.handler = async (event) => {
     // Store email if provided
     if (email) {
       try {
-        const store = getStore('emails');
+        const store = getBlobStore('emails');
         let emailList;
         try { emailList = await store.get('subscribers', { type: 'json' }); } catch { emailList = { emails: [] }; }
         if (!emailList || !emailList.emails) emailList = { emails: [] };
