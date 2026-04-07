@@ -1,4 +1,5 @@
-const { getBlobStore } = require('./lib/blobs');
+const { getStore } = require('@netlify/blobs');
+function getBlobStore(name) { const s = process.env.NETLIFY_SITE_ID, t = process.env.NETLIFY_BLOBS_TOKEN; return (s && t) ? getStore({ name, siteID: s, token: t }) : getStore(name); }
 
 const FINNHUB_KEY = process.env.FINNHUB_API_KEY;
 const FINNHUB_BASE = 'https://finnhub.io/api/v1';
