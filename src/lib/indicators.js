@@ -201,8 +201,8 @@ export function determineBias(quote, candles) {
   return b > s + 1 ? 'LONG' : s > b + 1 ? 'SHORT' : 'NEUTRAL';
 }
 
-export function axiarchScore(quote, candles) {
-  if (!candles || !candles.c || candles.c.length < 15) return basicScore(quote);
+export function axiarchScore(quote, candles, socialData) {
+  if (!candles || !candles.c || candles.c.length < 15) return basicScore(quote, socialData);
   const closes = candles.c, highs = candles.h, lows = candles.l, volumes = candles.v;
   const price = quote.c || closes[closes.length - 1];
   const rsi = calcRSI(closes) || 50;
@@ -280,11 +280,15 @@ export function axiarchScore(quote, candles) {
   else if (rvol > 0.5) volSc = 25;
   else volSc = 10;
 
-  const composite = (tech * 0.40) + (mom * 0.25) + (vol * 0.15) + (volSc * 0.20);
+  // Social factor (0-100)
+  const social = socialData?.socialScore || 0;
+
+  // Weights: Technical 35%, Momentum 20%, Volatility 15%, Volume 15%, Social 15%
+  const composite = (tech * 0.35) + (mom * 0.20) + (vol * 0.15) + (volSc * 0.15) + (social * 0.15);
   return Math.max(10, Math.min(99, Math.round(composite)));
 }
 
-function basicScore(q) {
+function basicScore(q, socialData) {
   let score = 50;
   const price = q.c || 0, absChange = Math.abs(q.dp || 0);
   if (price >= 0.50 && price <= 5) score += 12;
@@ -298,6 +302,8 @@ function basicScore(q) {
   const rangePct = price > 0 ? (range / price) * 100 : 0;
   if (rangePct > 10) score += 8;
   else if (rangePct > 5) score += 5;
+  // Social boost
+  if (socialData?.socialScore) score += Math.round(socialData.socialScore * 0.15);
   return Math.max(10, Math.min(99, Math.round(score)));
 }
 

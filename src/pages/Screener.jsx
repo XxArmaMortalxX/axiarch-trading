@@ -28,7 +28,9 @@ export default function Screener() {
     if (filter === 'long') d = d.filter(t => t.bias === 'LONG');
     else if (filter === 'short') d = d.filter(t => t.bias === 'SHORT');
     else if (filter === 'hot') d = d.filter(t => t.signal === 'STRONG BUY' || t.signal === 'STRONG SELL');
-    return d.sort((a, b) => b.score - a.score);
+    else if (filter === 'social') d = d.filter(t => t.socialScore > 0).sort((a, b) => b.socialScore - a.socialScore);
+    if (filter !== 'social') d = d.sort((a, b) => b.score - a.score);
+    return d;
   })();
 
   const statusColor = scanStatus === 'live' ? 'var(--accent-green)' : scanStatus === 'error' ? 'var(--accent-red)' : scanStatus === 'scanning' ? 'var(--accent-cyan)' : 'var(--accent-amber)';
@@ -82,7 +84,7 @@ export default function Screener() {
         <div className="screener-container">
           <div className="screener-toolbar">
             <div className="screener-filters">
-              {[['all', 'All Picks'], ['long', 'Long Only'], ['short', 'Short Only'], ['hot', 'Strong Signals']].map(([key, label]) => (
+              {[['all', 'All Picks'], ['long', 'Long Only'], ['short', 'Short Only'], ['hot', 'Strong Signals'], ['social', 'Social Buzz']].map(([key, label]) => (
                 <button key={key} className={`filter-chip${filter === key ? ' active' : ''}`} onClick={() => setFilter(key)}>{label}</button>
               ))}
             </div>
@@ -91,12 +93,12 @@ export default function Screener() {
             <table className="screener-table">
               <thead>
                 <tr>
-                  <th>#</th><th>Ticker</th><th>Price</th><th>Change %</th><th>RSI(14)</th><th>Rel Vol</th><th>MACD</th><th>Score</th><th>Signal</th><th>Entry / Stop / Target</th><th>Bias</th>
+                  <th>#</th><th>Ticker</th><th>Price</th><th>Change %</th><th>RSI(14)</th><th>Rel Vol</th><th>MACD</th><th>Social</th><th>Sentiment</th><th>Score</th><th>Signal</th><th>Entry / Stop / Target</th><th>Bias</th>
                 </tr>
               </thead>
               <tbody>
                 {filtered.length === 0 ? (
-                  <tr><td colSpan="11" style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>No stocks match current filters.</td></tr>
+                  <tr><td colSpan="13" style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>No stocks match current filters.</td></tr>
                 ) : filtered.slice(0, 30).map((t, i) => {
                   const chgCls = t.change >= 0 ? 'positive' : 'negative';
                   const rsiVal = t.rsi !== null ? t.rsi.toFixed(1) : '\u2014';
@@ -116,6 +118,17 @@ export default function Screener() {
                       <td style={{ fontFamily: 'var(--font-mono)' }} className={rsiCls}>{rsiVal}</td>
                       <td style={{ fontFamily: 'var(--font-mono)' }} className={rvolCls}>{rvolVal}</td>
                       <td style={{ fontFamily: 'var(--font-mono)' }} className={macdCls}>{macdIcon} {Math.abs(macdHist).toFixed(3)}</td>
+                      <td style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: t.socialScore > 50 ? 'var(--accent-green)' : t.socialScore > 20 ? 'var(--accent-amber)' : 'var(--text-muted)' }}>
+                        {t.socialScore > 0 ? t.socialScore : '\u2014'}
+                        {t.mentions > 0 && <span style={{ fontSize: '0.6rem', color: 'var(--text-muted)', marginLeft: '0.2rem' }}>({t.mentions})</span>}
+                      </td>
+                      <td style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>
+                        {t.sentiment !== null ? (
+                          <span style={{ color: t.sentiment >= 60 ? 'var(--accent-green)' : t.sentiment <= 40 ? 'var(--accent-red)' : 'var(--text-muted)' }}>
+                            {t.sentiment}% {t.sentimentLabel === 'bullish' ? '\u25B2' : t.sentimentLabel === 'bearish' ? '\u25BC' : ''}
+                          </span>
+                        ) : '\u2014'}
+                      </td>
                       <td><ScoreBar score={t.score} /></td>
                       <td><SignalBadge signal={t.signal} /></td>
                       <td className="target-cell" style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem' }}>

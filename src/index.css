@@ -601,6 +601,9 @@ section:first-child { padding-top: 5rem; }
 .rsi-overbought { color: #ff3b3b; }
 
 .rvol-high { color: var(--accent-amber); font-weight: 700; }
+.social-hot { color: var(--accent-green); font-weight: 700; }
+.social-warm { color: var(--accent-amber); }
+.social-cold { color: var(--text-muted); }
 .rvol-normal { color: var(--text-secondary); }
 .rvol-low { color: var(--text-muted); }
 

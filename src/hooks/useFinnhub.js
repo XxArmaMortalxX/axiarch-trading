@@ -18,9 +18,10 @@ async function proxyCandles(symbol, from, to) {
   return { c: data.c, h: data.h, l: data.l, o: data.o, v: data.v, t: data.t };
 }
 
-function processQuotes(quotes, candleCache) {
+function processQuotes(quotes, candleCache, socialMap) {
   return quotes.map(q => {
     const candles = candleCache[q.symbol] || null;
+    const social = socialMap?.[q.symbol] || null;
     const sig = generateSignal(q, candles);
     const rsi = candles ? calcRSI(candles.c) : null;
     const rvol = candles ? calcRelativeVolume(candles.v) : null;
@@ -33,7 +34,7 @@ function processQuotes(quotes, candleCache) {
       high: q.h,
       low: q.l,
       prevClose: q.pc,
-      score: axiarchScore(q, candles),
+      score: axiarchScore(q, candles, social),
       rsi,
       rvol,
       macd,
@@ -44,6 +45,12 @@ function processQuotes(quotes, candleCache) {
       rr: sig.rr,
       bias: determineBias(q, candles),
       hasCandles: !!candles,
+      // Social data
+      socialScore: social?.socialScore || 0,
+      mentions: social?.mentions || 0,
+      sentiment: social?.sentiment ?? null,
+      sentimentLabel: social?.sentimentLabel || null,
+      trendingRank: social?.trendingRank || null,
     };
   }).sort((a, b) => b.score - a.score);
 }
@@ -55,6 +62,7 @@ export function useFinnhub() {
   const [scanStatus, setScanStatus] = useState('loading');
   const [scanMessage, setScanMessage] = useState('Loading market data...');
   const candleCacheRef = useRef({});
+  const socialCacheRef = useRef({});
 
   const runFullScan = useCallback(async (customTickerList) => {
     const tickersToScan = customTickerList || WATCHLIST;
@@ -63,6 +71,14 @@ export function useFinnhub() {
     setScanStatus('scanning');
 
     try {
+      // Phase 0: Fetch social data in background (non-blocking)
+      const socialPromise = fetch('/.netlify/functions/social-data')
+        .then(r => r.ok ? r.json() : null)
+        .then(data => {
+          if (data?.tickers) socialCacheRef.current = data.tickers;
+        })
+        .catch(() => {});
+
       // Phase 1: Fetch quotes via proxy
       const results = [];
       const batchSize = 10;
@@ -79,7 +95,7 @@ export function useFinnhub() {
         const batchResults = await Promise.all(promises);
         results.push(...batchResults.filter(Boolean));
         const pct = Math.round(((i + batchSize) / tickersToScan.length) * 100);
-        setScanMessage(`Phase 1/2: Quotes... ${Math.min(i + batchSize, tickersToScan.length)}/${tickersToScan.length} (${Math.min(pct, 100)}%)`);
+        setScanMessage(`Phase 1/3: Quotes... ${Math.min(i + batchSize, tickersToScan.length)}/${tickersToScan.length} (${Math.min(pct, 100)}%)`);
         if (i + batchSize < tickersToScan.length) await new Promise(r => setTimeout(r, delayMs));
       }
 
@@ -101,16 +117,21 @@ export function useFinnhub() {
         });
         await Promise.all(promises);
         const pct = Math.round(((i + candleBatchSize) / syms.length) * 100);
-        setScanMessage(`Phase 2/2: Indicators... ${Math.min(i + candleBatchSize, syms.length)}/${syms.length} (${Math.min(pct, 100)}%)`);
+        setScanMessage(`Phase 2/3: Indicators... ${Math.min(i + candleBatchSize, syms.length)}/${syms.length} (${Math.min(pct, 100)}%)`);
         if (i + candleBatchSize < syms.length) await new Promise(r => setTimeout(r, candleDelay));
       }
 
-      const processed = processQuotes(results, candleCacheRef.current);
+      // Phase 3: Wait for social data to finish
+      setScanMessage('Phase 3/3: Social sentiment...');
+      await socialPromise;
+
+      const processed = processQuotes(results, candleCacheRef.current, socialCacheRef.current);
       setData(processed);
       setDataSource('live');
       setScanStatus('live');
       const withTA = processed.filter(t => t.hasCandles).length;
-      setScanMessage(`LIVE · ${processed.length} stocks · ${withTA} with TA · ${new Date().toLocaleTimeString()}`);
+      const withSocial = processed.filter(t => t.socialScore > 0).length;
+      setScanMessage(`LIVE · ${processed.length} stocks · ${withTA} TA · ${withSocial} social · ${new Date().toLocaleTimeString()}`);
     } catch (err) {
       console.error('Scan failed:', err);
       setDataSource('error');

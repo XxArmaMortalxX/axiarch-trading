@@ -53,7 +53,7 @@ function calcRelativeVolume(volumes) {
   return avg > 0 ? recent / avg : null;
 }
 
-function axiarchScore(quote, candles) {
+function axiarchScore(quote, candles, socialData) {
   if (!candles || !candles.c || candles.c.length < 21) return 0;
 
   const closes = candles.c;
@@ -66,23 +66,23 @@ function axiarchScore(quote, candles) {
 
   let score = 0;
 
-  // Technical (40%)
+  // Technical (35%)
   if (rsi !== null) {
-    if (rsi >= 30 && rsi <= 70) score += 15;
-    else if (rsi < 30) score += 20; // oversold = opportunity
-    else score += 5;
+    if (rsi >= 30 && rsi <= 70) score += 13;
+    else if (rsi < 30) score += 18;
+    else score += 4;
   }
-  if (ema9 && ema21 && ema9 > ema21) score += 20; // bullish crossover
+  if (ema9 && ema21 && ema9 > ema21) score += 17;
 
-  // Momentum (25%)
-  if (change > 5) score += 25;
-  else if (change > 2) score += 18;
-  else if (change > 0) score += 10;
+  // Momentum (20%)
+  if (change > 5) score += 20;
+  else if (change > 2) score += 14;
+  else if (change > 0) score += 8;
 
-  // Volume (20%)
-  if (rvol && rvol > 3) score += 20;
-  else if (rvol && rvol > 1.5) score += 12;
-  else if (rvol && rvol > 1) score += 6;
+  // Volume (15%)
+  if (rvol && rvol > 3) score += 15;
+  else if (rvol && rvol > 1.5) score += 9;
+  else if (rvol && rvol > 1) score += 4;
 
   // Volatility (15%) — ATR-based
   if (candles.h && candles.l && candles.h.length >= 14) {
@@ -95,6 +95,11 @@ function axiarchScore(quote, candles) {
     if (atrPct > 5) score += 15;
     else if (atrPct > 3) score += 10;
     else if (atrPct > 1) score += 5;
+  }
+
+  // Social (15%)
+  if (socialData && socialData.socialScore) {
+    score += Math.round(socialData.socialScore * 0.15);
   }
 
   return Math.min(score, 100);
@@ -146,6 +151,20 @@ exports.handler = async (event) => {
   }
 
   console.log('Morning scan starting...');
+
+  // Fetch social data from our own API
+  let socialMap = {};
+  try {
+    const socialResp = await fetch(`${process.env.URL || 'https://axiarchtrading.netlify.app'}/.netlify/functions/social-data`);
+    if (socialResp.ok) {
+      const socialData = await socialResp.json();
+      socialMap = socialData.tickers || {};
+      console.log(`Social data loaded: ${Object.keys(socialMap).length} tickers`);
+    }
+  } catch (err) {
+    console.error('Social data fetch failed (continuing without):', err.message);
+  }
+
   const results = [];
 
   // Process in batches of 5 to respect rate limits
@@ -159,12 +178,16 @@ exports.handler = async (event) => {
             fetchYahooCandles(symbol),
           ]);
           if (!quote) return null;
-          const score = axiarchScore(quote, candles);
+          const social = socialMap[symbol] || null;
+          const score = axiarchScore(quote, candles, social);
           return {
             ticker: symbol,
             price: quote.c,
             change: quote.dp || 0,
             score,
+            socialScore: social?.socialScore || 0,
+            mentions: social?.mentions || 0,
+            sentiment: social?.sentiment ?? null,
           };
         } catch (err) {
           console.error(`Error scanning ${symbol}:`, err.message);
@@ -202,6 +225,9 @@ exports.handler = async (event) => {
       entryPrice: p.price,
       score: p.score,
       change: p.change,
+      socialScore: p.socialScore,
+      mentions: p.mentions,
+      sentiment: p.sentiment,
     })),
   };
 
