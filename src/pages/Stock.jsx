@@ -1,13 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Chart as ChartJS, LineElement, PointElement, LinearScale, CategoryScale, Filler, Tooltip as ChartTooltip, Legend } from 'chart.js';
-import { Line } from 'react-chartjs-2';
 import { useFinnhubContext } from '../context/FinnhubContext';
 import { useStockProfile } from '../hooks/useStockProfile';
 import { calcRSI, calcEMA, calcMACD, calcBollingerBands, calcATR, calcVWAP, calcRelativeVolume, fmtPrice } from '../lib/indicators';
 import SignalBadge from '../components/SignalBadge';
-
-ChartJS.register(LineElement, PointElement, LinearScale, CategoryScale, Filler, ChartTooltip, Legend);
+import StockChart from '../components/StockChart';
 
 function StatCard({ label, value, color }) {
   return (
@@ -82,7 +79,7 @@ export default function Stock() {
         // Fetch candles if not cached
         if (!candleCache[sym] && !localCandles) {
           const now = Math.floor(Date.now() / 1000);
-          const from = now - 45 * 86400;
+          const from = now - 400 * 86400; // ~13 months for 1Y chart support
           const cRes = await fetch(`${PROXY}?endpoint=candles&symbol=${sym}&from=${from}&to=${now}`);
           const d = await cRes.json();
           if (!cancelled && d.s === 'ok') {
@@ -139,36 +136,7 @@ export default function Stock() {
   const rsi = ticker?.rsi || indicators.rsi;
   const rvol = ticker?.rvol || indicators.rvol;
 
-  // Chart data — only render when we have valid candle data with timestamps
-  const hasValidCandles = candles?.c?.length > 0 && candles?.t?.length > 0;
-  const chartData = hasValidCandles ? {
-    labels: candles.t.map(ts => new Date(ts * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })),
-    datasets: [{
-      label: sym,
-      data: candles.c,
-      borderColor: '#00e676',
-      backgroundColor: 'rgba(0, 230, 118, 0.06)',
-      borderWidth: 2,
-      fill: true,
-      tension: 0.3,
-      pointRadius: 0,
-      pointHoverRadius: 5,
-      pointHoverBackgroundColor: '#00e676',
-    }],
-  } : null;
-
-  const chartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      x: { grid: { color: 'rgba(22, 51, 34, 0.3)' }, ticks: { color: '#4a6b58', font: { family: 'IBM Plex Mono', size: 10 }, maxTicksLimit: 10 } },
-      y: { grid: { color: 'rgba(22, 51, 34, 0.3)' }, ticks: { color: '#4a6b58', font: { family: 'IBM Plex Mono', size: 10 }, callback: v => '$' + v.toFixed(2) } },
-    },
-    plugins: {
-      legend: { display: false },
-      tooltip: { backgroundColor: '#0b1a14', titleColor: '#e0ece6', bodyColor: '#7fa893', borderColor: '#1e4430', borderWidth: 1, callbacks: { label: ctx => `$${ctx.parsed.y.toFixed(2)}` } },
-    },
-  };
+  // No longer need Chart.js config — using StockChart component
 
   // Estimate score components (reverse-engineer from composite for display)
   const score = ticker?.score || 50;
@@ -239,18 +207,7 @@ export default function Stock() {
       </div>
 
       {/* Price Chart */}
-      {chartData ? (
-        <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: '1.25rem', marginBottom: '1.5rem' }}>
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.8rem' }}>45-Day Price History</div>
-          <div style={{ height: '280px' }}>
-            <Line data={chartData} options={chartOptions} />
-          </div>
-        </div>
-      ) : (
-        <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: '3rem', textAlign: 'center', color: 'var(--text-muted)', marginBottom: '1.5rem', fontSize: '0.85rem' }}>
-          Loading chart data...
-        </div>
-      )}
+      <StockChart candles={candles} symbol={sym} />
 
       {/* Key Stats */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: '0.6rem', marginBottom: '1.5rem' }}>
@@ -338,10 +295,11 @@ export default function Stock() {
           <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Axiarch Composite Score</div>
           <div style={{ fontFamily: 'var(--font-mono)', fontSize: '1.5rem', fontWeight: 800, color: score >= 70 ? 'var(--accent-green)' : score >= 45 ? 'var(--accent-amber)' : 'var(--accent-red)' }}>{score}</div>
         </div>
-        <ScoreBreakdownBar label="Technical" pct={techScore} weight={40} />
-        <ScoreBreakdownBar label="Momentum" pct={momScore} weight={25} />
+        <ScoreBreakdownBar label="Technical" pct={techScore} weight={35} />
+        <ScoreBreakdownBar label="Momentum" pct={momScore} weight={20} />
         <ScoreBreakdownBar label="Volatility" pct={volScore} weight={15} />
-        <ScoreBreakdownBar label="Volume" pct={volumeScore} weight={20} />
+        <ScoreBreakdownBar label="Volume" pct={volumeScore} weight={15} />
+        <ScoreBreakdownBar label="Social" pct={ticker?.socialScore || 0} weight={15} />
       </div>
 
       {/* Trade Plan */}
