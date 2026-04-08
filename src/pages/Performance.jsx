@@ -36,7 +36,7 @@ export default function Performance() {
         <div style={{ display: 'flex', gap: '2rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
           {[
             { value: picks.length, label: 'Tracked Picks' },
-            { value: `${winRate}%`, label: 'Win Rate', color: winRate >= 50 ? 'var(--accent-green)' : 'var(--accent-red)' },
+            { value: `${winners.length}/${picks.length}`, label: 'Winners', color: 'var(--accent-green)' },
             { value: `+${avgReturn}%`, label: 'Avg Return', color: 'var(--accent-green)' },
             { value: bestPick ? `+${bestPick.pctChange.toFixed(1)}%` : '\u2014', label: bestPick ? `Best: $${bestPick.ticker}` : 'Best Pick', color: 'var(--accent-green)' },
             { value: `+${totalReturn}%`, label: 'Total Return', color: 'var(--accent-green)' },
