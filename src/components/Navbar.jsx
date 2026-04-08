@@ -48,7 +48,7 @@ export default function Navbar() {
         ) : (
           <button onClick={() => setShowAuth(true)} className="nav-cta">Sign In</button>
         )}
-        <Link to="/pricing" className="nav-cta">Pricing</Link>
+        <a href="https://t.me/axiarchtradebot" target="_blank" rel="noopener noreferrer" className="nav-cta" style={{ background: 'var(--accent-green)', color: '#000' }}>Join Telegram</a>
         <button onClick={toggle} title={isDark ? 'Light mode' : 'Dark mode'} className="nav-icon-btn">
           {isDark ? '\u2600\uFE0F' : '\uD83C\uDF19'}
         </button>

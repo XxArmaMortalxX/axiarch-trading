@@ -62,8 +62,8 @@ export default function Home() {
         </div>
 
         <div className="hero-actions" style={{ position: 'relative', zIndex: 2 }}>
-          <Link to="/screener" className="btn-primary">Launch Screener</Link>
-          <Link to="/methodology" className="btn-secondary">See How It Works</Link>
+          <a href="https://t.me/axiarchtradebot" target="_blank" rel="noopener noreferrer" className="btn-primary">Join Telegram — Free Alerts</a>
+          <Link to="/screener" className="btn-secondary">Launch Screener</Link>
         </div>
       </section>
 
@@ -78,6 +78,10 @@ export default function Home() {
             <button onClick={() => setShowAuth(true)} className="btn-primary" style={{ width: '100%' }}>
               Get Free Access
             </button>
+            <div style={{ margin: 'var(--space-3) 0', fontSize: 'var(--text-xs)', color: 'var(--text-muted)' }}>or</div>
+            <a href="https://t.me/axiarchtradebot" target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ width: '100%', display: 'block', textAlign: 'center' }}>
+              Join Telegram for Daily Picks
+            </a>
             <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)', marginTop: 'var(--space-3)' }}>
               No credit card. No spam. Just your email.
             </p>
