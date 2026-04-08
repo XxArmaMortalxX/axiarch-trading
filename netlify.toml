@@ -33,3 +33,8 @@
 # Gets close prices for morning picks, calculates returns, saves to history
 [functions."afternoon-check"]
   schedule = "0 20 * * 1-5"
+
+# Daily email newsletter — 8:15 AM ET (12:15 UTC) Mon-Fri
+# Sends morning picks to all email subscribers via Resend
+[functions."daily-email"]
+  schedule = "15 12 * * 1-5"

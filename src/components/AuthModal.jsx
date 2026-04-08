@@ -4,15 +4,42 @@ import { useAuth } from '../context/AuthContext';
 export default function AuthModal({ onClose, required = false }) {
   const { login } = useAuth();
   const [email, setEmail] = useState('');
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const trimmed = email.trim();
     if (trimmed && trimmed.includes('@')) {
       login(trimmed);
-      onClose();
+      setShowSuccess(true);
     }
   };
+
+  if (showSuccess) {
+    return (
+      <div className="auth-overlay" onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
+        <div className="auth-box" style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: '2rem', marginBottom: 'var(--space-3)' }}>{'\u2705'}</div>
+          <h3>You're in!</h3>
+          <p style={{ marginBottom: 'var(--space-4)' }}>You'll receive daily picks in your inbox before the market opens.</p>
+
+          <a
+            href="https://t.me/axiarchtradebot"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary"
+            style={{ width: '100%', display: 'block', textAlign: 'center', marginBottom: 'var(--space-3)' }}
+          >
+            Join Telegram for Live Alerts
+          </a>
+
+          <button onClick={onClose} className="btn-secondary" style={{ width: '100%' }}>
+            Go to Screener
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="auth-overlay" onClick={e => { if (!required && e.target === e.currentTarget) onClose(); }}>
