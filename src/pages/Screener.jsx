@@ -116,21 +116,14 @@ export default function Screener() {
             <table className="screener-table">
               <thead>
                 <tr>
-                  <th>#</th><th>Ticker</th><th>Price</th><th>Change %</th><th>RSI(14)</th><th>Rel Vol</th><th>MACD</th><th>Social</th><th>Sentiment</th><th>Score</th><th>Signal</th><th>Entry / Stop / Target</th><th>Bias</th>
+                  <th>#</th><th>Ticker</th><th>Price</th><th>Change %</th><th>Social</th><th>Score</th><th>Signal</th><th>Bias</th>
                 </tr>
               </thead>
               <tbody>
                 {filtered.length === 0 ? (
-                  <tr><td colSpan="13" style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>No stocks match current filters.</td></tr>
+                  <tr><td colSpan="8" style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>No stocks match current filters.</td></tr>
                 ) : filtered.slice(0, 30).map((t, i) => {
                   const chgCls = t.change >= 0 ? 'positive' : 'negative';
-                  const rsiVal = t.rsi !== null ? t.rsi.toFixed(1) : '\u2014';
-                  const rsiCls = t.rsi === null ? 'rsi-neutral' : t.rsi < 30 ? 'rsi-oversold' : t.rsi > 70 ? 'rsi-overbought' : 'rsi-neutral';
-                  const rvolVal = t.rvol !== null ? t.rvol.toFixed(1) + 'x' : '\u2014';
-                  const rvolCls = t.rvol === null ? 'rvol-normal' : t.rvol > 2 ? 'rvol-high' : t.rvol > 1 ? 'rvol-normal' : 'rvol-low';
-                  const macdHist = t.macd ? t.macd.histogram : 0;
-                  const macdCls = macdHist > 0 ? 'macd-bull' : macdHist < 0 ? 'macd-bear' : 'macd-neutral';
-                  const macdIcon = macdHist > 0 ? '\u25B2' : macdHist < 0 ? '\u25BC' : '\u2014';
 
                   return (
                     <tr key={t.sym} onClick={() => navigate(`/stock/${t.sym}`)} style={{ cursor: 'pointer' }}>
@@ -138,33 +131,12 @@ export default function Screener() {
                       <td className="ticker-cell">{t.sym}</td>
                       <td style={{ fontFamily: 'var(--font-mono)' }}>{fmtPrice(t.price)}</td>
                       <td className={chgCls} style={{ fontFamily: 'var(--font-mono)', fontWeight: 600 }}>{t.change >= 0 ? '+' : ''}{t.change}%</td>
-                      <td style={{ fontFamily: 'var(--font-mono)' }} className={rsiCls}>{rsiVal}</td>
-                      <td style={{ fontFamily: 'var(--font-mono)' }} className={rvolCls}>{rvolVal}</td>
-                      <td style={{ fontFamily: 'var(--font-mono)' }} className={macdCls}>{macdIcon} {Math.abs(macdHist).toFixed(3)}</td>
                       <td style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: t.socialScore > 50 ? 'var(--accent-green)' : t.socialScore > 20 ? 'var(--accent-amber)' : 'var(--text-muted)' }}>
                         {t.socialScore > 0 ? t.socialScore : '\u2014'}
                         {t.mentions > 0 && <span style={{ fontSize: '0.6rem', color: 'var(--text-muted)', marginLeft: '0.2rem' }}>({t.mentions})</span>}
                       </td>
-                      <td style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>
-                        {t.sentiment !== null ? (
-                          <span style={{ color: t.sentiment >= 60 ? 'var(--accent-green)' : t.sentiment <= 40 ? 'var(--accent-red)' : 'var(--text-muted)' }}>
-                            {t.sentiment}% {t.sentimentLabel === 'bullish' ? '\u25B2' : t.sentimentLabel === 'bearish' ? '\u25BC' : ''}
-                          </span>
-                        ) : '\u2014'}
-                      </td>
                       <td><ScoreBar score={t.score} /></td>
                       <td><SignalBadge signal={t.signal} /></td>
-                      <td className="target-cell" style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem' }}>
-                        {t.entry !== null ? (
-                          <>
-                            <span className="target-entry">{fmtPrice(t.entry)}</span>
-                            {' / '}
-                            <span className="target-stop">{fmtPrice(t.stop)}</span>
-                            {' / '}
-                            <span className="target-tp">{fmtPrice(t.target)}</span>
-                          </>
-                        ) : <span style={{ color: 'var(--text-muted)' }}>{'\u2014'}</span>}
-                      </td>
                       <td><BiasTag bias={t.bias} /></td>
                     </tr>
                   );
