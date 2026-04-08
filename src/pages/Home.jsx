@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import AuthModal from '../components/AuthModal';
 
 const FEATURES = [
   { icon: '\u{1F4E1}', title: 'Real-Time TA Screener', desc: 'Live RSI, EMA, MACD, Bollinger Bands, and ATR calculated from 30-day historical candle data for every ticker.' },
@@ -32,6 +34,8 @@ const PIPELINE = [
 
 export default function Home() {
   const [emailStatus, setEmailStatus] = useState('');
+  const { isLoggedIn } = useAuth();
+  const [showAuth, setShowAuth] = useState(false);
   return (
     <>
       {/* HERO */}
@@ -63,6 +67,26 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Email gate — hero is visible, rest requires login */}
+      {!isLoggedIn && (
+        <section className="section-centered" style={{ paddingTop: '2rem', paddingBottom: '4rem' }}>
+          <div style={{ maxWidth: '460px', margin: '0 auto', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: 'var(--space-8)' }}>
+            <h3 style={{ fontSize: 'var(--text-xl)', fontWeight: 700, marginBottom: 'var(--space-2)' }}>Sign in to explore</h3>
+            <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-6)', lineHeight: 'var(--leading-relaxed)' }}>
+              Enter your email to access the full platform — screener, signals, charts, and more. Completely free.
+            </p>
+            <button onClick={() => setShowAuth(true)} className="btn-primary" style={{ width: '100%' }}>
+              Get Free Access
+            </button>
+            <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)', marginTop: 'var(--space-3)' }}>
+              No credit card. No spam. Just your email.
+            </p>
+          </div>
+          {showAuth && <AuthModal onClose={() => setShowAuth(false)} required />}
+        </section>
+      )}
+
+      {isLoggedIn && <>
       {/* TICKER TAPE */}
       <div className="ticker-tape">
         <div className="ticker-scroll">
@@ -226,6 +250,7 @@ export default function Home() {
           <Link to="/pricing" className="btn-secondary">View Pricing Plans</Link>
         </div>
       </section>
+      </>}
     </>
   );
 }
