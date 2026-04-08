@@ -18,20 +18,41 @@ export default function Performance() {
 
   const picks = perfData?.picks || [];
 
+  // Separate active trades (BUY/SELL) from holds (no position taken)
+  function isActiveTrade(pick) {
+    const sig = pick.signal || '';
+    return sig.includes('BUY') || sig.includes('SELL');
+  }
+
+  function isHold(pick) {
+    return !isActiveTrade(pick);
+  }
+
   // Directional win logic: BUY + up = win, SELL + down = win
   function isWin(pick) {
-    if (pick.result) return pick.result === 'WIN'; // afternoon-check already evaluated
+    if (pick.result === 'WIN') return true;
+    if (pick.result === 'LOSS') return false;
+    if (pick.result === 'NEUTRAL') return null; // no trade
     const isBullish = pick.signal === 'BUY' || pick.signal === 'STRONG BUY';
     const isBearish = pick.signal === 'SELL' || pick.signal === 'STRONG SELL';
     if (isBullish) return pick.pctChange > 0;
     if (isBearish) return pick.pctChange < 0;
-    return pick.pctChange > 0; // legacy picks without signal default to long
+    if (isHold(pick)) return null; // HOLD = no trade taken
+    return pick.pctChange > 0; // legacy picks without signal
   }
 
-  const winners = picks.filter(isWin);
-  const losers = picks.filter(p => !isWin(p) && p.pctChange !== 0);
-  const avgReturn = picks.length > 0 ? (picks.reduce((s, p) => s + Math.abs(p.pctChange), 0) / picks.length).toFixed(1) : '0';
-  const bestPick = picks.reduce((best, p) => Math.abs(p.pctChange) > Math.abs(best?.pctChange || 0) ? p : best, null);
+  function getResultIcon(pick) {
+    const win = isWin(pick);
+    if (win === null) return '\u2014'; // dash for holds
+    return win ? '\u2705' : '\u274C';
+  }
+
+  const activePicks = picks.filter(isActiveTrade);
+  const holdPicks = picks.filter(isHold);
+  const winners = activePicks.filter(p => isWin(p) === true);
+  const losers = activePicks.filter(p => isWin(p) === false);
+  const avgReturn = activePicks.length > 0 ? (activePicks.reduce((s, p) => s + Math.abs(p.pctChange), 0) / activePicks.length).toFixed(1) : '0';
+  const bestPick = activePicks.reduce((best, p) => Math.abs(p.pctChange) > Math.abs(best?.pctChange || 0) ? p : best, null);
 
   return (
     <div className="page-fullbg page-fullbg-performance">
@@ -45,11 +66,11 @@ export default function Performance() {
         {/* Stats */}
         <div style={{ display: 'flex', gap: '2rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
           {[
-            { value: picks.length, label: 'Tracked Picks' },
+            { value: activePicks.length, label: 'Active Trades' },
             { value: `${winners.length}`, label: 'Correct Calls', color: 'var(--accent-green)' },
             { value: `${losers.length}`, label: 'Missed Calls', color: losers.length > 0 ? 'var(--accent-red)' : 'var(--text-muted)' },
             { value: `${avgReturn}%`, label: 'Avg Move', color: 'var(--accent-green)' },
-            { value: bestPick ? `${Math.abs(bestPick.pctChange).toFixed(1)}%` : '\u2014', label: bestPick ? `Best: $${bestPick.ticker}` : 'Best Pick', color: 'var(--accent-green)' },
+            { value: holdPicks.length > 0 ? `${holdPicks.length}` : '\u2014', label: 'No Trade (Hold)', color: 'var(--text-muted)' },
           ].map(s => (
             <div key={s.label} className="hero-stat">
               <div className="hero-stat-value" style={s.color ? { color: s.color } : {}}>{s.value}</div>
@@ -99,7 +120,6 @@ export default function Performance() {
               </thead>
               <tbody>
                 {[...picks].sort((a, b) => new Date(b.flaggedDate) - new Date(a.flaggedDate)).map((pick, i) => {
-                  const win = isWin(pick);
                   const signalColor = (pick.signal || '').includes('BUY') ? 'var(--accent-green)' : (pick.signal || '').includes('SELL') ? 'var(--accent-red)' : 'var(--text-muted)';
                   return (
                   <tr key={i} style={{ cursor: 'pointer' }} onClick={() => window.location.href = `/stock/${pick.ticker}`}>
@@ -112,7 +132,7 @@ export default function Performance() {
                     <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 700 }} className={pick.pctChange >= 0 ? 'positive' : 'negative'}>
                       {pick.pctChange >= 0 ? '+' : ''}{pick.pctChange.toFixed(2)}%
                     </td>
-                    <td style={{ fontSize: '0.85rem' }}>{win ? '\u2705' : '\u274C'}</td>
+                    <td style={{ fontSize: '0.85rem' }}>{getResultIcon(pick)}</td>
                     <td style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>{pick.sources.join(', ')}</td>
                   </tr>
                   );
