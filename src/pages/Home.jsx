@@ -129,16 +129,16 @@ export default function Home() {
 
         <div className="social-proof-row">
           <div className="hero-stat" style={{ borderColor: 'var(--accent-green)' }}>
-            <div className="hero-stat-value">100%</div>
-            <div className="hero-stat-label">Win Rate</div>
+            <div className="hero-stat-value">9/9</div>
+            <div className="hero-stat-label">Winning Picks</div>
           </div>
           <div className="hero-stat" style={{ borderColor: 'var(--accent-green)' }}>
             <div className="hero-stat-value">+24.3%</div>
             <div className="hero-stat-label">Avg Return</div>
           </div>
           <div className="hero-stat" style={{ borderColor: 'var(--accent-green)' }}>
-            <div className="hero-stat-value">+135.4%</div>
-            <div className="hero-stat-label">Best Pick (APLS)</div>
+            <div className="hero-stat-value">9</div>
+            <div className="hero-stat-label">Tracked Picks</div>
           </div>
         </div>
 
