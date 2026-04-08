@@ -75,8 +75,10 @@ exports.handler = async (event) => {
   }
 
   try {
-    const picksPath = path.resolve(__dirname, '../../picks.json');
-    const picksData = JSON.parse(fs.readFileSync(picksPath, 'utf8'));
+    const siteUrl = process.env.URL || 'https://axiarchtrading.netlify.app';
+    const resp = await fetch(`${siteUrl}/picks.json`);
+    if (!resp.ok) throw new Error('Could not load picks.json');
+    const picksData = await resp.json();
 
     const message = formatPicksMessage(picksData);
     const result = await sendTelegramMessage(token, chatId, message);

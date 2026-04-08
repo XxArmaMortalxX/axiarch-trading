@@ -1,0 +1,20 @@
+{
+  "picks": [
+    {"ticker": "APLS", "score": 82, "sources": ["Reddit", "Yahoo Gainers"], "signal": "STRONG BUY"},
+    {"ticker": "GEVO", "score": 74, "sources": ["Axiarch Screener"], "signal": "BUY"},
+    {"ticker": "UNIT", "score": 68, "sources": ["Yahoo Gainers"], "signal": "BUY"},
+    {"ticker": "IBRX", "score": 65, "sources": ["Yahoo Gainers"], "signal": "BUY"},
+    {"ticker": "SNAP", "score": 63, "sources": ["Yahoo Trending", "Reddit"], "signal": "BUY"},
+    {"ticker": "SOUN", "score": 61, "sources": ["Yahoo Gainers"], "signal": "HOLD"},
+    {"ticker": "WRD", "score": 59, "sources": ["Yahoo Gainers"], "signal": "HOLD"},
+    {"ticker": "EMAT", "score": 57, "sources": ["Yahoo Gainers"], "signal": "HOLD"},
+    {"ticker": "ASTC", "score": 55, "sources": ["Reddit"], "signal": "HOLD"}
+  ],
+  "stats": {
+    "winRate": 100,
+    "avgReturn": "24.3",
+    "bestPick": {"ticker": "APLS", "pct": "135.4", "date": "2026-03-31"},
+    "fearGreed": 65,
+    "fearGreedLabel": "Greed"
+  }
+}

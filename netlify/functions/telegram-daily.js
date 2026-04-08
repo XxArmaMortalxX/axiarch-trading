@@ -68,9 +68,10 @@ exports.handler = async (event) => {
   }
 
   try {
-    // Read picks.json (bundled at deploy time)
-    const picksPath = path.resolve(__dirname, '../../picks.json');
-    const picksData = JSON.parse(fs.readFileSync(picksPath, 'utf8'));
+    const siteUrl = process.env.URL || 'https://axiarchtrading.netlify.app';
+    const resp = await fetch(`${siteUrl}/picks.json`);
+    if (!resp.ok) throw new Error('Could not load picks.json');
+    const picksData = await resp.json();
 
     if (!picksData.picks || picksData.picks.length === 0) {
       return { statusCode: 200, body: 'No picks to send' };
