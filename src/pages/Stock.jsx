@@ -106,7 +106,7 @@ export default function Stock() {
     const name = profile?.name || sym;
     const title = `$${sym} — ${name} | Axiarch`;
     const description = `Technical analysis for $${sym}${profile?.name ? ` (${profile.name})` : ''}. RSI, EMA, MACD, Bollinger Bands, ATR signals and Axiarch composite score.`;
-    const url = `https://axiarch.netlify.app/stock/${sym}`;
+    const url = `https://axiarchtrading.netlify.app/stock/${sym}`;
 
     document.title = title;
     const setMeta = (selector, attr, value) => { const el = document.querySelector(selector); if (el) el.setAttribute(attr, value); };
@@ -354,7 +354,7 @@ export default function Stock() {
       <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
         <button
           onClick={() => {
-            const url = `https://axiarch.netlify.app/stock/${sym}`;
+            const url = `https://axiarchtrading.netlify.app/stock/${sym}`;
             const text = `$${sym}${ticker?.signal && ticker.signal !== 'HOLD' ? ` — ${ticker.signal}` : ''} | Score: ${score}/99${rsi ? ` | RSI: ${rsi.toFixed(0)}` : ''} | Axiarch`;
             if (navigator.share) {
               navigator.share({ title: `$${sym} — Axiarch`, text, url }).catch(() => {});
@@ -373,7 +373,7 @@ export default function Stock() {
           Share ${sym}
         </button>
         <a
-          href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`$${sym}${ticker?.signal && ticker.signal !== 'HOLD' ? ` — ${ticker.signal}` : ''} | Axiarch Score: ${score}/99`)}&url=${encodeURIComponent(`https://axiarch.netlify.app/stock/${sym}`)}`}
+          href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`$${sym}${ticker?.signal && ticker.signal !== 'HOLD' ? ` — ${ticker.signal}` : ''} | Axiarch Score: ${score}/99`)}&url=${encodeURIComponent(`https://axiarchtrading.netlify.app/stock/${sym}`)}`}
           target="_blank"
           rel="noopener noreferrer"
           className="btn-secondary"

@@ -18,7 +18,7 @@ exports.handler = async (event) => {
 
     const portalSession = await stripe.billingPortal.sessions.create({
       customer: customerId,
-      return_url: `${process.env.URL || 'https://axiarch.netlify.app'}/pricing`,
+      return_url: `${process.env.URL || 'https://axiarchtrading.netlify.app'}/pricing`,
     });
 
     return {

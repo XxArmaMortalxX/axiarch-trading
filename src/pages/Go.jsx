@@ -13,7 +13,7 @@ const BENEFITS = [
 
 const STATS = [
   { value: '+17.78%', label: 'GEVO in 4 Days' },
-  { value: '67%', label: 'Win Rate' },
+  { value: '9/9', label: 'Winning Picks' },
   { value: '11', label: 'Verified Picks' },
 ];
 

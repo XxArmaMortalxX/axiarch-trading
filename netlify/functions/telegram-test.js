@@ -31,7 +31,7 @@ function formatPicksMessage(data) {
     msg += `😱 *Fear & Greed:* ${stats.fearGreed} (${stats.fearGreedLabel})\n\n`;
   }
 
-  msg += `🔗 [View Live Screener](https://axiarch.netlify.app/screener)\n`;
+  msg += `🔗 [View Live Screener](https://axiarchtrading.netlify.app/screener)\n`;
   msg += `📡 Powered by Axiarch Algorithm`;
 
   return msg;

@@ -22,8 +22,8 @@ exports.handler = async (event) => {
       mode: 'subscription',
       payment_method_types: ['card'],
       line_items: [{ price: process.env.STRIPE_PRO_PRICE_ID, quantity: 1 }],
-      success_url: `${process.env.URL || 'https://axiarch.netlify.app'}/pricing?session_id={CHECKOUT_SESSION_ID}&status=success`,
-      cancel_url: `${process.env.URL || 'https://axiarch.netlify.app'}/pricing?status=cancelled`,
+      success_url: `${process.env.URL || 'https://axiarchtrading.netlify.app'}/pricing?session_id={CHECKOUT_SESSION_ID}&status=success`,
+      cancel_url: `${process.env.URL || 'https://axiarchtrading.netlify.app'}/pricing?status=cancelled`,
       allow_promotion_codes: true,
       subscription_data: {
         trial_period_days: 7,
