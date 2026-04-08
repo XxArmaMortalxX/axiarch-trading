@@ -113,7 +113,7 @@ export function calcRelativeVolume(volumes, period) {
   return avg > 0 ? +(volumes[volumes.length - 1] / avg).toFixed(2) : null;
 }
 
-export function generateSignal(quote, candles) {
+export function generateSignal(quote, candles, socialData) {
   const price = quote.c;
   if (!candles || !candles.c || candles.c.length < 15) {
     return { signal: 'HOLD', entry: null, stop: null, target: null, rr: null };
@@ -129,42 +129,75 @@ export function generateSignal(quote, candles) {
   const changePct = quote.dp || 0;
   let bull = 0, bear = 0;
 
-  if (rsi < 30) bull += 2;
+  // RSI — more granular scoring
+  if (rsi < 25) bull += 3;        // deeply oversold = strong buy signal
+  else if (rsi < 30) bull += 2;
   else if (rsi < 40) bull += 1;
-  else if (rsi > 75) bear += 2;
-  else if (rsi > 65) bear += 1;
+  else if (rsi > 80) bear += 3;   // deeply overbought = strong sell
+  else if (rsi > 70) bear += 2;
+  else if (rsi > 60) bear += 1;
 
+  // EMA alignment
   if (ema9 && ema21) {
-    if (price > ema9 && ema9 > ema21) bull += 2;
-    else if (price > ema21) bull += 1;
-    else if (price < ema9 && ema9 < ema21) bear += 2;
-    else if (price < ema21) bear += 1;
+    if (price > ema9 && ema9 > ema21) bull += 2;   // full bullish alignment
+    else if (price > ema9) bull += 1;                // price above short EMA
+    else if (price > ema21) bull += 0.5;             // price above long EMA at least
+    else if (price < ema9 && ema9 < ema21) bear += 2; // full bearish alignment
+    else if (price < ema9) bear += 1;
+    else if (price < ema21) bear += 0.5;
   }
 
+  // VWAP position
   if (vwap) {
-    if (price > vwap) bull += 1;
-    else bear += 1;
+    if (price > vwap * 1.02) bull += 1;    // clearly above VWAP
+    else if (price > vwap) bull += 0.5;     // slightly above
+    else if (price < vwap * 0.98) bear += 1; // clearly below
+    else bear += 0.5;
   }
 
-  if (rvol > 1.5 && changePct > 0) bull += 1;
+  // Volume confirmation
+  if (rvol > 2 && changePct > 0) bull += 1.5;   // high volume + green = strong
+  else if (rvol > 1.5 && changePct > 0) bull += 1;
+  else if (rvol > 2 && changePct < 0) bear += 1.5;
   else if (rvol > 1.5 && changePct < 0) bear += 1;
 
+  // MACD
   if (macd) {
-    if (macd.histogram > 0) bull += 1;
-    else bear += 1;
+    if (macd.histogram > 0 && macd.macd > macd.signal) bull += 1.5; // MACD expanding bullish
+    else if (macd.histogram > 0) bull += 0.5;  // MACD positive but fading
+    else if (macd.histogram < 0 && macd.macd < macd.signal) bear += 1.5;
+    else if (macd.histogram < 0) bear += 0.5;
   }
 
-  if (changePct > 3) bull += 1;
-  else if (changePct < -3) bear += 1;
+  // Daily momentum
+  if (changePct > 5) bull += 1.5;
+  else if (changePct > 2) bull += 1;
+  else if (changePct > 0) bull += 0.5;
+  else if (changePct < -5) bear += 1.5;
+  else if (changePct < -2) bear += 1;
+  else if (changePct < 0) bear += 0.5;
 
+  // Social sentiment tiebreaker
+  if (socialData) {
+    const sentiment = socialData.sentiment;
+    const score = socialData.socialScore || 0;
+    if (score > 40 && sentiment > 65) bull += 1;       // high buzz + bullish
+    else if (score > 40 && sentiment < 35) bear += 1;  // high buzz + bearish
+    else if (score > 20) {
+      if (sentiment > 55) bull += 0.5;
+      else if (sentiment < 45) bear += 0.5;
+    }
+  }
+
+  // Signal thresholds — slightly more aggressive
   let signal, entry, stop, target, rr;
   if (bull >= bear + 3) {
     signal = 'STRONG BUY'; entry = +price.toFixed(2); stop = +(price - 1.5 * atr).toFixed(2); target = +(price + 3 * atr).toFixed(2); rr = '3.0:1';
-  } else if (bull >= bear + 1) {
+  } else if (bull >= bear + 1.5) {
     signal = 'BUY'; entry = +price.toFixed(2); stop = +(price - 1.5 * atr).toFixed(2); target = +(price + 2 * atr).toFixed(2); rr = '2.0:1';
   } else if (bear >= bull + 3) {
     signal = 'STRONG SELL'; entry = +price.toFixed(2); stop = +(price + 1.5 * atr).toFixed(2); target = +(price - 3 * atr).toFixed(2); rr = '3.0:1';
-  } else if (bear >= bull + 1) {
+  } else if (bear >= bull + 1.5) {
     signal = 'SELL'; entry = +price.toFixed(2); stop = +(price + 1.5 * atr).toFixed(2); target = +(price - 2 * atr).toFixed(2); rr = '2.0:1';
   } else {
     signal = 'HOLD'; entry = null; stop = null; target = null; rr = null;

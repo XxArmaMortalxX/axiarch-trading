@@ -54,7 +54,7 @@ function calcRelativeVolume(volumes) {
   return avg > 0 ? recent / avg : null;
 }
 
-function generateSignal(quote, candles) {
+function generateSignal(quote, candles, socialData) {
   const price = quote.c;
   if (!candles || !candles.c || candles.c.length < 15) return { signal: 'HOLD', bias: 'NEUTRAL' };
   const closes = candles.c, volumes = candles.v;
@@ -65,29 +65,58 @@ function generateSignal(quote, candles) {
   const changePct = quote.dp || 0;
   let bull = 0, bear = 0;
 
-  if (rsi < 30) bull += 2; else if (rsi < 40) bull += 1;
-  else if (rsi > 75) bear += 2; else if (rsi > 65) bear += 1;
+  // RSI — more granular
+  if (rsi < 25) bull += 3;
+  else if (rsi < 30) bull += 2;
+  else if (rsi < 40) bull += 1;
+  else if (rsi > 80) bear += 3;
+  else if (rsi > 70) bear += 2;
+  else if (rsi > 60) bear += 1;
 
+  // EMA alignment
   if (ema9 && ema21) {
     if (price > ema9 && ema9 > ema21) bull += 2;
-    else if (price > ema21) bull += 1;
+    else if (price > ema9) bull += 1;
+    else if (price > ema21) bull += 0.5;
     else if (price < ema9 && ema9 < ema21) bear += 2;
-    else if (price < ema21) bear += 1;
+    else if (price < ema9) bear += 1;
+    else if (price < ema21) bear += 0.5;
   }
 
-  if (rvol > 1.5 && changePct > 0) bull += 1;
+  // Volume confirmation
+  if (rvol > 2 && changePct > 0) bull += 1.5;
+  else if (rvol > 1.5 && changePct > 0) bull += 1;
+  else if (rvol > 2 && changePct < 0) bear += 1.5;
   else if (rvol > 1.5 && changePct < 0) bear += 1;
 
-  if (changePct > 3) bull += 1; else if (changePct < -3) bear += 1;
+  // Daily momentum
+  if (changePct > 5) bull += 1.5;
+  else if (changePct > 2) bull += 1;
+  else if (changePct > 0) bull += 0.5;
+  else if (changePct < -5) bear += 1.5;
+  else if (changePct < -2) bear += 1;
+  else if (changePct < 0) bear += 0.5;
+
+  // Social sentiment
+  if (socialData) {
+    const sentiment = socialData.sentiment;
+    const score = socialData.socialScore || 0;
+    if (score > 40 && sentiment > 65) bull += 1;
+    else if (score > 40 && sentiment < 35) bear += 1;
+    else if (score > 20) {
+      if (sentiment > 55) bull += 0.5;
+      else if (sentiment < 45) bear += 0.5;
+    }
+  }
 
   let signal;
   if (bull >= bear + 3) signal = 'STRONG BUY';
-  else if (bull >= bear + 1) signal = 'BUY';
+  else if (bull >= bear + 1.5) signal = 'BUY';
   else if (bear >= bull + 3) signal = 'STRONG SELL';
-  else if (bear >= bull + 1) signal = 'SELL';
+  else if (bear >= bull + 1.5) signal = 'SELL';
   else signal = 'HOLD';
 
-  const bias = bull > bear + 1 ? 'LONG' : bear > bull + 1 ? 'SHORT' : 'NEUTRAL';
+  const bias = bull > bear + 0.5 ? 'LONG' : bear > bull + 0.5 ? 'SHORT' : 'NEUTRAL';
 
   return { signal, bias };
 }
@@ -219,7 +248,7 @@ exports.handler = async (event) => {
           if (!quote) return null;
           const social = socialMap[symbol] || null;
           const score = axiarchScore(quote, candles, social);
-          const { signal, bias } = generateSignal(quote, candles);
+          const { signal, bias } = generateSignal(quote, candles, social);
           return {
             ticker: symbol,
             price: quote.c,

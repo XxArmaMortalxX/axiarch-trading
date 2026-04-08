@@ -22,7 +22,7 @@ function processQuotes(quotes, candleCache, socialMap) {
   return quotes.map(q => {
     const candles = candleCache[q.symbol] || null;
     const social = socialMap?.[q.symbol] || null;
-    const sig = generateSignal(q, candles);
+    const sig = generateSignal(q, candles, social);
     const rsi = candles ? calcRSI(candles.c) : null;
     const rvol = candles ? calcRelativeVolume(candles.v) : null;
     const macd = candles ? calcMACD(candles.c) : null;
