@@ -17,11 +17,21 @@ export default function Performance() {
   }, []);
 
   const picks = perfData?.picks || [];
-  const winners = picks.filter(p => p.pctChange > 0);
-  const winRate = picks.length > 0 ? Math.round((winners.length / picks.length) * 100) : 0;
-  const avgReturn = picks.length > 0 ? (picks.reduce((s, p) => s + p.pctChange, 0) / picks.length).toFixed(1) : '0';
-  const bestPick = picks.reduce((best, p) => p.pctChange > (best?.pctChange || -Infinity) ? p : best, null);
-  const totalReturn = picks.reduce((s, p) => s + p.pctChange, 0).toFixed(1);
+
+  // Directional win logic: BUY + up = win, SELL + down = win
+  function isWin(pick) {
+    if (pick.result) return pick.result === 'WIN'; // afternoon-check already evaluated
+    const isBullish = pick.signal === 'BUY' || pick.signal === 'STRONG BUY';
+    const isBearish = pick.signal === 'SELL' || pick.signal === 'STRONG SELL';
+    if (isBullish) return pick.pctChange > 0;
+    if (isBearish) return pick.pctChange < 0;
+    return pick.pctChange > 0; // legacy picks without signal default to long
+  }
+
+  const winners = picks.filter(isWin);
+  const losers = picks.filter(p => !isWin(p) && p.pctChange !== 0);
+  const avgReturn = picks.length > 0 ? (picks.reduce((s, p) => s + Math.abs(p.pctChange), 0) / picks.length).toFixed(1) : '0';
+  const bestPick = picks.reduce((best, p) => Math.abs(p.pctChange) > Math.abs(best?.pctChange || 0) ? p : best, null);
 
   return (
     <div className="page-fullbg page-fullbg-performance">
@@ -36,10 +46,10 @@ export default function Performance() {
         <div style={{ display: 'flex', gap: '2rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
           {[
             { value: picks.length, label: 'Tracked Picks' },
-            { value: `${winners.length}/${picks.length}`, label: 'Winners', color: 'var(--accent-green)' },
-            { value: `+${avgReturn}%`, label: 'Avg Return', color: 'var(--accent-green)' },
-            { value: bestPick ? `+${bestPick.pctChange.toFixed(1)}%` : '\u2014', label: bestPick ? `Best: $${bestPick.ticker}` : 'Best Pick', color: 'var(--accent-green)' },
-            { value: `+${totalReturn}%`, label: 'Total Return', color: 'var(--accent-green)' },
+            { value: `${winners.length}`, label: 'Correct Calls', color: 'var(--accent-green)' },
+            { value: `${losers.length}`, label: 'Missed Calls', color: losers.length > 0 ? 'var(--accent-red)' : 'var(--text-muted)' },
+            { value: `${avgReturn}%`, label: 'Avg Move', color: 'var(--accent-green)' },
+            { value: bestPick ? `${Math.abs(bestPick.pctChange).toFixed(1)}%` : '\u2014', label: bestPick ? `Best: $${bestPick.ticker}` : 'Best Pick', color: 'var(--accent-green)' },
           ].map(s => (
             <div key={s.label} className="hero-stat">
               <div className="hero-stat-value" style={s.color ? { color: s.color } : {}}>{s.value}</div>
@@ -78,29 +88,35 @@ export default function Performance() {
                 <tr>
                   <th>#</th>
                   <th>Ticker</th>
-                  <th>Date Flagged</th>
-                  <th>Entry Price</th>
-                  <th>Close Price</th>
-                  <th>Return</th>
+                  <th>Signal</th>
+                  <th>Date</th>
+                  <th>Entry</th>
+                  <th>Close</th>
+                  <th>Move</th>
                   <th>Result</th>
                   <th>Sources</th>
                 </tr>
               </thead>
               <tbody>
-                {[...picks].sort((a, b) => b.pctChange - a.pctChange).map((pick, i) => (
+                {[...picks].sort((a, b) => new Date(b.flaggedDate) - new Date(a.flaggedDate)).map((pick, i) => {
+                  const win = isWin(pick);
+                  const signalColor = (pick.signal || '').includes('BUY') ? 'var(--accent-green)' : (pick.signal || '').includes('SELL') ? 'var(--accent-red)' : 'var(--text-muted)';
+                  return (
                   <tr key={i} style={{ cursor: 'pointer' }} onClick={() => window.location.href = `/stock/${pick.ticker}`}>
                     <td style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>{i + 1}</td>
                     <td className="ticker-cell">${pick.ticker}</td>
+                    <td style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, color: signalColor }}>{pick.signal || 'BUY'}</td>
                     <td style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem', color: 'var(--text-muted)' }}>{pick.flaggedDate}</td>
                     <td style={{ fontFamily: 'var(--font-mono)' }}>${pick.entryPrice.toFixed(2)}</td>
                     <td style={{ fontFamily: 'var(--font-mono)' }}>${pick.closePrice.toFixed(2)}</td>
                     <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 700 }} className={pick.pctChange >= 0 ? 'positive' : 'negative'}>
                       {pick.pctChange >= 0 ? '+' : ''}{pick.pctChange.toFixed(2)}%
                     </td>
-                    <td style={{ fontSize: '0.85rem' }}>{pick.pctChange >= 0 ? '\u2705' : '\u274C'}</td>
+                    <td style={{ fontSize: '0.85rem' }}>{win ? '\u2705' : '\u274C'}</td>
                     <td style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>{pick.sources.join(', ')}</td>
                   </tr>
-                ))}
+                  );
+                })}
               </tbody>
             </table>
           </div>

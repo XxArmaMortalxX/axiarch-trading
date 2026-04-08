@@ -15,6 +15,18 @@ async function fetchQuote(symbol) {
   } catch { return null; }
 }
 
+// Determine if the pick was a win based on signal direction
+function evaluateResult(signal, pctChange) {
+  const isBullish = signal === 'BUY' || signal === 'STRONG BUY';
+  const isBearish = signal === 'SELL' || signal === 'STRONG SELL';
+
+  if (isBullish && pctChange > 0) return 'WIN';
+  if (isBearish && pctChange < 0) return 'WIN';
+  if (isBullish && pctChange < 0) return 'LOSS';
+  if (isBearish && pctChange > 0) return 'LOSS';
+  return 'NEUTRAL'; // HOLD signals or 0% change
+}
+
 exports.handler = async (event) => {
   if (!FINNHUB_KEY) {
     return { statusCode: 500, body: 'FINNHUB_API_KEY not configured' };
@@ -52,15 +64,24 @@ exports.handler = async (event) => {
     const pctChange = pick.entryPrice > 0
       ? ((closePrice - pick.entryPrice) / pick.entryPrice * 100)
       : 0;
+    const pctRounded = Math.round(pctChange * 100) / 100;
+    const signal = pick.signal || 'HOLD';
+    const result = evaluateResult(signal, pctRounded);
 
     results.push({
       ticker: pick.ticker,
       flaggedDate: today,
       score: pick.score,
+      signal: signal,
+      bias: pick.bias || 'NEUTRAL',
       sources: ['Axiarch Screener'],
       entryPrice: pick.entryPrice,
       closePrice: closePrice,
-      pctChange: Math.round(pctChange * 100) / 100,
+      pctChange: pctRounded,
+      result: result, // WIN, LOSS, or NEUTRAL
+      socialScore: pick.socialScore || 0,
+      mentions: pick.mentions || 0,
+      sentiment: pick.sentiment,
       tracked: true,
       trackedAt: new Date().toISOString(),
     });
@@ -97,12 +118,14 @@ exports.handler = async (event) => {
 
   await store.setJSON('history', history);
 
-  const winners = results.filter(r => r.pctChange > 0).length;
-  console.log(`Afternoon check complete. ${results.length} picks: ${winners} winners, ${results.length - winners} losers`);
-  console.log(results.map(r => `${r.ticker}: ${r.pctChange > 0 ? '+' : ''}${r.pctChange}%`).join(', '));
+  const wins = results.filter(r => r.result === 'WIN').length;
+  const losses = results.filter(r => r.result === 'LOSS').length;
+  const neutral = results.filter(r => r.result === 'NEUTRAL').length;
+  console.log(`Afternoon check complete. ${results.length} picks: ${wins} wins, ${losses} losses, ${neutral} neutral`);
+  console.log(results.map(r => `${r.ticker}(${r.signal}): ${r.pctChange > 0 ? '+' : ''}${r.pctChange}% → ${r.result}`).join(', '));
 
   return {
     statusCode: 200,
-    body: JSON.stringify({ message: 'Afternoon check saved', results }),
+    body: JSON.stringify({ message: 'Afternoon check saved', results, summary: { wins, losses, neutral } }),
   };
 };

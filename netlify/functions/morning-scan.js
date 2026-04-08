@@ -54,6 +54,44 @@ function calcRelativeVolume(volumes) {
   return avg > 0 ? recent / avg : null;
 }
 
+function generateSignal(quote, candles) {
+  const price = quote.c;
+  if (!candles || !candles.c || candles.c.length < 15) return { signal: 'HOLD', bias: 'NEUTRAL' };
+  const closes = candles.c, volumes = candles.v;
+  const rsi = calcRSI(closes) || 50;
+  const ema9 = calcEMA(closes, 9);
+  const ema21 = calcEMA(closes, 21);
+  const rvol = calcRelativeVolume(volumes) || 1;
+  const changePct = quote.dp || 0;
+  let bull = 0, bear = 0;
+
+  if (rsi < 30) bull += 2; else if (rsi < 40) bull += 1;
+  else if (rsi > 75) bear += 2; else if (rsi > 65) bear += 1;
+
+  if (ema9 && ema21) {
+    if (price > ema9 && ema9 > ema21) bull += 2;
+    else if (price > ema21) bull += 1;
+    else if (price < ema9 && ema9 < ema21) bear += 2;
+    else if (price < ema21) bear += 1;
+  }
+
+  if (rvol > 1.5 && changePct > 0) bull += 1;
+  else if (rvol > 1.5 && changePct < 0) bear += 1;
+
+  if (changePct > 3) bull += 1; else if (changePct < -3) bear += 1;
+
+  let signal;
+  if (bull >= bear + 3) signal = 'STRONG BUY';
+  else if (bull >= bear + 1) signal = 'BUY';
+  else if (bear >= bull + 3) signal = 'STRONG SELL';
+  else if (bear >= bull + 1) signal = 'SELL';
+  else signal = 'HOLD';
+
+  const bias = bull > bear + 1 ? 'LONG' : bear > bull + 1 ? 'SHORT' : 'NEUTRAL';
+
+  return { signal, bias };
+}
+
 function axiarchScore(quote, candles, socialData) {
   if (!candles || !candles.c || candles.c.length < 21) return 0;
 
@@ -181,11 +219,14 @@ exports.handler = async (event) => {
           if (!quote) return null;
           const social = socialMap[symbol] || null;
           const score = axiarchScore(quote, candles, social);
+          const { signal, bias } = generateSignal(quote, candles);
           return {
             ticker: symbol,
             price: quote.c,
             change: quote.dp || 0,
             score,
+            signal,
+            bias,
             socialScore: social?.socialScore || 0,
             mentions: social?.mentions || 0,
             sentiment: social?.sentiment ?? null,
@@ -225,6 +266,8 @@ exports.handler = async (event) => {
       ticker: p.ticker,
       entryPrice: p.price,
       score: p.score,
+      signal: p.signal,
+      bias: p.bias,
       change: p.change,
       socialScore: p.socialScore,
       mentions: p.mentions,
