@@ -5,39 +5,13 @@ import { useStockProfile } from '../hooks/useStockProfile';
 import { calcRSI, calcEMA, calcMACD, calcBollingerBands, calcATR, calcVWAP, calcRelativeVolume, fmtPrice } from '../lib/indicators';
 import SignalBadge from '../components/SignalBadge';
 import StockChart from '../components/StockChart';
+import StrategyCard from '../components/StrategyCard';
 
 function StatCard({ label, value, color }) {
   return (
     <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '0.8rem 1rem' }}>
       <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.3rem' }}>{label}</div>
       <div style={{ fontFamily: 'var(--font-mono)', fontSize: '1rem', fontWeight: 700, color: color || 'var(--text-primary)' }}>{value}</div>
-    </div>
-  );
-}
-
-function IndicatorCard({ label, value, detail, barPct, barColor }) {
-  return (
-    <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: '1rem 1.2rem' }}>
-      <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.5rem' }}>{label}</div>
-      <div style={{ fontFamily: 'var(--font-mono)', fontSize: '1.3rem', fontWeight: 700, color: barColor || 'var(--text-primary)', marginBottom: '0.3rem' }}>{value}</div>
-      {barPct !== undefined && (
-        <div style={{ width: '100%', height: '4px', background: 'var(--border)', borderRadius: '2px', marginBottom: '0.4rem' }}>
-          <div style={{ width: `${Math.min(100, Math.max(0, barPct))}%`, height: '100%', background: barColor || 'var(--accent-green)', borderRadius: '2px', transition: 'width 0.3s' }} />
-        </div>
-      )}
-      {detail && <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>{detail}</div>}
-    </div>
-  );
-}
-
-function ScoreBreakdownBar({ label, pct, weight }) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', marginBottom: '0.6rem' }}>
-      <div style={{ width: '90px', fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)', flexShrink: 0 }}>{label} ({weight}%)</div>
-      <div style={{ flex: 1, height: '6px', background: 'var(--border)', borderRadius: '3px' }}>
-        <div style={{ width: `${pct}%`, height: '100%', background: pct >= 70 ? 'var(--accent-green)' : pct >= 40 ? 'var(--accent-amber)' : 'var(--accent-red)', borderRadius: '3px', transition: 'width 0.3s' }} />
-      </div>
-      <div style={{ width: '30px', fontFamily: 'var(--font-mono)', fontSize: '0.72rem', fontWeight: 600, textAlign: 'right', color: pct >= 70 ? 'var(--accent-green)' : pct >= 40 ? 'var(--accent-amber)' : 'var(--accent-red)' }}>{Math.round(pct)}</div>
     </div>
   );
 }
@@ -138,12 +112,7 @@ export default function Stock() {
 
   // No longer need Chart.js config — using StockChart component
 
-  // Estimate score components (reverse-engineer from composite for display)
   const score = ticker?.score || 50;
-  const techScore = rsi ? (rsi < 40 ? 75 : rsi < 60 ? 55 : 35) : 50;
-  const momScore = Math.abs(change) > 10 ? 80 : Math.abs(change) > 5 ? 60 : 40;
-  const volScore = indicators.atr && price ? ((indicators.atr / price) * 100 > 5 ? 80 : 45) : 50;
-  const volumeScore = rvol ? (rvol > 2 ? 85 : rvol > 1 ? 55 : 25) : 40;
 
   return (
     <section style={{ maxWidth: '960px' }}>
@@ -221,116 +190,8 @@ export default function Stock() {
         <StatCard label="Exchange" value={profile?.exchange || '—'} />
       </div>
 
-      {/* Technical Analysis */}
-      <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', fontWeight: 600, color: 'var(--accent-green)', textTransform: 'uppercase', letterSpacing: '0.18em', marginBottom: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-        <span style={{ width: '24px', height: '1px', background: 'var(--accent-green)', display: 'inline-block' }} />
-        Technical Analysis
-      </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '0.6rem', marginBottom: '1.5rem' }}>
-        <IndicatorCard
-          label="RSI (14)"
-          value={rsi ? rsi.toFixed(1) : '—'}
-          barPct={rsi || 50}
-          barColor={rsi < 30 ? 'var(--accent-green)' : rsi > 70 ? 'var(--accent-red)' : 'var(--accent-amber)'}
-          detail={rsi < 30 ? 'Oversold' : rsi > 70 ? 'Overbought' : rsi < 50 ? 'Below midline' : 'Above midline'}
-        />
-        <IndicatorCard
-          label="EMA (9)"
-          value={indicators.ema9 ? fmtPrice(indicators.ema9) : '—'}
-          detail={indicators.ema9 && price > indicators.ema9 ? 'Price above EMA9' : indicators.ema9 ? 'Price below EMA9' : null}
-          barColor={indicators.ema9 && price > indicators.ema9 ? 'var(--accent-green)' : 'var(--accent-red)'}
-        />
-        <IndicatorCard
-          label="EMA (21)"
-          value={indicators.ema21 ? fmtPrice(indicators.ema21) : '—'}
-          detail={indicators.ema9 && indicators.ema21 ? (indicators.ema9 > indicators.ema21 ? 'Golden cross (bullish)' : 'Death cross (bearish)') : null}
-          barColor={indicators.ema9 > indicators.ema21 ? 'var(--accent-green)' : 'var(--accent-red)'}
-        />
-        <IndicatorCard
-          label="MACD"
-          value={indicators.macd ? indicators.macd.histogram.toFixed(4) : ticker?.macd?.histogram?.toFixed(4) || '—'}
-          detail={(() => { const h = indicators.macd?.histogram || ticker?.macd?.histogram || 0; return h > 0 ? 'Bullish momentum' : h < 0 ? 'Bearish momentum' : 'Neutral'; })()}
-          barColor={(() => { const h = indicators.macd?.histogram || ticker?.macd?.histogram || 0; return h > 0 ? 'var(--accent-green)' : 'var(--accent-red)'; })()}
-        />
-        <IndicatorCard
-          label="ATR (14)"
-          value={indicators.atr ? fmtPrice(indicators.atr) : '—'}
-          detail={indicators.atr && price ? `${((indicators.atr / price) * 100).toFixed(1)}% of price` : null}
-        />
-        <IndicatorCard
-          label="VWAP"
-          value={indicators.vwap ? fmtPrice(indicators.vwap) : '—'}
-          detail={indicators.vwap && price > indicators.vwap ? 'Price above VWAP (bullish)' : indicators.vwap ? 'Price below VWAP (bearish)' : null}
-          barColor={indicators.vwap && price > indicators.vwap ? 'var(--accent-green)' : 'var(--accent-red)'}
-        />
-      </div>
-
-      {/* Bollinger Bands */}
-      {indicators.bb && (
-        <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: '1rem 1.2rem', marginBottom: '1.5rem' }}>
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.6rem' }}>Bollinger Bands (20, 2)</div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem' }}>
-            <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>Lower</div>
-              <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: 'var(--accent-green)' }}>{fmtPrice(indicators.bb.lower)}</div>
-            </div>
-            <div style={{ flex: 1, position: 'relative', height: '20px', background: 'var(--border)', borderRadius: '10px', overflow: 'hidden' }}>
-              {(() => {
-                const pos = ((price - indicators.bb.lower) / (indicators.bb.upper - indicators.bb.lower)) * 100;
-                return <div style={{ position: 'absolute', left: `${Math.min(100, Math.max(0, pos))}%`, top: '50%', transform: 'translate(-50%, -50%)', width: '10px', height: '10px', borderRadius: '50%', background: 'var(--accent-green)', boxShadow: '0 0 8px rgba(0,230,118,0.4)' }} />;
-              })()}
-            </div>
-            <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>Upper</div>
-              <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: 'var(--accent-red)' }}>{fmtPrice(indicators.bb.upper)}</div>
-            </div>
-          </div>
-          <div style={{ textAlign: 'center', fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '0.4rem' }}>Bandwidth: {indicators.bb.bandwidth.toFixed(1)}%</div>
-        </div>
-      )}
-
-      {/* Axiarch Score Breakdown */}
-      <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: '1.2rem', marginBottom: '1.5rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Axiarch Composite Score</div>
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '1.5rem', fontWeight: 800, color: score >= 70 ? 'var(--accent-green)' : score >= 45 ? 'var(--accent-amber)' : 'var(--accent-red)' }}>{score}</div>
-        </div>
-        <ScoreBreakdownBar label="Technical" pct={techScore} weight={35} />
-        <ScoreBreakdownBar label="Momentum" pct={momScore} weight={20} />
-        <ScoreBreakdownBar label="Volatility" pct={volScore} weight={15} />
-        <ScoreBreakdownBar label="Volume" pct={volumeScore} weight={15} />
-        <ScoreBreakdownBar label="Social" pct={ticker?.socialScore || 0} weight={15} />
-      </div>
-
-      {/* Trade Plan */}
-      {ticker?.entry && (
-        <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: '1.2rem', marginBottom: '1.5rem' }}>
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem' }}>Trade Plan</div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))', gap: '0.8rem', textAlign: 'center' }}>
-            <div>
-              <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', marginBottom: '0.3rem' }}>Signal</div>
-              <SignalBadge signal={ticker.signal} />
-            </div>
-            <div>
-              <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', marginBottom: '0.3rem' }}>Entry</div>
-              <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: 'var(--accent-cyan)' }}>{fmtPrice(ticker.entry)}</div>
-            </div>
-            <div>
-              <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', marginBottom: '0.3rem' }}>Stop Loss</div>
-              <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: 'var(--accent-red)' }}>{fmtPrice(ticker.stop)}</div>
-            </div>
-            <div>
-              <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', marginBottom: '0.3rem' }}>Target</div>
-              <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: 'var(--accent-green)' }}>{fmtPrice(ticker.target)}</div>
-            </div>
-          </div>
-          {ticker.rr && (
-            <div style={{ textAlign: 'center', marginTop: '0.8rem', fontFamily: 'var(--font-mono)', fontSize: '0.78rem', color: 'var(--accent-amber)' }}>
-              Risk/Reward: {ticker.rr}
-            </div>
-          )}
-        </div>
-      )}
+      {/* Axiarch Strategy — plain English analysis */}
+      <StrategyCard ticker={ticker} indicators={indicators} price={price} sym={sym} />
 
       {/* Company Info */}
       {profile && (
