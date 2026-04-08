@@ -3,6 +3,7 @@ import { createChart, CrosshairMode } from 'lightweight-charts';
 import { calcRSI, calcEMA, calcBollingerBands } from '../lib/indicators';
 
 const TIMEFRAMES = [
+  { key: '1D', label: '1D', days: 1, intraday: true },
   { key: '1W', label: '1W', days: 7 },
   { key: '1M', label: '1M', days: 30 },
   { key: '3M', label: '3M', days: 90 },
@@ -21,6 +22,8 @@ const OVERLAYS = [
   { key: 'bb', label: 'Bollinger' },
 ];
 
+const PROXY = '/.netlify/functions/finnhub-proxy';
+
 export default function StockChart({ candles, symbol }) {
   const chartContainerRef = useRef(null);
   const chartRef = useRef(null);
@@ -29,13 +32,32 @@ export default function StockChart({ candles, symbol }) {
   const [overlays, setOverlays] = useState([]);
   const [showVolume, setShowVolume] = useState(true);
   const [showRSI, setShowRSI] = useState(false);
+  const [intradayData, setIntradayData] = useState(null);
+  const [loadingIntraday, setLoadingIntraday] = useState(false);
 
   const toggleOverlay = (key) => {
     setOverlays(prev => prev.includes(key) ? prev.filter(k => k !== key) : [...prev, key]);
   };
 
+  // Fetch intraday data when 1D is selected
   useEffect(() => {
-    if (!chartContainerRef.current || !candles?.c?.length) return;
+    if (timeframe !== '1D' || !symbol) return;
+    setLoadingIntraday(true);
+    fetch(`${PROXY}?endpoint=intraday&symbol=${symbol}`)
+      .then(r => r.json())
+      .then(data => {
+        if (data.s === 'ok' && data.c?.length > 0) setIntradayData(data);
+      })
+      .catch(() => {})
+      .finally(() => setLoadingIntraday(false));
+  }, [timeframe, symbol]);
+
+  useEffect(() => {
+    if (!chartContainerRef.current) return;
+
+    const isIntraday = timeframe === '1D';
+    const activeCandles = isIntraday ? intradayData : candles;
+    if (!activeCandles?.c?.length) return;
 
     // Clear previous chart
     if (chartRef.current) {
@@ -45,19 +67,31 @@ export default function StockChart({ candles, symbol }) {
 
     const container = chartContainerRef.current;
     const tf = TIMEFRAMES.find(t => t.key === timeframe) || TIMEFRAMES[2];
-    const totalBars = candles.c.length;
-    const barsToShow = Math.min(totalBars, tf.days);
-    const startIdx = Math.max(0, totalBars - barsToShow);
 
-    // Slice data to timeframe
-    const slicedData = {
-      t: candles.t.slice(startIdx),
-      o: candles.o.slice(startIdx),
-      h: candles.h.slice(startIdx),
-      l: candles.l.slice(startIdx),
-      c: candles.c.slice(startIdx),
-      v: candles.v.slice(startIdx),
-    };
+    let slicedData;
+    if (isIntraday) {
+      // Use all intraday bars
+      slicedData = {
+        t: activeCandles.t,
+        o: activeCandles.o,
+        h: activeCandles.h,
+        l: activeCandles.l,
+        c: activeCandles.c,
+        v: activeCandles.v,
+      };
+    } else {
+      const totalBars = activeCandles.c.length;
+      const barsToShow = Math.min(totalBars, tf.days);
+      const startIdx = Math.max(0, totalBars - barsToShow);
+      slicedData = {
+        t: activeCandles.t.slice(startIdx),
+        o: activeCandles.o.slice(startIdx),
+        h: activeCandles.h.slice(startIdx),
+        l: activeCandles.l.slice(startIdx),
+        c: activeCandles.c.slice(startIdx),
+        v: activeCandles.v.slice(startIdx),
+      };
+    }
 
     // Calculate chart height
     const mainHeight = showRSI ? 300 : 380;
@@ -86,7 +120,8 @@ export default function StockChart({ candles, symbol }) {
       },
       timeScale: {
         borderColor: '#163322',
-        timeVisible: false,
+        timeVisible: isIntraday,
+        secondsVisible: false,
       },
       handleScroll: { vertTouchDrag: false },
     });
@@ -96,6 +131,10 @@ export default function StockChart({ candles, symbol }) {
     // Format timestamps
     const formatTime = (ts) => {
       const d = new Date(ts * 1000);
+      if (isIntraday) {
+        // lightweight-charts uses Unix timestamps for intraday
+        return ts;
+      }
       return { year: d.getFullYear(), month: d.getMonth() + 1, day: d.getDate() };
     };
 
@@ -216,9 +255,9 @@ export default function StockChart({ candles, symbol }) {
         chartRef.current = null;
       }
     };
-  }, [candles, timeframe, chartType, overlays, showVolume, showRSI]);
+  }, [candles, intradayData, timeframe, chartType, overlays, showVolume, showRSI]);
 
-  if (!candles?.c?.length) {
+  if (!candles?.c?.length && timeframe !== '1D') {
     return (
       <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: '3rem', textAlign: 'center', color: 'var(--text-muted)', marginBottom: '1.5rem', fontSize: '0.85rem' }}>
         Loading chart data...

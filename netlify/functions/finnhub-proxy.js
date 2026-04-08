@@ -41,6 +41,33 @@ async function fetchYahooCandles(symbol, fromTs, toTs) {
   };
 }
 
+// Yahoo Finance intraday fetcher (5-min candles, 1 day)
+async function fetchYahooIntraday(symbol) {
+  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=5m&range=1d`;
+  const resp = await fetch(url, {
+    headers: { 'User-Agent': 'Mozilla/5.0' },
+  });
+  if (!resp.ok) return null;
+  const json = await resp.json();
+  const result = json?.chart?.result?.[0];
+  if (!result) return null;
+
+  const timestamps = result.timestamp;
+  const quotes = result.indicators?.quote?.[0];
+  if (!timestamps || !quotes) return null;
+
+  return {
+    s: 'ok',
+    c: timestamps.map((_, i) => quotes.close[i]).filter(v => v !== null),
+    h: timestamps.map((_, i) => quotes.high[i]).filter(v => v !== null),
+    l: timestamps.map((_, i) => quotes.low[i]).filter(v => v !== null),
+    o: timestamps.map((_, i) => quotes.open[i]).filter(v => v !== null),
+    v: timestamps.map((_, i) => quotes.volume[i]).filter(v => v !== null),
+    t: timestamps.filter((_, i) => quotes.close[i] !== null),
+    intraday: true,
+  };
+}
+
 exports.handler = async (event) => {
   const headers = {
     'Content-Type': 'application/json',
@@ -106,6 +133,24 @@ exports.handler = async (event) => {
         if (yahooData && yahooData.c.length > 0) {
           setCache(cacheKey, yahooData);
           return { statusCode: 200, headers, body: JSON.stringify(yahooData) };
+        }
+
+        return { statusCode: 200, headers, body: JSON.stringify({ s: 'no_data' }) };
+      }
+
+      case 'intraday': {
+        cacheKey = `intraday:${symbol}`;
+        ttl = 2 * 60 * 1000; // 2 minutes
+
+        const intradayCached = getCached(cacheKey, ttl);
+        if (intradayCached) {
+          return { statusCode: 200, headers, body: JSON.stringify(intradayCached) };
+        }
+
+        const intradayData = await fetchYahooIntraday(symbol);
+        if (intradayData && intradayData.c.length > 0) {
+          setCache(cacheKey, intradayData);
+          return { statusCode: 200, headers, body: JSON.stringify(intradayData) };
         }
 
         return { statusCode: 200, headers, body: JSON.stringify({ s: 'no_data' }) };
