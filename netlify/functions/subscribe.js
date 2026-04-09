@@ -37,6 +37,14 @@ exports.handler = async (event, context) => {
       emailList.emails.push(entry);
       await store.setJSON('subscribers', emailList);
       console.log(`New subscriber: ${email} (source: ${source}) — total: ${emailList.emails.length}`);
+
+      // Trigger welcome email for new signups (non-blocking)
+      const siteUrl = process.env.URL || 'https://axiarchtrading.org';
+      fetch(`${siteUrl}/.netlify/functions/welcome-email`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      }).catch(() => {});
     } else {
       console.log(`Duplicate subscriber skipped: ${email}`);
     }

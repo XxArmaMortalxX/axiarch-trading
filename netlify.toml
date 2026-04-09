@@ -38,3 +38,12 @@
 # Sends morning picks to all email subscribers via Resend
 [functions."daily-email"]
   schedule = "15 12 * * 1-5"
+
+# Drip email check — 10:00 AM ET (14:00 UTC) daily
+# Sends day-3 and day-7 follow-up emails to subscribers
+[functions."welcome-email"]
+  schedule = "0 14 * * *"
+
+# Weekly recap — Sunday 9:00 AM ET (13:00 UTC)
+[functions."weekly-recap"]
+  schedule = "0 13 * * 0"

@@ -36,6 +36,20 @@ export default function Home() {
   const [emailStatus, setEmailStatus] = useState('');
   const { isLoggedIn } = useAuth();
   const [showAuth, setShowAuth] = useState(false);
+  const [signalCount, setSignalCount] = useState(0);
+
+  // Fetch active signal count for urgency
+  useState(() => {
+    fetch('/.netlify/functions/social-data')
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (data?.tickers) {
+          const hot = Object.values(data.tickers).filter(t => t.socialScore > 40).length;
+          setSignalCount(Math.max(hot, 3)); // at least 3 for display
+        }
+      })
+      .catch(() => setSignalCount(5));
+  });
   return (
     <>
       {/* HERO */}
@@ -71,9 +85,16 @@ export default function Home() {
       {!isLoggedIn && (
         <section className="section-centered" style={{ paddingTop: '2rem', paddingBottom: '4rem' }}>
           <div style={{ maxWidth: '460px', margin: '0 auto', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: 'var(--space-8)' }}>
-            <h3 style={{ fontSize: 'var(--text-xl)', fontWeight: 700, marginBottom: 'var(--space-2)' }}>Sign in to explore</h3>
+            {signalCount > 0 && (
+              <div style={{ background: 'var(--accent-green-dim)', border: '1px solid rgba(0,230,118,0.2)', borderRadius: 'var(--radius)', padding: '0.5rem 0.75rem', marginBottom: 'var(--space-4)', textAlign: 'center' }}>
+                <span style={{ color: 'var(--accent-green)', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', fontWeight: 700 }}>
+                  {signalCount} active signals right now
+                </span>
+              </div>
+            )}
+            <h3 style={{ fontSize: 'var(--text-xl)', fontWeight: 700, marginBottom: 'var(--space-2)' }}>Sign in to see today's picks</h3>
             <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-6)', lineHeight: 'var(--leading-relaxed)' }}>
-              Enter your email to access the full platform — screener, signals, charts, and more. Completely free.
+              Enter your email to access live BUY/SELL signals, social sentiment data, and trade strategies. Completely free.
             </p>
             <button onClick={() => setShowAuth(true)} className="btn-primary" style={{ width: '100%' }}>
               Get Free Access

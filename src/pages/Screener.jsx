@@ -51,9 +51,11 @@ export default function Screener() {
       {!isLoggedIn && (
         <section className="section-centered" style={{ paddingTop: '2rem', paddingBottom: '4rem' }}>
           <div style={{ maxWidth: '460px', margin: '0 auto', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: 'var(--space-8)' }}>
-            <h3 style={{ fontSize: 'var(--text-xl)', fontWeight: 700, marginBottom: 'var(--space-2)' }}>Unlock the Scanner</h3>
+            <h3 style={{ fontSize: 'var(--text-xl)', fontWeight: 700, marginBottom: 'var(--space-2)' }}>
+              {Math.random() > 0.5 ? 'See Today\'s BUY/SELL Signals' : 'Unlock the Scanner'}
+            </h3>
             <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-6)', lineHeight: 'var(--leading-relaxed)' }}>
-              Enter your email to access live stock scanning with RSI, EMA, MACD, social sentiment, and BUY/SELL signals. Completely free.
+              Enter your email to access live signals, social sentiment data, and trade strategies for 65+ stocks. Free — takes 5 seconds.
             </p>
             <button onClick={() => setShowAuth(true)} className="btn-primary" style={{ width: '100%' }}>
               Sign In with Email
