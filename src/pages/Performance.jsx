@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import AccuracyMeter from '../components/AccuracyMeter';
 
 export default function Performance() {
   const [perfData, setPerfData] = useState(null);
@@ -63,6 +64,9 @@ export default function Performance() {
       </section>
 
       <section>
+        {/* Live Accuracy Meter */}
+        <AccuracyMeter />
+
         {/* Stats */}
         <div style={{ display: 'flex', gap: '2rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
           {[
