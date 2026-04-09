@@ -31,7 +31,7 @@ function formatPicksMessage(data) {
     msg += `😱 *Fear & Greed:* ${stats.fearGreed} (${stats.fearGreedLabel})\n\n`;
   }
 
-  msg += `🔗 [View Live Screener](https://axiarchtrading.netlify.app/screener)\n`;
+  msg += `🔗 [View Live Screener](https://axiarchtrading.org/screener)\n`;
   msg += `📡 Powered by Axiarch Algorithm`;
 
   return msg;
@@ -68,7 +68,7 @@ exports.handler = async (event) => {
   }
 
   try {
-    const siteUrl = process.env.URL || 'https://axiarchtrading.netlify.app';
+    const siteUrl = process.env.URL || 'https://axiarchtrading.org';
     const resp = await fetch(`${siteUrl}/picks.json`);
     if (!resp.ok) throw new Error('Could not load picks.json');
     const picksData = await resp.json();

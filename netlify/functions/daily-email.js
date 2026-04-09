@@ -62,7 +62,7 @@ function formatPicksHTML(picks, stats) {
 
   html += `
     <div style="text-align:center;margin:24px 0;">
-      <a href="https://axiarchtrading.netlify.app/screener" style="display:inline-block;background:#00e676;color:#000;font-weight:700;padding:12px 32px;border-radius:6px;text-decoration:none;font-size:14px;">View Live Screener</a>
+      <a href="https://axiarchtrading.org/screener" style="display:inline-block;background:#00e676;color:#000;font-weight:700;padding:12px 32px;border-radius:6px;text-decoration:none;font-size:14px;">View Live Screener</a>
     </div>
 
     <div style="text-align:center;margin:20px 0;padding:16px;background:#0b1a14;border:1px solid #163322;border-radius:8px;">
@@ -103,7 +103,7 @@ exports.handler = async (event) => {
 
   try {
     // Get picks data
-    const siteUrl = process.env.URL || 'https://axiarchtrading.netlify.app';
+    const siteUrl = process.env.URL || 'https://axiarchtrading.org';
     const picksResp = await fetch(`${siteUrl}/picks.json`);
     if (!picksResp.ok) throw new Error('Could not load picks.json');
     const picksData = await picksResp.json();

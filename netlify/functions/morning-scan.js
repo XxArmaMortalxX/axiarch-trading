@@ -223,7 +223,7 @@ exports.handler = async (event) => {
   // Fetch social data from our own API
   let socialMap = {};
   try {
-    const socialResp = await fetch(`${process.env.URL || 'https://axiarchtrading.netlify.app'}/.netlify/functions/social-data`);
+    const socialResp = await fetch(`${process.env.URL || 'https://axiarchtrading.org'}/.netlify/functions/social-data`);
     if (socialResp.ok) {
       const socialData = await socialResp.json();
       socialMap = socialData.tickers || {};

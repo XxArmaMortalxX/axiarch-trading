@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-const SITE_URL = 'https://axiarchtrading.netlify.app';
+const SITE_URL = 'https://axiarchtrading.org';
 
 const META = {
   '/': { title: 'Axiarch — Algorithmic Day Trading Intelligence', description: 'Real-time technical analysis of 65+ stocks. RSI, EMA, MACD, Bollinger Bands, ATR, VWAP indicators with BUY/SELL signals and trade targets.' },

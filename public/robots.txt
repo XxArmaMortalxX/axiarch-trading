@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 Disallow: /callback
-Sitemap: https://axiarchtrading.netlify.app/sitemap.xml
+Sitemap: https://axiarchtrading.org/sitemap.xml
