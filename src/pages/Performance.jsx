@@ -18,133 +18,134 @@ export default function Performance() {
   }, []);
 
   const picks = perfData?.picks || [];
+  const today = new Date().toISOString().split('T')[0];
 
-  // Separate active trades (BUY/SELL) from holds (no position taken)
-  function isActiveTrade(pick) {
-    const sig = pick.signal || '';
-    return sig.includes('BUY') || sig.includes('SELL');
-  }
+  // Split into today vs past
+  const todayPicks = picks.filter(p => p.flaggedDate === today);
+  const pastPicks = picks.filter(p => p.flaggedDate !== today);
 
-  function isHold(pick) {
-    return !isActiveTrade(pick);
+  // Group past picks by date
+  const pastByDate = {};
+  for (const pick of pastPicks) {
+    const date = pick.flaggedDate || 'Unknown';
+    if (!pastByDate[date]) pastByDate[date] = [];
+    pastByDate[date].push(pick);
   }
-
-  // Directional win logic: BUY + up = win, SELL + down = win
-  function isWin(pick) {
-    if (pick.result === 'WIN') return true;
-    if (pick.result === 'LOSS') return false;
-    if (pick.result === 'NEUTRAL') return null; // no trade
-    const isBullish = pick.signal === 'BUY' || pick.signal === 'STRONG BUY';
-    const isBearish = pick.signal === 'SELL' || pick.signal === 'STRONG SELL';
-    if (isBullish) return pick.pctChange > 0;
-    if (isBearish) return pick.pctChange < 0;
-    if (isHold(pick)) return null; // HOLD = no trade taken
-    return pick.pctChange > 0; // legacy picks without signal
-  }
+  const sortedDates = Object.keys(pastByDate).sort((a, b) => new Date(b) - new Date(a));
 
   function getResultIcon(pick) {
-    const win = isWin(pick);
-    if (win === null) return '\u2014'; // dash for holds
-    return win ? '\u2705' : '\u274C';
+    const isBullish = (pick.signal || '').includes('BUY');
+    const isBearish = (pick.signal || '').includes('SELL');
+    const isHold = !isBullish && !isBearish;
+    if (isHold) return '\u2014';
+    if (pick.result === 'WIN') return '\u2705';
+    if (pick.result === 'LOSS') return '\u274C';
+    if (isBullish && pick.pctChange > 0) return '\u2705';
+    if (isBearish && pick.pctChange < 0) return '\u2705';
+    if (isBullish && pick.pctChange < 0) return '\u274C';
+    if (isBearish && pick.pctChange > 0) return '\u274C';
+    return '\u2014';
   }
 
-  const activePicks = picks.filter(isActiveTrade);
-  const holdPicks = picks.filter(isHold);
-  const winners = activePicks.filter(p => isWin(p) === true);
-  const losers = activePicks.filter(p => isWin(p) === false);
-  const avgReturn = activePicks.length > 0 ? (activePicks.reduce((s, p) => s + Math.abs(p.pctChange), 0) / activePicks.length).toFixed(1) : '0';
-  const bestPick = activePicks.reduce((best, p) => Math.abs(p.pctChange) > Math.abs(best?.pctChange || 0) ? p : best, null);
+  function formatDate(dateStr) {
+    const d = new Date(dateStr + 'T12:00:00');
+    return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+  }
 
   return (
     <div className="page-fullbg page-fullbg-performance">
       <section className="page-hero">
         <div className="section-label">Transparency</div>
         <h2 className="section-title">Verified Performance</h2>
-        <p className="section-subtitle">Every pick is tracked from the moment it's flagged. Entry price at flag time, close price at end of day. No cherry-picking. No hindsight bias.</p>
+        <p className="section-subtitle">Every pick is tracked from flag time to close. No cherry-picking. No hindsight bias.</p>
       </section>
 
       <section>
-        {/* Live Accuracy Meter */}
+        {/* Live Accuracy Meter — today only */}
         <AccuracyMeter />
 
-        {/* Stats */}
-        <div style={{ display: 'flex', gap: '2rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
-          {[
-            { value: activePicks.length, label: 'Active Trades' },
-            { value: `${winners.length}`, label: 'Correct Calls', color: 'var(--accent-green)' },
-            { value: `${losers.length}`, label: 'Missed Calls', color: losers.length > 0 ? 'var(--accent-red)' : 'var(--text-muted)' },
-            { value: `${avgReturn}%`, label: 'Avg Move', color: 'var(--accent-green)' },
-            { value: holdPicks.length > 0 ? `${holdPicks.length}` : '\u2014', label: 'No Trade (Hold)', color: 'var(--text-muted)' },
-          ].map(s => (
-            <div key={s.label} className="hero-stat">
-              <div className="hero-stat-value" style={s.color ? { color: s.color } : {}}>{s.value}</div>
-              <div className="hero-stat-label">{s.label}</div>
-            </div>
-          ))}
-        </div>
-
-        {/* Key insight */}
-        <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: 'var(--space-6)', marginBottom: '2rem' }}>
+        {/* How it works */}
+        <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: 'var(--space-6)', marginBottom: '1.5rem' }}>
           <h3 style={{ fontSize: 'var(--text-lg)', fontWeight: 700, marginBottom: 'var(--space-3)' }}>How the Algorithm Works</h3>
           <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)', lineHeight: 'var(--leading-relaxed)', marginBottom: 'var(--space-3)' }}>
-            The Axiarch scanner runs overnight and flags stocks based on Reddit buzz + Yahoo gainers + news headlines, combined with technical analysis. Every single output is tracked — wins and losses.
+            The Axiarch scanner runs every morning at 9:30 AM ET. It scores 65+ stocks on technical indicators + Reddit/StockTwits social sentiment. Top 5 picks are logged with entry prices. At 4:00 PM ET, close prices are recorded and results are scored.
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-            <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)', lineHeight: 'var(--leading-relaxed)' }}>
-              <span style={{ color: 'var(--accent-green)', fontWeight: 700 }}>1.</span> Picks appearing in <strong>both</strong> Reddit AND Yahoo gainers are significantly more reliable than single-source signals
+            <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)' }}>
+              <span style={{ color: 'var(--accent-green)', fontWeight: 700 }}>{'\u2713'}</span> BUY signal + price goes up = <strong style={{ color: 'var(--accent-green)' }}>correct call</strong>
             </p>
-            <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)', lineHeight: 'var(--leading-relaxed)' }}>
-              <span style={{ color: 'var(--accent-green)', fontWeight: 700 }}>2.</span> High Fear & Greed (&gt;65) = momentum environment, picks perform better
+            <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)' }}>
+              <span style={{ color: 'var(--accent-green)', fontWeight: 700 }}>{'\u2713'}</span> SELL signal + price goes down = <strong style={{ color: 'var(--accent-green)' }}>correct call</strong>
             </p>
-            <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)', lineHeight: 'var(--leading-relaxed)' }}>
-              <span style={{ color: 'var(--accent-green)', fontWeight: 700 }}>3.</span> First hour of trading is key — if it doesn't move in the first 30min, cut it
+            <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)' }}>
+              <span style={{ color: 'var(--accent-red)', fontWeight: 700 }}>{'\u2717'}</span> Wrong direction = <strong style={{ color: 'var(--accent-red)' }}>missed call</strong>
+            </p>
+            <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)' }}>
+              <span style={{ color: 'var(--text-muted)' }}>{'\u2014'}</span> HOLD = no trade taken (algorithm wasn't confident)
             </p>
           </div>
-          <p style={{ color: 'var(--text-muted)', fontSize: 'var(--text-xs)', marginTop: 'var(--space-3)', fontStyle: 'italic' }}>
-            The algorithm isn't perfect — nothing is. But at a 2:1 risk/reward setup you only need ~35% accuracy to profit. We're running higher than that.
-          </p>
         </div>
 
-        {/* Picks table */}
-        <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', overflow: 'hidden' }}>
-          <div style={{ overflowX: 'auto' }}>
-            <table className="screener-table">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Ticker</th>
-                  <th>Signal</th>
-                  <th>Date</th>
-                  <th>Entry</th>
-                  <th>Close</th>
-                  <th>Move</th>
-                  <th>Result</th>
-                  <th>Sources</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[...picks].sort((a, b) => new Date(b.flaggedDate) - new Date(a.flaggedDate)).map((pick, i) => {
-                  const signalColor = (pick.signal || '').includes('BUY') ? 'var(--accent-green)' : (pick.signal || '').includes('SELL') ? 'var(--accent-red)' : 'var(--text-muted)';
-                  return (
-                  <tr key={i} style={{ cursor: 'pointer' }} onClick={() => window.location.href = `/stock/${pick.ticker}`}>
-                    <td style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>{i + 1}</td>
-                    <td className="ticker-cell">${pick.ticker}</td>
-                    <td style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, color: signalColor }}>{pick.signal || 'BUY'}</td>
-                    <td style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem', color: 'var(--text-muted)' }}>{pick.flaggedDate}</td>
-                    <td style={{ fontFamily: 'var(--font-mono)' }}>${pick.entryPrice.toFixed(2)}</td>
-                    <td style={{ fontFamily: 'var(--font-mono)' }}>${pick.closePrice.toFixed(2)}</td>
-                    <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 700 }} className={pick.pctChange >= 0 ? 'positive' : 'negative'}>
-                      {pick.pctChange >= 0 ? '+' : ''}{pick.pctChange.toFixed(2)}%
-                    </td>
-                    <td style={{ fontSize: '0.85rem' }}>{getResultIcon(pick)}</td>
-                    <td style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>{pick.sources.join(', ')}</td>
-                  </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+        {/* Past Performance — grouped by date */}
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', fontWeight: 600, color: 'var(--accent-green)', textTransform: 'uppercase', letterSpacing: '0.18em', marginBottom: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <span style={{ width: '24px', height: '1px', background: 'var(--accent-green)', display: 'inline-block' }} />
+          Past Picks
         </div>
+
+        {sortedDates.length === 0 ? (
+          <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: 'var(--space-8)', textAlign: 'center', color: 'var(--text-muted)', marginBottom: '1.5rem' }}>
+            No past picks yet. Check back after the first full day of tracking.
+          </div>
+        ) : sortedDates.map(date => {
+          const datePicks = pastByDate[date];
+          const dateActive = datePicks.filter(p => (p.signal || '').includes('BUY') || (p.signal || '').includes('SELL'));
+          const dateWins = datePicks.filter(p => getResultIcon(p) === '\u2705').length;
+          const dateLosses = datePicks.filter(p => getResultIcon(p) === '\u274C').length;
+          const dateHolds = datePicks.length - dateActive.length;
+
+          return (
+            <div key={date} style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', marginBottom: '0.75rem', overflow: 'hidden' }}>
+              {/* Date header */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem 1rem', borderBottom: '1px solid var(--border)', background: 'var(--bg-primary)' }}>
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', fontWeight: 700 }}>
+                  {formatDate(date)}
+                </div>
+                <div style={{ display: 'flex', gap: '0.75rem', fontFamily: 'var(--font-mono)', fontSize: '0.7rem' }}>
+                  {dateWins > 0 && <span style={{ color: 'var(--accent-green)' }}>{dateWins}W</span>}
+                  {dateLosses > 0 && <span style={{ color: 'var(--accent-red)' }}>{dateLosses}L</span>}
+                  {dateHolds > 0 && <span style={{ color: 'var(--text-muted)' }}>{dateHolds}H</span>}
+                </div>
+              </div>
+              {/* Picks for this date */}
+              <div style={{ overflowX: 'auto' }}>
+                <table className="screener-table" style={{ marginBottom: 0 }}>
+                  <thead>
+                    <tr>
+                      <th>Ticker</th><th>Signal</th><th>Entry</th><th>Close</th><th>Move</th><th>Result</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {datePicks.map((pick, i) => {
+                      const signalColor = (pick.signal || '').includes('BUY') ? 'var(--accent-green)' : (pick.signal || '').includes('SELL') ? 'var(--accent-red)' : 'var(--text-muted)';
+                      return (
+                        <tr key={i} style={{ cursor: 'pointer' }} onClick={() => window.location.href = `/stock/${pick.ticker}`}>
+                          <td className="ticker-cell">${pick.ticker}</td>
+                          <td style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, color: signalColor }}>{pick.signal || 'BUY'}</td>
+                          <td style={{ fontFamily: 'var(--font-mono)' }}>${pick.entryPrice.toFixed(2)}</td>
+                          <td style={{ fontFamily: 'var(--font-mono)' }}>${pick.closePrice.toFixed(2)}</td>
+                          <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 700 }} className={pick.pctChange >= 0 ? 'positive' : 'negative'}>
+                            {pick.pctChange >= 0 ? '+' : ''}{pick.pctChange.toFixed(2)}%
+                          </td>
+                          <td style={{ fontSize: '0.85rem' }}>{getResultIcon(pick)}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          );
+        })}
 
         {/* CTA */}
         <div className="section-centered" style={{ marginTop: 'var(--space-8)' }}>
@@ -153,12 +154,12 @@ export default function Performance() {
           </p>
           <div className="cta-row">
             <Link to="/screener" className="btn-primary">Try the Screener</Link>
-            <Link to="/go" className="btn-secondary">Start Free Trial</Link>
+            <a href="https://t.me/axiarchtradebot" target="_blank" rel="noopener noreferrer" className="btn-secondary">Join Telegram</a>
           </div>
         </div>
 
         <p style={{ textAlign: 'center', marginTop: 'var(--space-8)', fontSize: '0.72rem', color: 'var(--text-muted)' }}>
-          Past performance does not guarantee future results. All picks are tracked from the moment they are flagged by the algorithm. Entry price is the price at flag time. Close price is the market close that day.
+          Past performance does not guarantee future results. All picks are tracked from the moment they are flagged by the algorithm.
         </p>
       </section>
     </div>

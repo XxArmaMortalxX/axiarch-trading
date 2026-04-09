@@ -15,80 +15,127 @@ export default function AccuracyMeter() {
       });
   }, []);
 
-  if (!data?.picks?.length) return null;
+  if (!data) return null;
 
-  const picks = data.picks;
-  const active = picks.filter(p => p.signal && (p.signal.includes('BUY') || p.signal.includes('SELL')));
-  const holds = picks.filter(p => !p.signal || p.signal === 'HOLD');
-  const wins = active.filter(p => p.result === 'WIN' || (!p.result && ((p.signal?.includes('BUY') && p.pctChange > 0) || (p.signal?.includes('SELL') && p.pctChange < 0))));
-  const losses = active.filter(p => p.result === 'LOSS' || (!p.result && ((p.signal?.includes('BUY') && p.pctChange < 0) || (p.signal?.includes('SELL') && p.pctChange > 0))));
-  const accuracy = active.length > 0 ? Math.round((wins.length / active.length) * 100) : 0;
-  const avgReturn = active.length > 0 ? (active.reduce((s, p) => s + Math.abs(p.pctChange || 0), 0) / active.length).toFixed(1) : '0';
+  const today = new Date().toISOString().split('T')[0];
+  const todayMorning = data.todayMorning;
+  const allPicks = data.picks || [];
 
-  const meterColor = accuracy >= 70 ? 'var(--accent-green)' : accuracy >= 50 ? 'var(--accent-amber)' : 'var(--accent-red)';
+  // Today's picks only (from afternoon check or morning scan)
+  const todayPicks = allPicks.filter(p => p.flaggedDate === today);
+  const todayActive = todayPicks.filter(p => p.signal && (p.signal.includes('BUY') || p.signal.includes('SELL')));
+  const todayWins = todayActive.filter(p => p.result === 'WIN' || (!p.result && ((p.signal?.includes('BUY') && p.pctChange > 0) || (p.signal?.includes('SELL') && p.pctChange < 0)))).length;
+  const todayLosses = todayActive.filter(p => p.result === 'LOSS' || (!p.result && ((p.signal?.includes('BUY') && p.pctChange < 0) || (p.signal?.includes('SELL') && p.pctChange > 0)))).length;
 
-  // Last updated
-  const lastPick = picks.reduce((latest, p) => {
-    const d = new Date(p.flaggedDate || p.trackedAt || 0);
-    return d > latest ? d : latest;
-  }, new Date(0));
-  const daysAgo = Math.floor((Date.now() - lastPick.getTime()) / 86400000);
-  const lastUpdated = daysAgo === 0 ? 'Today' : daysAgo === 1 ? 'Yesterday' : `${daysAgo}d ago`;
+  // If we have morning picks but no afternoon results yet, show "tracking"
+  const hasMorningPicks = todayMorning?.picks?.length > 0;
+  const hasResults = todayPicks.length > 0;
+
+  // All-time stats for context
+  const allActive = allPicks.filter(p => p.signal && (p.signal.includes('BUY') || p.signal.includes('SELL')));
+  const allWins = allActive.filter(p => p.result === 'WIN' || (!p.result && ((p.signal?.includes('BUY') && p.pctChange > 0) || (p.signal?.includes('SELL') && p.pctChange < 0)))).length;
+  const allLosses = allActive.filter(p => p.result === 'LOSS' || (!p.result && ((p.signal?.includes('BUY') && p.pctChange < 0) || (p.signal?.includes('SELL') && p.pctChange > 0)))).length;
+  const allAccuracy = allActive.length > 0 ? Math.round((allWins / allActive.length) * 100) : 0;
 
   return (
     <div style={{
       background: 'var(--bg-card)',
       border: '1px solid var(--border)',
       borderRadius: 'var(--radius-lg)',
-      padding: '1rem 1.25rem',
-      marginBottom: '1rem',
+      padding: '1.25rem',
+      marginBottom: '1.5rem',
     }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.6rem' }}>
-        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.12em' }}>
-          Live Accuracy
-        </div>
-        <div style={{ fontSize: '0.6rem', color: 'var(--text-muted)' }}>
-          Updated {lastUpdated}
-        </div>
+      {/* Today's Status */}
+      <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600, color: 'var(--accent-green)', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+        <span className="live-dot" />
+        Today's Performance
       </div>
 
-      {/* Accuracy bar */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.6rem' }}>
-        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '1.5rem', fontWeight: 800, color: meterColor, minWidth: '55px' }}>
-          {accuracy}%
-        </div>
-        <div style={{ flex: 1 }}>
-          <div style={{ width: '100%', height: '8px', background: 'var(--border)', borderRadius: '4px', overflow: 'hidden' }}>
-            <div style={{
-              width: `${accuracy}%`,
-              height: '100%',
-              background: `linear-gradient(90deg, ${meterColor}, ${meterColor}dd)`,
-              borderRadius: '4px',
-              transition: 'width 0.5s ease',
-            }} />
+      {hasMorningPicks && !hasResults && (
+        <div>
+          <div style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: '0.75rem' }}>
+            {todayMorning.picks.length} picks flagged this morning — tracking until market close.
+          </div>
+          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+            {todayMorning.picks.map(p => (
+              <div key={p.ticker} style={{
+                background: 'var(--bg-primary)',
+                border: '1px solid var(--border)',
+                borderRadius: 'var(--radius)',
+                padding: '0.5rem 0.75rem',
+                fontFamily: 'var(--font-mono)',
+                fontSize: 'var(--text-sm)',
+              }}>
+                <span style={{ color: 'var(--accent-green)', fontWeight: 700 }}>${p.ticker}</span>
+                <span style={{ color: 'var(--text-muted)', marginLeft: '0.4rem' }}>
+                  {p.signal || 'BUY'} @ ${p.entryPrice.toFixed(2)}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
-      </div>
+      )}
 
-      {/* Stats row */}
-      <div style={{ display: 'flex', gap: '1rem', fontSize: '0.7rem', fontFamily: 'var(--font-mono)' }}>
+      {hasResults && (
         <div>
-          <span style={{ color: 'var(--accent-green)', fontWeight: 700 }}>{wins.length}</span>
-          <span style={{ color: 'var(--text-muted)' }}> wins</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.75rem' }}>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '1.8rem', fontWeight: 800, color: todayWins >= todayLosses ? 'var(--accent-green)' : 'var(--accent-red)' }}>
+              {todayWins}/{todayActive.length}
+            </div>
+            <div>
+              <div style={{ fontSize: 'var(--text-sm)', fontWeight: 600 }}>Correct calls today</div>
+              <div style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)' }}>
+                {todayWins} wins, {todayLosses} losses, {todayPicks.length - todayActive.length} holds
+              </div>
+            </div>
+          </div>
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+            {todayPicks.map(p => {
+              const isWin = p.result === 'WIN' || (p.signal?.includes('BUY') && p.pctChange > 0) || (p.signal?.includes('SELL') && p.pctChange < 0);
+              const isLoss = p.result === 'LOSS';
+              const isHold = !p.signal || p.signal === 'HOLD';
+              return (
+                <div key={p.ticker} style={{
+                  background: 'var(--bg-primary)',
+                  border: `1px solid ${isWin ? 'var(--accent-green)' : isLoss ? 'var(--accent-red)' : 'var(--border)'}`,
+                  borderRadius: 'var(--radius)',
+                  padding: '0.4rem 0.6rem',
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '0.72rem',
+                }}>
+                  <span style={{ fontWeight: 700, color: isWin ? 'var(--accent-green)' : isLoss ? 'var(--accent-red)' : 'var(--text-muted)' }}>${p.ticker}</span>
+                  <span style={{ color: p.pctChange >= 0 ? 'var(--accent-green)' : 'var(--accent-red)', marginLeft: '0.3rem' }}>
+                    {p.pctChange >= 0 ? '+' : ''}{p.pctChange.toFixed(1)}%
+                  </span>
+                  {isHold && <span style={{ color: 'var(--text-muted)', marginLeft: '0.2rem' }}>(hold)</span>}
+                </div>
+              );
+            })}
+          </div>
         </div>
-        <div>
-          <span style={{ color: losses.length > 0 ? 'var(--accent-red)' : 'var(--text-muted)', fontWeight: 700 }}>{losses.length}</span>
-          <span style={{ color: 'var(--text-muted)' }}> losses</span>
+      )}
+
+      {!hasMorningPicks && !hasResults && (
+        <div style={{ fontSize: 'var(--text-sm)', color: 'var(--text-muted)' }}>
+          No picks yet today. Morning scan runs at 9:30 AM ET.
         </div>
-        <div>
-          <span style={{ color: 'var(--text-secondary)', fontWeight: 700 }}>{holds.length}</span>
-          <span style={{ color: 'var(--text-muted)' }}> holds</span>
+      )}
+
+      {/* All-time accuracy bar */}
+      {allActive.length > 0 && (
+        <div style={{ marginTop: '1rem', paddingTop: '0.75rem', borderTop: '1px solid var(--border)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>All-Time Accuracy</span>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', fontWeight: 700, color: allAccuracy >= 60 ? 'var(--accent-green)' : allAccuracy >= 40 ? 'var(--accent-amber)' : 'var(--accent-red)' }}>{allAccuracy}%</span>
+          </div>
+          <div style={{ width: '100%', height: '6px', background: 'var(--border)', borderRadius: '3px', overflow: 'hidden' }}>
+            <div style={{ width: `${allAccuracy}%`, height: '100%', background: allAccuracy >= 60 ? 'var(--accent-green)' : allAccuracy >= 40 ? 'var(--accent-amber)' : 'var(--accent-red)', borderRadius: '3px' }} />
+          </div>
+          <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', marginTop: '0.3rem', fontFamily: 'var(--font-mono)' }}>
+            {allWins}W / {allLosses}L across {allActive.length} active trades
+          </div>
         </div>
-        <div>
-          <span style={{ color: 'var(--accent-green)', fontWeight: 700 }}>{avgReturn}%</span>
-          <span style={{ color: 'var(--text-muted)' }}> avg move</span>
-        </div>
-      </div>
+      )}
     </div>
   );
 }
