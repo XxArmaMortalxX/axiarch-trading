@@ -274,9 +274,53 @@ exports.handler = async (event) => {
     }
   }
 
+  // ── FILTERS ──
+
+  // 1. Don't chase gaps: remove stocks already up >5% at scan time
+  //    These have already made their move — you're buying the top
+  const preFilter = results.length;
+  const filtered = results.filter(r => {
+    if (r.change > 5) {
+      console.log(`Filtered out ${r.ticker}: already up ${r.change.toFixed(1)}% (gap chase)`);
+      return false;
+    }
+    return true;
+  });
+
+  // 2. Penalize repeat losers: check yesterday's results
+  let yesterdayLosers = [];
+  try {
+    const history = await store.get('history', { type: 'json' });
+    if (history?.picks) {
+      // Get picks from last 2 days that lost
+      const twoDaysAgo = new Date(Date.now() - 2 * 86400000).toISOString().split('T')[0];
+      yesterdayLosers = history.picks
+        .filter(p => p.flaggedDate >= twoDaysAgo && p.result === 'LOSS')
+        .map(p => p.ticker);
+    }
+  } catch { /* no history yet */ }
+
+  // Penalize repeat losers by reducing their score
+  for (const r of filtered) {
+    if (yesterdayLosers.includes(r.ticker)) {
+      console.log(`Penalized ${r.ticker}: lost recently, score ${r.score} → ${r.score - 15}`);
+      r.score = Math.max(0, r.score - 15);
+      r.penalized = true;
+    }
+  }
+
+  // 3. Prefer stocks with moderate pre-market moves (1-4%) over flat or extreme
+  for (const r of filtered) {
+    if (r.change >= 1 && r.change <= 4) {
+      r.score += 5; // bonus for healthy momentum without overextension
+    }
+  }
+
+  console.log(`Filters: ${preFilter} stocks → ${filtered.length} after gap filter, ${yesterdayLosers.length} recent losers penalized`);
+
   // Sort by score descending, take top 5
-  results.sort((a, b) => b.score - a.score);
-  const top5 = results.slice(0, 5);
+  filtered.sort((a, b) => b.score - a.score);
+  const top5 = filtered.slice(0, 5);
 
   if (top5.length === 0) {
     console.log('No valid scan results');
