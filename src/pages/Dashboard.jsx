@@ -1,7 +1,9 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement } from 'chart.js';
 import { Doughnut, Bar } from 'react-chartjs-2';
 import { useFinnhubContext } from '../context/FinnhubContext';
+import { useAuth } from '../context/AuthContext';
+import AuthModal from '../components/AuthModal';
 import { useAxiarchScore } from '../hooks/useAxiarchScore';
 import SignalBadge from '../components/SignalBadge';
 import { fmtPrice } from '../lib/indicators';
@@ -9,6 +11,8 @@ import { fmtPrice } from '../lib/indicators';
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement);
 
 export default function Dashboard() {
+  const { isLoggedIn } = useAuth();
+  const [showAuth, setShowAuth] = useState(false);
   const { data, dataSource, isScanning, scanStatus, scanMessage, runFullScan } = useFinnhubContext();
   const stats = useAxiarchScore(data);
 
@@ -72,7 +76,22 @@ export default function Dashboard() {
       <p className="section-subtitle">Top-ranked signals, market-wide signal distribution, and RSI breakdown — all derived from indicator confluence.</p>
     </section>
 
-    <section>
+    {!isLoggedIn && (
+      <section className="section-centered" style={{ paddingTop: '2rem', paddingBottom: '4rem' }}>
+        <div style={{ maxWidth: '460px', margin: '0 auto', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: 'var(--space-8)' }}>
+          <h3 style={{ fontSize: 'var(--text-xl)', fontWeight: 700, marginBottom: 'var(--space-2)' }}>Sign in to view signals</h3>
+          <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-6)', lineHeight: 'var(--leading-relaxed)' }}>
+            Enter your email to access the signals dashboard, charts, and analysis. Free — takes 5 seconds.
+          </p>
+          <button onClick={() => setShowAuth(true)} className="btn-primary" style={{ width: '100%' }}>Get Free Access</button>
+          <div style={{ margin: 'var(--space-3) 0', fontSize: 'var(--text-xs)', color: 'var(--text-muted)' }}>or</div>
+          <a href="https://t.me/axiarchtradebot" target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ width: '100%', display: 'block', textAlign: 'center' }}>Join Telegram for Daily Picks</a>
+        </div>
+        {showAuth && <AuthModal onClose={() => setShowAuth(false)} required />}
+      </section>
+    )}
+
+    {isLoggedIn && <section>
 
       {/* Stats bar */}
       <div style={{ display: 'flex', gap: '2rem', marginTop: '2rem', flexWrap: 'wrap' }}>
@@ -158,7 +177,7 @@ export default function Dashboard() {
           <Bar data={rsiData} options={rsiOptions} />
         </div>
       </div>
-    </section>
+    </section>}
     </div>
   );
 }
