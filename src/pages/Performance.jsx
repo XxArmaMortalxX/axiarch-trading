@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import AuthModal from '../components/AuthModal';
 import AccuracyMeter from '../components/AccuracyMeter';
 
 export default function Performance() {
+  const { isLoggedIn } = useAuth();
+  const [showAuth, setShowAuth] = useState(false);
   const [perfData, setPerfData] = useState(null);
 
   useEffect(() => {
@@ -86,6 +90,23 @@ export default function Performance() {
           </div>
         </div>
 
+        {/* Auth gate — accuracy meter and how-it-works are teasers, picks are locked */}
+        {!isLoggedIn && (
+          <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: 'var(--space-8)', textAlign: 'center', marginBottom: '1.5rem' }}>
+            <h3 style={{ fontSize: 'var(--text-xl)', fontWeight: 700, marginBottom: 'var(--space-2)' }}>Sign in to see all picks</h3>
+            <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-4)', lineHeight: 'var(--leading-relaxed)' }}>
+              View every pick the algorithm has flagged — entry prices, close prices, win/loss results. Full transparency, free.
+            </p>
+            <button onClick={() => setShowAuth(true)} className="btn-primary" style={{ minWidth: '200px' }}>
+              See All Picks
+            </button>
+            <div style={{ margin: 'var(--space-3) 0', fontSize: 'var(--text-xs)', color: 'var(--text-muted)' }}>or</div>
+            <a href="https://t.me/axiarchtradebot" target="_blank" rel="noopener noreferrer" className="btn-secondary btn-sm">Join Telegram</a>
+          </div>
+        )}
+        {showAuth && <AuthModal onClose={() => setShowAuth(false)} required />}
+
+        {isLoggedIn && <>
         {/* Past Performance — grouped by date */}
         <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', fontWeight: 600, color: 'var(--accent-green)', textTransform: 'uppercase', letterSpacing: '0.18em', marginBottom: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <span style={{ width: '24px', height: '1px', background: 'var(--accent-green)', display: 'inline-block' }} />
@@ -157,6 +178,8 @@ export default function Performance() {
             <a href="https://t.me/axiarchtradebot" target="_blank" rel="noopener noreferrer" className="btn-secondary">Join Telegram</a>
           </div>
         </div>
+
+        </>}
 
         <p style={{ textAlign: 'center', marginTop: 'var(--space-8)', fontSize: '0.72rem', color: 'var(--text-muted)' }}>
           Past performance does not guarantee future results. All picks are tracked from the moment they are flagged by the algorithm.

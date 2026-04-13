@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useFinnhubContext } from '../context/FinnhubContext';
+import { useAuth } from '../context/AuthContext';
+import AuthModal from '../components/AuthModal';
 import { useStockProfile } from '../hooks/useStockProfile';
 import { calcRSI, calcEMA, calcMACD, calcBollingerBands, calcATR, calcVWAP, calcRelativeVolume, fmtPrice } from '../lib/indicators';
 import SignalBadge from '../components/SignalBadge';
@@ -21,6 +23,8 @@ const PROXY = '/.netlify/functions/finnhub-proxy';
 export default function Stock() {
   const { symbol } = useParams();
   const sym = symbol.toUpperCase();
+  const { isLoggedIn } = useAuth();
+  const [showAuth, setShowAuth] = useState(false);
   const { data, candleCache, customTickers, addTicker, removeTicker } = useFinnhubContext();
   const isWatchlisted = customTickers.includes(sym);
   const { profile } = useStockProfile(sym);
@@ -175,6 +179,25 @@ export default function Stock() {
         </div>
       </div>
 
+      {/* Auth gate — teaser shows price/signal above, everything below is locked */}
+      {!isLoggedIn && (
+        <div style={{ marginBottom: '1.5rem' }}>
+          <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: 'var(--space-8)', textAlign: 'center' }}>
+            <h3 style={{ fontSize: 'var(--text-xl)', fontWeight: 700, marginBottom: 'var(--space-2)' }}>Sign in to see full analysis</h3>
+            <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-4)', lineHeight: 'var(--leading-relaxed)' }}>
+              Get the full Axiarch Strategy for ${sym} — chart, entry/stop/target prices, risk level, and plain-English analysis. Free.
+            </p>
+            <button onClick={() => setShowAuth(true)} className="btn-primary" style={{ minWidth: '200px' }}>
+              Unlock Full Analysis
+            </button>
+            <div style={{ margin: 'var(--space-3) 0', fontSize: 'var(--text-xs)', color: 'var(--text-muted)' }}>or</div>
+            <a href="https://t.me/axiarchtradebot" target="_blank" rel="noopener noreferrer" className="btn-secondary btn-sm">Join Telegram</a>
+          </div>
+          {showAuth && <AuthModal onClose={() => setShowAuth(false)} required />}
+        </div>
+      )}
+
+      {isLoggedIn && <>
       {/* Price Chart */}
       <StockChart candles={candles} symbol={sym} />
 
@@ -247,6 +270,7 @@ export default function Stock() {
         <a href={`https://www.reddit.com/search/?q=${encodeURIComponent('$' + sym)}&sort=new`} target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ fontSize: '0.78rem', padding: '0.5rem 1rem' }}>Reddit</a>
       </div>
 
+      </>}
       </>}
     </section>
   );

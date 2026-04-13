@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import AuthModal from '../components/AuthModal';
 
 const BENEFITS = [
   { icon: '\u{1F4C8}', text: 'Real-time scanning of 65+ stocks with 6 technical indicators' },
@@ -18,11 +19,16 @@ const STATS = [
 ];
 
 export default function Go() {
-  const { user } = useAuth();
+  const { user, isLoggedIn } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showAuth, setShowAuth] = useState(false);
 
   const handleCheckout = async () => {
+    if (!isLoggedIn) {
+      setShowAuth(true);
+      return;
+    }
     setLoading(true);
     setError('');
     try {
@@ -168,6 +174,7 @@ export default function Go() {
           The Axiarch Trading Algorithm is an independent research tool for educational purposes only. Not financial advice. Day trading involves substantial risk of loss. Past performance does not guarantee future results.
         </p>
       </section>
+      {showAuth && <AuthModal onClose={() => setShowAuth(false)} required />}
     </div>
   );
 }

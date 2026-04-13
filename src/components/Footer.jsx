@@ -11,7 +11,7 @@ export default function Footer() {
     fetch('/.netlify/functions/subscribe', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
+      body: JSON.stringify({ email, source: 'footer' }),
     }).then(() => {
       e.target.reset();
       setSubStatus('Subscribed!');
