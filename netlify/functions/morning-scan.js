@@ -274,53 +274,116 @@ exports.handler = async (event) => {
     }
   }
 
+  // ── MARKET REGIME DETECTION ──
+  // Check if overall market (SPY) is red — if so, favor SELL/HOLD over BUY
+  let marketBias = 'neutral';
+  try {
+    const spyQuote = await fetchQuote('SPY');
+    if (spyQuote) {
+      const spyChange = spyQuote.dp || 0;
+      if (spyChange < -1) marketBias = 'bearish';
+      else if (spyChange < -0.3) marketBias = 'cautious';
+      else if (spyChange > 1) marketBias = 'bullish';
+      else marketBias = 'neutral';
+      console.log(`Market regime: SPY ${spyChange > 0 ? '+' : ''}${spyChange.toFixed(2)}% → ${marketBias}`);
+    }
+  } catch { /* default neutral */ }
+
   // ── FILTERS ──
 
   // 1. Don't chase gaps: remove stocks already up >5% at scan time
-  //    These have already made their move — you're buying the top
   const preFilter = results.length;
   const filtered = results.filter(r => {
     if (r.change > 5) {
       console.log(`Filtered out ${r.ticker}: already up ${r.change.toFixed(1)}% (gap chase)`);
       return false;
     }
+    // Also filter stocks down >5% for BUY signals (catching falling knives)
+    if (r.change < -5 && r.signal === 'BUY') {
+      console.log(`Filtered out ${r.ticker}: down ${r.change.toFixed(1)}% with BUY signal (falling knife)`);
+      return false;
+    }
     return true;
   });
 
-  // 2. Penalize repeat losers: check yesterday's results
-  let yesterdayLosers = [];
+  // 2. Penalize repeat losers: check recent results
+  let recentLosers = [];
   try {
     const history = await store.get('history', { type: 'json' });
     if (history?.picks) {
-      // Get picks from last 2 days that lost
-      const twoDaysAgo = new Date(Date.now() - 2 * 86400000).toISOString().split('T')[0];
-      yesterdayLosers = history.picks
-        .filter(p => p.flaggedDate >= twoDaysAgo && p.result === 'LOSS')
+      const threeDaysAgo = new Date(Date.now() - 3 * 86400000).toISOString().split('T')[0];
+      recentLosers = history.picks
+        .filter(p => p.flaggedDate >= threeDaysAgo && p.result === 'LOSS')
         .map(p => p.ticker);
     }
   } catch { /* no history yet */ }
 
-  // Penalize repeat losers by reducing their score
   for (const r of filtered) {
-    if (yesterdayLosers.includes(r.ticker)) {
+    // Count how many times this ticker lost recently
+    const lossCount = recentLosers.filter(t => t === r.ticker).length;
+    if (lossCount >= 2) {
+      console.log(`Blacklisted ${r.ticker}: lost ${lossCount}x in last 3 days`);
+      r.score = 0; // effectively remove it
+    } else if (lossCount === 1) {
       console.log(`Penalized ${r.ticker}: lost recently, score ${r.score} → ${r.score - 15}`);
       r.score = Math.max(0, r.score - 15);
-      r.penalized = true;
     }
   }
 
-  // 3. Prefer stocks with moderate pre-market moves (1-4%) over flat or extreme
+  // 3. Market regime adjustments
+  for (const r of filtered) {
+    if (marketBias === 'bearish') {
+      // On red days: penalize BUY signals, boost SELL signals
+      if (r.signal === 'BUY' || r.signal === 'STRONG BUY') {
+        r.score -= 10;
+        console.log(`Bearish market: penalized BUY on ${r.ticker} (-10)`);
+      }
+      if (r.signal === 'SELL' || r.signal === 'STRONG SELL') {
+        r.score += 10;
+        console.log(`Bearish market: boosted SELL on ${r.ticker} (+10)`);
+      }
+    } else if (marketBias === 'cautious') {
+      // Slightly red: small penalty on BUYs
+      if (r.signal === 'BUY') r.score -= 5;
+    } else if (marketBias === 'bullish') {
+      // Green market: small bonus on BUYs with momentum
+      if ((r.signal === 'BUY' || r.signal === 'STRONG BUY') && r.change >= 1 && r.change <= 4) {
+        r.score += 5;
+      }
+    }
+  }
+
+  // 4. Social confirmation bonus — picks with social buzz are more reliable
+  for (const r of filtered) {
+    if (r.socialScore > 40) {
+      r.score += 8;
+      console.log(`Social confirmation: ${r.ticker} +8 (socialScore: ${r.socialScore})`);
+    } else if (r.socialScore > 20) {
+      r.score += 3;
+    }
+  }
+
+  // 5. Sweet spot bonus — moderate moves are ideal
   for (const r of filtered) {
     if (r.change >= 1 && r.change <= 4) {
-      r.score += 5; // bonus for healthy momentum without overextension
+      r.score += 5;
     }
   }
 
-  console.log(`Filters: ${preFilter} stocks → ${filtered.length} after gap filter, ${yesterdayLosers.length} recent losers penalized`);
+  // 6. Minimum score threshold — don't flag weak picks
+  const qualified = filtered.filter(r => {
+    if (r.score < 55) {
+      console.log(`Filtered ${r.ticker}: score ${r.score} below threshold 55`);
+      return false;
+    }
+    return true;
+  });
+
+  console.log(`Filters: ${preFilter} scanned → ${filtered.length} after gap/knife filter → ${qualified.length} above score threshold. Market: ${marketBias}, ${recentLosers.length} recent losers`);
 
   // Sort by score descending, take top 5
-  filtered.sort((a, b) => b.score - a.score);
-  const top5 = filtered.slice(0, 5);
+  qualified.sort((a, b) => b.score - a.score);
+  const top5 = qualified.slice(0, 5);
 
   if (top5.length === 0) {
     console.log('No valid scan results');
