@@ -9,6 +9,26 @@ export const WATCHLIST = [
   'SQ','PYPL','ROKU','ABNB','UBER','DASH','NET','CRWD',
 ];
 
+// Growth mode watchlist — quality growth stocks across sectors
+export const GROWTH_WATCHLIST = [
+  // Mega-cap tech growth
+  'AAPL','MSFT','GOOGL','META','AMZN','NVDA','TSLA','AVGO','CRM','ADBE',
+  // High-growth SaaS / Cloud
+  'CRWD','NET','DDOG','SNOW','MDB','PANW','ZS','OKTA','BILL','HUBS',
+  // Semiconductors
+  'AMD','MRVL','KLAC','LRCX','AMAT','ON','MPWR','ARM',
+  // Fintech / Payments
+  'SQ','PYPL','AFRM','SOFI','COIN','HOOD',
+  // E-commerce / Consumer
+  'SHOP','MELI','ABNB','UBER','DASH','DUOL',
+  // Healthcare / Biotech growth
+  'LLY','ISRG','DXCM','VEEV','PODD','INSP',
+  // AI / Quantum / Emerging tech
+  'PLTR','IONQ','RKLB','SOUN','SMCI',
+  // Infrastructure / Energy transition
+  'ENPH','FSLR','CEG','VST',
+];
+
 // No fallback data — all data comes from the server-side Finnhub proxy
 
 export const FRAMEWORK_STEPS = [

@@ -162,6 +162,50 @@ exports.handler = async (event) => {
         url = `${BASE}/stock/profile2?symbol=${symbol}&token=${FINNHUB_KEY}`;
         break;
 
+      // === Growth Mode Endpoints ===
+
+      case 'metrics':
+        cacheKey = `metrics:${symbol}`;
+        ttl = 6 * 60 * 60 * 1000; // 6 hours
+        url = `${BASE}/stock/metric?symbol=${symbol}&metric=all&token=${FINNHUB_KEY}`;
+        break;
+
+      case 'earnings': {
+        cacheKey = `earnings:${symbol}`;
+        ttl = 12 * 60 * 60 * 1000; // 12 hours
+        url = `${BASE}/stock/earnings?symbol=${symbol}&limit=8&token=${FINNHUB_KEY}`;
+        break;
+      }
+
+      case 'financials': {
+        const freq = params.freq || 'quarterly';
+        cacheKey = `financials:${symbol}:${freq}`;
+        ttl = 12 * 60 * 60 * 1000; // 12 hours
+        url = `${BASE}/stock/financials-reported?symbol=${symbol}&freq=${freq}&token=${FINNHUB_KEY}`;
+        break;
+      }
+
+      case 'recommendation':
+        cacheKey = `rec:${symbol}`;
+        ttl = 24 * 60 * 60 * 1000; // 24 hours
+        url = `${BASE}/stock/recommendation?symbol=${symbol}&token=${FINNHUB_KEY}`;
+        break;
+
+      case 'peers':
+        cacheKey = `peers:${symbol}`;
+        ttl = 24 * 60 * 60 * 1000; // 24 hours
+        url = `${BASE}/stock/peers?symbol=${symbol}&token=${FINNHUB_KEY}`;
+        break;
+
+      case 'earnings-calendar': {
+        const ecFrom = params.from || new Date().toISOString().slice(0, 10);
+        const ecTo = params.to || new Date(Date.now() + 90 * 86400000).toISOString().slice(0, 10);
+        cacheKey = `ecal:${symbol}:${ecFrom}`;
+        ttl = 6 * 60 * 60 * 1000; // 6 hours
+        url = `${BASE}/calendar/earnings?symbol=${symbol}&from=${ecFrom}&to=${ecTo}&token=${FINNHUB_KEY}`;
+        break;
+      }
+
       default:
         return { statusCode: 400, headers, body: JSON.stringify({ error: `Unknown endpoint: ${endpoint}` }) };
     }

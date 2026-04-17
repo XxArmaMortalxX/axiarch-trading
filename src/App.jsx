@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { TradingModeProvider } from './context/TradingModeContext';
 import { FinnhubProvider } from './context/FinnhubContext';
 import Layout from './components/Layout';
 import Home from './pages/Home';
@@ -20,6 +21,7 @@ export default function App() {
   return (
     <BrowserRouter>
     <AuthProvider>
+    <TradingModeProvider>
     <FinnhubProvider>
       <Routes>
         <Route element={<Layout />}>
@@ -40,6 +42,7 @@ export default function App() {
         </Route>
       </Routes>
     </FinnhubProvider>
+    </TradingModeProvider>
     </AuthProvider>
     </BrowserRouter>
   );

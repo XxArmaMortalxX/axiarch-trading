@@ -351,7 +351,12 @@ export function getSignalClass(sig) {
     'BUY': 'signal-buy',
     'HOLD': 'signal-hold',
     'SELL': 'signal-sell',
-    'STRONG SELL': 'signal-strong-sell'
+    'STRONG SELL': 'signal-strong-sell',
+    // Growth mode signals map to same CSS classes
+    'STRONG ACCUMULATE': 'signal-strong-buy',
+    'ACCUMULATE': 'signal-buy',
+    'TRIM': 'signal-sell',
+    'AVOID': 'signal-strong-sell',
   };
   return map[sig] || 'signal-hold';
 }
