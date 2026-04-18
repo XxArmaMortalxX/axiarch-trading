@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../hooks/useTheme';
 import { useAuth } from '../context/AuthContext';
 import AuthModal from './AuthModal';
+import ModeToggle from './ModeToggle';
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -41,6 +42,7 @@ export default function Navbar() {
         ))}
       </div>
       <div className="nav-actions">
+        <ModeToggle />
         {isLoggedIn ? (
           <div className="user-avatar" onClick={logout} title={`${user.email} — click to logout`}>
             {user.initial}
