@@ -31,10 +31,19 @@ SECRETS_SCAN_OMIT_PATHS = "netlify/functions/telegram-daily.js,netlify/functions
 schedule = "0 13 * * 1-5"
 
 [functions.morning-scan]
-schedule = "30 13 * * 1-5"
+schedule = "0 14 * * 1-5"
 
 [functions.afternoon-check]
 schedule = "0 20 * * 1-5"
+
+[functions.daily-email]
+schedule = "15 12 * * 1-5"
+
+[functions.welcome-email]
+schedule = "0 14 * * *"
+
+[functions.weekly-recap]
+schedule = "0 13 * * 0"
 
 [functions."*"]
 node_bundler = "esbuild"
