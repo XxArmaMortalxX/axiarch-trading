@@ -60,10 +60,10 @@ export default function Home() {
 
         <div className="section-label" style={{ position: 'relative', zIndex: 2 }}>Algorithmic Trading Intelligence</div>
         <h1 className="section-title hero-headline">
-          Stop Guessing. <span style={{ color: 'var(--accent-green)' }}>Start Trading with Data.</span>
+          Our algorithm just flagged <span style={{ color: 'var(--accent-green)' }}>GEVO at +17.78%</span> before it ran.
         </h1>
         <p className="section-subtitle" style={{ maxWidth: '640px', marginTop: '1rem', position: 'relative', zIndex: 2 }}>
-          Axiarch scans 65+ stocks in real-time, calculates 6 technical indicators on each, and generates BUY/SELL signals with precise entry, stop-loss, and profit targets.
+          Axiarch scans 65+ stocks every morning using technical analysis + Reddit/StockTwits social sentiment. Every pick is tracked publicly — wins AND losses. No cherry-picking.
         </p>
 
         <div className="hero-stats" style={{ position: 'relative', zIndex: 2 }}>
@@ -84,27 +84,48 @@ export default function Home() {
       {/* Email gate — hero is visible, rest requires login */}
       {!isLoggedIn && (
         <section className="section-centered" style={{ paddingTop: '2rem', paddingBottom: '4rem' }}>
-          <div style={{ maxWidth: '460px', margin: '0 auto', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: 'var(--space-8)' }}>
+          <div style={{ maxWidth: '520px', margin: '0 auto', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: 'var(--space-8)' }}>
             {signalCount > 0 && (
               <div style={{ background: 'var(--accent-green-dim)', border: '1px solid rgba(0,230,118,0.2)', borderRadius: 'var(--radius)', padding: '0.5rem 0.75rem', marginBottom: 'var(--space-4)', textAlign: 'center' }}>
                 <span style={{ color: 'var(--accent-green)', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', fontWeight: 700 }}>
-                  {signalCount} active signals right now
+                  \u26A1 {signalCount} active signals right now
                 </span>
               </div>
             )}
-            <h3 style={{ fontSize: 'var(--text-xl)', fontWeight: 700, marginBottom: 'var(--space-2)' }}>Sign in to see today's picks</h3>
-            <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-6)', lineHeight: 'var(--leading-relaxed)' }}>
-              Enter your email to access live BUY/SELL signals, social sentiment data, and trade strategies. Completely free.
+            <h3 style={{ fontSize: 'var(--text-xl)', fontWeight: 700, marginBottom: 'var(--space-2)' }}>Today's top picks are ready</h3>
+            <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-4)', lineHeight: 'var(--leading-relaxed)' }}>
+              Enter your email to unlock today's BUY/SELL signals, entry prices, stop-loss targets, and social sentiment data.
             </p>
+
+            {/* Ticker preview teaser */}
+            <div style={{ background: 'var(--bg-primary)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '0.75rem', marginBottom: 'var(--space-4)', textAlign: 'left' }}>
+              <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.5rem' }}>Today's picks</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)' }}>
+                  <span style={{ color: 'var(--accent-green)', fontWeight: 700 }}>$INTC</span>
+                  <span style={{ color: 'var(--accent-green)', fontWeight: 600, fontSize: '0.72rem' }}>STRONG BUY</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', filter: 'blur(5px)', userSelect: 'none' }}>
+                  <span style={{ color: 'var(--accent-green)', fontWeight: 700 }}>$XXXX</span>
+                  <span style={{ color: 'var(--accent-green)', fontWeight: 600, fontSize: '0.72rem' }}>STRONG BUY</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', filter: 'blur(5px)', userSelect: 'none' }}>
+                  <span style={{ color: 'var(--accent-green)', fontWeight: 700 }}>$XXXX</span>
+                  <span style={{ color: 'var(--accent-green)', fontWeight: 600, fontSize: '0.72rem' }}>BUY</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', filter: 'blur(5px)', userSelect: 'none' }}>
+                  <span style={{ color: 'var(--accent-green)', fontWeight: 700 }}>$XXXX</span>
+                  <span style={{ color: 'var(--accent-green)', fontWeight: 600, fontSize: '0.72rem' }}>BUY</span>
+                </div>
+              </div>
+            </div>
+
             <button onClick={() => setShowAuth(true)} className="btn-primary" style={{ width: '100%' }}>
-              Get Free Access
+              Unlock Today's Picks \u2192
             </button>
-            <div style={{ margin: 'var(--space-3) 0', fontSize: 'var(--text-xs)', color: 'var(--text-muted)' }}>or</div>
-            <a href="https://t.me/axiarchtradebot" target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ width: '100%', display: 'block', textAlign: 'center' }}>
-              Join Telegram for Daily Picks
-            </a>
-            <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)', marginTop: 'var(--space-3)' }}>
-              No credit card. No spam. Just your email.
+            <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)', marginTop: 'var(--space-3)', lineHeight: 'var(--leading-relaxed)' }}>
+              \u2713 No credit card \u00B7 No spam \u00B7 Unsubscribe anytime<br/>
+              Tracked publicly: GEVO +17.78%, INTC +1.2%, CORZ +1.6%
             </p>
           </div>
           {showAuth && <AuthModal onClose={() => setShowAuth(false)} required />}
