@@ -371,9 +371,9 @@ exports.handler = async (event) => {
   }
 
   // 6. Minimum score threshold — don't flag weak picks
+  // Minimum score threshold — lower for 10-pick system
   const qualified = filtered.filter(r => {
-    if (r.score < 55) {
-      console.log(`Filtered ${r.ticker}: score ${r.score} below threshold 55`);
+    if (r.score < 40) {
       return false;
     }
     return true;
