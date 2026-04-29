@@ -381,11 +381,11 @@ exports.handler = async (event) => {
 
   console.log(`Filters: ${preFilter} scanned → ${filtered.length} after gap/knife filter → ${qualified.length} above score threshold. Market: ${marketBias}, ${recentLosers.length} recent losers`);
 
-  // Sort by score descending, take top 5
+  // Sort by score descending, take top 10
   qualified.sort((a, b) => b.score - a.score);
-  const top5 = qualified.slice(0, 5);
+  const topPicks = qualified.slice(0, 10);
 
-  if (top5.length === 0) {
+  if (topPicks.length === 0) {
     console.log('No valid scan results');
     return { statusCode: 200, body: 'No results' };
   }
@@ -398,7 +398,7 @@ exports.handler = async (event) => {
     date: today,
     scannedAt: new Date().toISOString(),
     tickersScanned: results.length,
-    picks: top5.map(p => ({
+    picks: topPicks.map(p => ({
       ticker: p.ticker,
       entryPrice: p.price,
       score: p.score,
@@ -413,10 +413,10 @@ exports.handler = async (event) => {
 
   await store.setJSON(`morning-${today}`, morningData);
 
-  console.log(`Morning scan complete. Top 5: ${top5.map(p => `${p.ticker}(${p.score})`).join(', ')}`);
+  console.log(`Morning scan complete. Top 10: ${topPicks.map(p => `${p.ticker}(${p.score})`).join(', ')}`);
 
   return {
     statusCode: 200,
-    body: JSON.stringify({ message: 'Morning scan saved', picks: top5 }),
+    body: JSON.stringify({ message: 'Morning scan saved', picks: topPicks }),
   };
 };

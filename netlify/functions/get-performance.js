@@ -23,32 +23,13 @@ exports.handler = async (event) => {
       history = null;
     }
 
-    // Start with the static GEVO seed data
-    const seedPicks = [
-      {
-        ticker: 'GEVO',
-        flaggedDate: '2026-04-02',
-        score: 74,
-        signal: 'BUY',
-        sources: ['Axiarch Screener'],
-        entryPrice: 2.42,
-        closePrice: 2.84,
-        pctChange: 17.78,
-        result: 'WIN',
-        tracked: true,
-        trackedAt: '2026-04-06T15:47:00.000Z',
-      },
-    ];
-
-    // Merge: seed data + automated history (no duplicates)
-    const allPicks = [...seedPicks];
+    // Fresh start from Apr 15 — only include data from today onward
+    const resetDate = '2026-04-15';
+    const allPicks = [];
     if (history && history.picks) {
-      const existingKeys = new Set(allPicks.map(p => `${p.ticker}-${p.flaggedDate}`));
       for (const pick of history.picks) {
-        const key = `${pick.ticker}-${pick.flaggedDate}`;
-        if (!existingKeys.has(key)) {
+        if (pick.flaggedDate >= resetDate) {
           allPicks.push(pick);
-          existingKeys.add(key);
         }
       }
     }
